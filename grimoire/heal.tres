@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Heal" load_steps=4 format=3 uid="uid://c5qii1wdw3ilx"]
+
+[ext_resource type="Script" uid="uid://mk4ea7fxi1hq" path="res://grimoire/heal.gd" id="1_ifolc"]
+[ext_resource type="Texture2D" uid="uid://ct3e25cxowsrp" path="res://grimoire/icons.png" id="1_u5tu6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5tu6"]
+atlas = ExtResource("1_u5tu6")
+region = Rect2(0, 0, 16, 16)
+
+[resource]
+script = ExtResource("1_ifolc")
+heal_amount = 10
+display_name = "Heal"
+range = 0
+icon = SubResource("AtlasTexture_u5tu6")

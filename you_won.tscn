@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2wsdbhmhfosh"]
+
+[ext_resource type="FontFile" uid="uid://c5pxnvirre88f" path="res://common/pf_tempesta_seven_condensed_bold.ttf" id="1_j5gld"]
+
+[node name="YouWon" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 640.0
+offset_bottom = 360.0
+
+[node name="Label" type="Label" parent="."]
+offset_right = 640.0
+offset_bottom = 360.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_j5gld")
+theme_override_font_sizes/font_size = 32
+text = "YOU WON"
+horizontal_alignment = 1
+vertical_alignment = 1

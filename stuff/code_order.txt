@@ -1,0 +1,27 @@
+@tool, @icon, @static_unload
+class_name
+extends
+## doc comment
+
+signals
+enums
+constants
+static variables
+@export variables
+remaining public regular variables
+remaining private regular variables
+@onready variables
+
+_static_init()
+remaining static methods
+overridden built-in virtual methods:
+    1. _init()
+    2. _enter_tree()
+    3. _ready()
+    4. _process()
+    5. _physics_process()
+    6. remaining virtual methods
+overridden custom methods
+remaining public methods
+remaining private methods
+subclasses

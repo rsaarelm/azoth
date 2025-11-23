@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://x0fuej02rsv0"]
+
+[ext_resource type="Script" uid="uid://daan81nyf7nuy" path="res://bestiary/mob.gd" id="1_73s6p"]
+[ext_resource type="Texture2D" uid="uid://cqgbvd45rebjt" path="res://bestiary/mobs.png" id="2_1jj30"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_32vw7"]
+radius = 3.0
+
+[node name="Goblin" type="StaticBody2D" groups=["enemy", "mob"]]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_73s6p")
+display_name = "goblin"
+traits = Array[int]([0])
+metadata/_custom_type_script = "uid://daan81nyf7nuy"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_32vw7")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_1jj30")
+region_enabled = true
+region_rect = Rect2(96, 0, 16, 16)

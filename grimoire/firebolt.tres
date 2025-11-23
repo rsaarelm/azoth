@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Blast" load_steps=4 format=3 uid="uid://fqkv7lupgk8a"]
+
+[ext_resource type="Script" uid="uid://c5wtyi72ccqy6" path="res://grimoire/blast.gd" id="1_13dnv"]
+[ext_resource type="Texture2D" uid="uid://ct3e25cxowsrp" path="res://grimoire/icons.png" id="1_rbs85"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u0hbv"]
+atlas = ExtResource("1_rbs85")
+region = Rect2(16, 0, 16, 16)
+
+[resource]
+script = ExtResource("1_13dnv")
+damage = 5
+display_name = "Firebolt"
+range = 10
+icon = SubResource("AtlasTexture_u0hbv")

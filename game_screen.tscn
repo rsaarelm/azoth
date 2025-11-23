@@ -1,0 +1,91 @@
+[gd_scene load_steps=10 format=3 uid="uid://xtgbp2cv4xk4"]
+
+[ext_resource type="Script" uid="uid://b5lgb5f3rmtt2" path="res://game_screen.gd" id="1_3vj30"]
+[ext_resource type="FontFile" uid="uid://dvpqcoee1hjeb" path="res://common/pf_tempesta_seven_condensed.ttf" id="2_3vj30"]
+[ext_resource type="FontFile" uid="uid://c5pxnvirre88f" path="res://common/pf_tempesta_seven_condensed_bold.ttf" id="3_6mti6"]
+[ext_resource type="Script" uid="uid://c4ijn5mqbm6rr" path="res://console.gd" id="4_aybt7"]
+[ext_resource type="PackedScene" uid="uid://cglcr3xbts2x7" path="res://atlas/sprintmap.tscn" id="5_viusa"]
+[ext_resource type="Script" uid="uid://tv8g4wjhqfk0" path="res://hotbar.gd" id="6_o17u5"]
+[ext_resource type="PackedScene" uid="uid://d1tgj56pwbuux" path="res://cursor_sprite.tscn" id="7_u10x5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dx7b0"]
+bg_color = Color(1, 0.945098, 0.909804, 1)
+border_width_right = 1
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0qhw6"]
+bg_color = Color(1, 0.945098, 0.909804, 1)
+border_width_top = 1
+border_color = Color(0, 0, 0, 1)
+
+[node name="GameScreen" type="Node2D"]
+script = ExtResource("1_3vj30")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+offset_right = 640.0
+offset_bottom = 360.0
+split_offset = 128
+dragging_enabled = false
+dragger_visibility = 2
+
+[node name="SidePanel" type="Panel" parent="HSplitContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_dx7b0")
+
+[node name="StatusArea" type="VBoxContainer" parent="HSplitContainer/SidePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="HSplitContainer/SidePanel/StatusArea"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_3vj30")
+theme_override_font_sizes/font_size = 8
+text = "Side Panel!"
+
+[node name="Console" type="Label" parent="HSplitContainer/SidePanel"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 4.0
+offset_top = 255.0
+offset_right = 124.0
+offset_bottom = 357.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -2
+theme_override_fonts/font = ExtResource("3_6mti6")
+theme_override_font_sizes/font_size = 8
+autowrap_mode = 3
+script = ExtResource("4_aybt7")
+
+[node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer"]
+layout_mode = 2
+split_offset = 328
+dragging_enabled = false
+dragger_visibility = 2
+
+[node name="GameView" type="Control" parent="HSplitContainer/VSplitContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Area" parent="HSplitContainer/VSplitContainer/GameView" instance=ExtResource("5_viusa")]
+unique_name_in_owner = true
+
+[node name="BottomPanel" type="Panel" parent="HSplitContainer/VSplitContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0qhw6")
+
+[node name="Hotbar" type="HBoxContainer" parent="HSplitContainer/VSplitContainer/BottomPanel"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 424.0
+offset_bottom = 20.0
+script = ExtResource("6_o17u5")
+
+[node name="CursorSprite" parent="." instance=ExtResource("7_u10x5")]
+unique_name_in_owner = true

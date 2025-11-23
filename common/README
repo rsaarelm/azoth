@@ -1,0 +1,2 @@
+Assets and logic shared between multiple projects.
+Symlink "common/" to your game project directory.

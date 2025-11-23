@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Armageddon" load_steps=4 format=3 uid="uid://ouw1pdy1dkbs"]
+
+[ext_resource type="Texture2D" uid="uid://ct3e25cxowsrp" path="res://grimoire/icons.png" id="1_1ulqs"]
+[ext_resource type="Script" uid="uid://bn3ef2qpsk63y" path="res://grimoire/armageddon.gd" id="1_rgmnd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rog6l"]
+atlas = ExtResource("1_1ulqs")
+region = Rect2(48, 0, 16, 16)
+
+[resource]
+script = ExtResource("1_rgmnd")
+damage = 999
+display_name = "Armageddon"
+range = 0
+icon = SubResource("AtlasTexture_rog6l")

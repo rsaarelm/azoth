@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://ke6i8f8031ob"]
+
+[ext_resource type="FontFile" uid="uid://cktjgvrfii0kn" path="res://common/tinypixel.otf" id="1_ds5wh"]
+[ext_resource type="Script" uid="uid://cdx8eqe1t3wpw" path="res://floating_text.gd" id="2_8goxa"]
+
+[node name="FloatingText" type="Label"]
+custom_minimum_size = Vector2(150, 0)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 0.945098, 0.909804, 1)
+theme_override_constants/line_spacing = 0
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("1_ds5wh")
+theme_override_font_sizes/font_size = 7
+text = "-"
+horizontal_alignment = 1
+autowrap_mode = 2
+uppercase = true
+script = ExtResource("2_8goxa")
+metadata/_custom_type_script = "uid://cdx8eqe1t3wpw"
