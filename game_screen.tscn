@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://xtgbp2cv4xk4"]
+[gd_scene load_steps=11 format=3 uid="uid://xtgbp2cv4xk4"]
 
 [ext_resource type="Script" uid="uid://b5lgb5f3rmtt2" path="res://game_screen.gd" id="1_3vj30"]
 [ext_resource type="FontFile" uid="uid://dvpqcoee1hjeb" path="res://common/pf_tempesta_seven_condensed.ttf" id="2_3vj30"]
@@ -12,6 +12,15 @@
 bg_color = Color(1, 0.945098, 0.909804, 1)
 border_width_right = 1
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="GDScript" id="GDScript_3vj30"]
+script/source = "extends Label
+
+func _process(delta: float) -> void:
+	var pc = Game.leader()
+	if pc:
+		text = \"HP: \" + str(pc.health - pc.wounds) + \"/\" + str(pc.health)
+"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0qhw6"]
 bg_color = Color(1, 0.945098, 0.909804, 1)
@@ -38,6 +47,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -127.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -47,6 +60,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("2_3vj30")
 theme_override_font_sizes/font_size = 8
 text = "Side Panel!"
+script = SubResource("GDScript_3vj30")
 
 [node name="Console" type="Label" parent="HSplitContainer/SidePanel"]
 unique_name_in_owner = true

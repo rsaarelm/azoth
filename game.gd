@@ -89,6 +89,15 @@ func start_running():
 func stop_running():
 	pause_requested = true
 
+func player_died():
+	await get_tree().create_timer(0.4).timeout
+	get_tree().change_scene_to_file("res://you_died.tscn")
+	await get_tree().create_timer(1.0).timeout
+	# Restarting is baked into GameScreen's initialization routine, so we just
+	# reload the scene here. This will respawn player at the last respawn
+	# position.
+	get_tree().change_scene_to_file("res://game_screen.tscn")
+
 ## Load a new area and place the player in the given pos.
 ##
 ## If player is unspecified, pull out the existing player.

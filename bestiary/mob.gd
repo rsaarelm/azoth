@@ -26,9 +26,6 @@ const ENEMY_SIGHT_RANGE := 7
 
 @export var display_name: String = "mob"
 
-# Cached reference to current area
-var area: Area
-
 ## List of abilities this mob can use.
 @export var abilities: Array[Ability]
 
@@ -36,10 +33,18 @@ var area: Area
 @export var traits: Array[CreatureTrait]
 
 ## How much damage can the mob take.
-@export var health := 10
+@export var health := 20
 
 ## How hard does the mob hit.
-@export var strength := 0
+@export var strength := 10
+
+## "Inverse hitpoints", set up so it's easy to reset by setting it to zero.
+##
+## Once wounds reach up to your health, you're dead.
+var wounds := 0
+
+## Cached reference to current area
+var area: Area
 
 ## Access cell coordinates of the mob, using the underlying position.
 ##
@@ -69,6 +74,8 @@ var _is_moving := false
 ## Enemies the mob is currently seeing. Used to determine whether a visible
 ## enemy is new or known.
 var _known_enemies: Array[Mob]
+
+#region Movement
 
 func _enter_tree():
 	# Clean up stuff that's probably invalid.
@@ -232,6 +239,10 @@ func can_move(direction: Vector2i) -> bool:
 		return true
 	return !area.is_blocked(body.shape, cell + direction, [self])
 
+#endregion
+
+#region Combat
+
 # Should 'attack' be split into 'find_target' and 'deal_damage'?
 
 func attack(vec: Vector2i) -> bool:
@@ -240,28 +251,29 @@ func attack(vec: Vector2i) -> bool:
 	# fire.
 	var target = area.mob_at(cell + vec)
 	if target:
-		# TODO: Do proper damage system instead of instakill.
-		Game.msg(target.display_name.capitalize() + " killed.")
-		target.take_damage(9999)
+		target.take_damage(self.strength)
 		return true
 	return false
 
 func take_damage(damage: int) -> void:
-	# Fake damage for player
-	if is_pc():
-		say_drift(str(randf_range(5, 20) as int))
-		return
+	wounds += damage
+	if wounds < health:
+		# Still alive.
+		say_drift(str(damage))
+	else:
+		# Snap to health, no negative HP.
+		wounds = health
+		say_drift("death")
+		if is_pc():
+			Game.player_died()
+		else:
+			queue_free()
 
-	# Fake combat against enemies (but they eventually lose)
-	if randf_range(0.0, 1.0) < 0.5:
-		say_drift(str(randf_range(5, 20) as int))
-		return
+		# Additional death logic goes here...
 
-	say_drift("death")
-	queue_free()
-	if CreatureTrait.QUEST_BOSS in traits:
-		Game.msg("You have defeated " + display_name + "!")
-		# TODO: Create an altar when a quest boss is defeated
+#endregion
+
+#region AI
 
 ## True if this mob is the main player character. The game is turn-based
 ## around the main character's moves.
@@ -378,3 +390,5 @@ func _visible_enemies(detection_range: int) -> Array[Mob]:
 		return Game.dist(self, a) < Game.dist(self, b)
 	)
 	return result
+
+#endregion
