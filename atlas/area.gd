@@ -58,11 +58,12 @@ var _astar := AStarGrid2D.new()
 
 var _astar_is_dirty: bool = false
 
-# XXX: There's a problem with mobs where their updated positions only register
-# after a frame, so two mobs trying to enter a cell at the same time will both
-# succeed cause the area to end up in an invalid state. We'll add this set
-# that mobs can use to reserve spaces.
-var _occupation_scratchpad = {}
+# NB. Do not rely on collision physics to detect mobs. Moving entities only
+# register in Godot's collision system on the frame after they moved, and a
+# lot of the logic of the game relies on mobs showing up in their destination
+# cell immediately after they've run their own process routin. Eg. consider
+# two mobs updating on the same frame and trying to move to the same target
+# cell.
 
 func _ready():
 	# Configure for 4-way movement.
@@ -110,21 +111,16 @@ func _ready():
 				set_cell(pos, 1, EXIT_TILE)
 
 func _process(delta: float) -> void:
-	_occupation_scratchpad.clear()
-
 	if _astar_is_dirty:
 		_build_astar()
 		_astar_is_dirty = false
-
-
-func occupy(pos: Vector2i):
-	_occupation_scratchpad[pos] = true
 
 ## Get path from start to end cell coordinates.
 func path_to(start: Vector2i, end: Vector2i) -> Array[Vector2i]:
 	return _astar.get_id_path(start, end)
 
 ## Return whether terrain can be walked at given cell coordinates.
+## Does not consider mobs that might block the path.
 func is_passable(cell: Vector2i) -> bool:
 	var data = get_cell_tile_data(cell)
 	# XXX: Currently any collision data in the tile makes it impassable.
@@ -158,39 +154,16 @@ func mouse_cell():
 		return null
 	return cell
 
-## Return whether the shape can occupy the given cell without colliding.
-func is_blocked(shape: Shape2D, cell: Vector2i, exclude=[]) -> bool:
-	if _occupation_scratchpad.has(cell):
-		return true
-
-	var space_state = get_world_2d().direct_space_state
-	var params = PhysicsShapeQueryParameters2D.new()
-	params.shape = shape
-	params.transform = Transform2D(0, global_position + (Vector2(cell) + Vector2(0.5, 0.5)) * CELL_SIZE)
-	# Turn off the bit corresponding to SIGHT_LAYER, vision-blocking tiles
-	# can be passable.
-	params.collision_mask = ~(1 << SIGHT_LAYER)
-
-	params.collide_with_areas = true
-	params.collide_with_bodies = true
-	params.exclude = exclude
-
-	var collision = space_state.intersect_shape(params)
-	return collision.size() > 0
-
 ## Return entities in a given cell.
 func entities_at(cell: Vector2i) -> Array:
-	var space_state = get_world_2d().direct_space_state
-	var params = PhysicsPointQueryParameters2D.new()
-	# NB. Mobs need to have collision shapes that cover the cell center.
-	params.position = to_global(map_to_local(cell))
-	params.collide_with_areas = false
-	params.collide_with_bodies = true
-	var collision = space_state.intersect_point(params)
-
-	var result := []
-	for c in collision:
-		result.append(c.collider)
+	# XXX: Unoptimized, a spatial index in area that stores objects by cell
+	# would be better. (We can't use Godot's built-in collision physics since
+	# they don't register movement during the frame when the entity moves.)
+	var result = []
+	for child in find_children("*", "", true, false):
+		# Child must have "cell" property to be considered.
+		if "cell" in child and child.cell == cell:
+			result.append(child)
 	return result
 
 ## Return mob at given cell, or null if none.

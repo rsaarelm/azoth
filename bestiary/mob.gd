@@ -209,11 +209,6 @@ func step(direction: Vector2i) -> bool:
 		_is_moving = true
 		cell += direction
 
-		# Mark the cell we moved into in Area's temporary scratchpad to
-		# prevent multiple mobs from moving into the same cell this frame. The
-		# engine's collision detection won't work for single-frame conflicts.
-		area.occupy(cell)
-
 		# Hooks for stepping to a new position go here.
 
 		return true
@@ -227,12 +222,8 @@ func bump(direction: Vector2) -> bool:
 	return step(direction)
 
 func can_move(direction: Vector2i) -> bool:
-	var body = $CollisionShape2D
-	if body == null or body.shape == null:
-		# XXX: Not sure if it's okay to let bodiless mobs move anywhere they
-		# want rather than crashing here.
-		return true
-	return !area.is_blocked(body.shape, cell + direction, [self])
+	var pos = cell + direction
+	return area.is_passable(pos) and area.mob_at(pos) == null
 
 #endregion
 
