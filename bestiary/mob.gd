@@ -147,7 +147,7 @@ func _process(delta: float) -> void:
 				# killed.
 				_clear_goal()
 			else:
-				var state = _move_towards(_goal_target_cell())
+				var state = _move_towards(target)
 				if !state:
 					# Goal is done or failed.
 					_clear_goal()

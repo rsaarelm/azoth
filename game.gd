@@ -1,12 +1,5 @@
 extends Node
 
-var is_paused := true
-
-## Toggle variable for pausing, we want actual pause switch to happen at
-## Game._process and nowhere else to control when the other _process calls see
-## the game as running.
-var pause_requested = null
-
 ## Cached current area.
 ## Do not set from outside Game.
 var _area: Area = null
@@ -16,6 +9,8 @@ var aim_ability: Ability = null:
 	set(value):
 		get_tree().current_scene.aim_ability = value
 
+#region Static game-specific functions
+
 ## Distance between two games in the metric used by the game.
 static func dist(p1, p2) -> float:
 	# Taxicab metric distance
@@ -23,7 +18,20 @@ static func dist(p1, p2) -> float:
 	p2 = Util.unwrap_cell(p2)
 	return abs(p1.x - p2.x) + abs(p1.y - p2.y)
 
-## Global operations
+## How many coins do you need to pay to level up to given level.
+static func level_up_cost(level: int) -> int:
+	return int(100 * 1.05 ** (level - 1))
+
+#endregion
+
+#region Global time and state management
+
+var is_paused := true
+
+## Toggle variable for pausing, we want actual pause switch to happen at
+## Game._process and nowhere else to control when the other _process calls see
+## the game as running.
+var pause_requested = null
 
 func _process(delta: float) -> void:
 	if !is_paused:
@@ -49,17 +57,19 @@ func _process(delta: float) -> void:
 			is_paused = false
 			pause_requested = null
 
-func msg(text: String) -> void:
-	get_tree().current_scene.msg(text)
+## Start running logic after player turn
+func start_running():
+	pause_requested = false
+
+## Start running logic after player turn
+func stop_running():
+	pause_requested = true
 
 ## Reset levels and respawn player to last checkpoint.
 ##
 ## If `retain_player` is true, the player's injuries and status effects are
 ## sustained.
 func restart_world(retain_player=false):
-	# TODO: We don't actually want to use `restart_world` at all for region
-	# shift, the other mobs' states should be kept too. That's a problem for
-	# future, for now things will be harder for the player.
 	var player: Mob = null
 	# Keep original player mob around
 	if retain_player:
@@ -80,14 +90,6 @@ func restart_world(retain_player=false):
 		player.cell = dummy_player.cell
 		dummy_player.get_parent().add(player)
 		dummy_player.queue_free()
-
-## Start running logic after player turn
-func start_running():
-	pause_requested = false
-
-## Start running logic after player turn
-func stop_running():
-	pause_requested = true
 
 func player_died():
 	await get_tree().create_timer(0.4).timeout
@@ -125,6 +127,10 @@ func load_area(scene_path: String, player_pos: Vector2i, player: Mob = null):
 	# Add player
 	player.cell = player_pos
 	_area.add_child(player)
+#endregion
+
+func msg(text: String) -> void:
+	get_tree().current_scene.msg(text)
 
 ## Get the current leader mob (directly controlled player character).
 ## This may be different than the main player character if a minion NPC
