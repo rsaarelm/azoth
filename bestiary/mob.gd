@@ -197,17 +197,12 @@ func step(direction: Vector2i) -> bool:
 			Area.Kind.ALTAR:
 				# Pray at altar, you heal but the enemies respawn.
 
-				# TODO: Simple altar behavior, auto-level-up player as long as
-				# there's cash
-
-				# TODO: Complex altar behavior, pop up an actual rest
-				# operations menu here for complex leveling up, spell
-				# attunement etc.
 				if is_pc():
-					Player.spawn_area = area.scene_file_path
-					assert(Player.spawn_area, "Invalid area: No scene file path")
-					Player.spawn_pos = cell
-					Game.restart_world()
+					# TODO: Simple altar behavior, auto-level-up player as long as there's cash
+
+					# TODO: Complex altar behavior, pop up an actual rest operations menu here for
+					# complex leveling up, spell attunement etc.
+					Game.player_rests()
 					return true
 
 		# Set is_moving to true when you're definitely taking a step.
