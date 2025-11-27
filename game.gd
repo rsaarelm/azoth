@@ -87,9 +87,14 @@ func player_rests():
 	Game.restart()
 
 func player_died():
-	# TODO: Lose all your cash at hand when you die, designate current
-	# position (or the enemy that killed you) as the cash pile you need to
-	# pick up on your next run.
+	# TODO: Generate a recoverable cash pile at the spot you died or on the
+	# enemy that killed you.
+
+	# Lose your cash as punishment for dying.
+	Game.msg("You died.")
+	if Player.cash > 0:
+		Game.msg("You lost " + str(Player.cash) + "$.")
+	Player.cash = 0
 
 	await get_tree().create_timer(0.4).timeout
 	get_tree().change_scene_to_file("res://you_died.tscn")

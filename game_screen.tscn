@@ -20,6 +20,10 @@ func _process(delta: float) -> void:
 	var pc = Game.leader()
 	if pc:
 		text = \"HP: \" + str(pc.health - pc.wounds) + \"/\" + str(pc.health)
+		text += \"\\nSilver: \" + str(Player.cash) + \"$\"
+		# Add indicator if you have enough cash to level up
+		if Player.cash >= Game.level_up_cost(Player.level + 1):
+			text += \"*\"
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0qhw6"]
@@ -57,6 +61,7 @@ grow_vertical = 2
 [node name="Label" type="Label" parent="HSplitContainer/SidePanel/StatusArea"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = 0
 theme_override_fonts/font = ExtResource("2_3vj30")
 theme_override_font_sizes/font_size = 8
 text = "Side Panel!"

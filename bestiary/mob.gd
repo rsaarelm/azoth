@@ -198,10 +198,12 @@ func step(direction: Vector2i) -> bool:
 				# Pray at altar, you heal but the enemies respawn.
 
 				if is_pc():
-					# TODO: Simple altar behavior, auto-level-up player as long as there's cash
-
 					# TODO: Complex altar behavior, pop up an actual rest operations menu here for
 					# complex leveling up, spell attunement etc.
+
+					# Eat cash and do simple level ups as far as you can.
+					while Player.level_up():
+						Game.msg("Gained level " + str(Player.level))
 					Game.player_rests()
 					return true
 
@@ -254,6 +256,11 @@ func take_damage(damage: int) -> void:
 			Game.player_died()
 		else:
 			queue_free()
+
+		if is_enemy():
+			# XP gain (don't care who killed it)
+			var payout = strength
+			Player.cash += payout
 
 		# Additional death logic goes here...
 

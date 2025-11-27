@@ -42,4 +42,21 @@ func build() -> Mob:
 	# Urgh, I guess I need this so far to align it to the cell center.
 	player.position = Area.CELL / 2
 
+	# Apply stats.
+	player.health = health
+	player.strength = 10 + might
+
 	return player
+
+## Level up the persistent player.
+##
+## The player mob must be reconstructed with `build` before the effects show
+## up. Return false if you don't have money to level up.
+func level_up() -> bool:
+	var cost = Game.level_up_cost(self.level + 1)
+	if cash >= cost:
+		cash -= cost
+		# No stat selection yet, just pump up strength.
+		might += 1
+		return true
+	return false
