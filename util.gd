@@ -1,4 +1,5 @@
 class_name Util
+## Game-agnostic utilities
 
 # Can't use the built-in Input.get_vector() here because it doesn't do the
 # just_pressed bit.
@@ -25,8 +26,8 @@ static func unwrap_cell(entity) -> Vector2i:
 	return Vector2i.ZERO
 
 ## Get probability value for deciban odds.
-static func odds_prob(odds: float) -> float:
-	return 1.0 - 1.0 / (1.0 + 10.0 ** (odds / 10.0))
+static func odds_prob(a: float) -> float:
+	return 1.0 - 1.0 / (1.0 + 10.0 ** (a / 10.0))
 
 ## Randomly return true with the given deciban odds.
 static func odds(odds: float) -> bool:

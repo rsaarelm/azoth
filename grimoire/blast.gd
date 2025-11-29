@@ -3,7 +3,7 @@ class_name Blast extends Ability
 
 @export var damage: int = 5
 
-func use(caster: Mob, target: Vector2i) -> void:
+func use(_caster: Mob, target: Vector2i) -> void:
 	var mob = Game.area().mob_at(target)
 
 	if mob:

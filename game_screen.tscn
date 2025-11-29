@@ -22,7 +22,7 @@ func _process(delta: float) -> void:
 		text = \"HP: \" + str(pc.health - pc.wounds) + \"/\" + str(pc.health)
 		text += \"\\nSilver: \" + str(Player.cash) + \"$\"
 		# Add indicator if you have enough cash to level up
-		if Player.cash >= Game.level_up_cost(Player.level + 1):
+		if Player.cash >= Rules.level_up_cost(Player.level + 1):
 			text += \"*\"
 "
 

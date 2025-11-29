@@ -11,5 +11,5 @@ region = Rect2(16, 0, 16, 16)
 script = ExtResource("1_13dnv")
 damage = 5
 display_name = "Firebolt"
-range = 10
+fx_range = 10
 icon = SubResource("AtlasTexture_u0hbv")

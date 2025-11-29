@@ -18,7 +18,6 @@ var target_node: Node2D:
 var game_screen: Control
 
 var _lifetime := 0.0
-var _max_life: float
 
 func _process(delta: float) -> void:
 	_lifetime += delta

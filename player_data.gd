@@ -53,7 +53,7 @@ func build() -> Mob:
 ## The player mob must be reconstructed with `build` before the effects show
 ## up. Return false if you don't have money to level up.
 func level_up() -> bool:
-	var cost = Game.level_up_cost(self.level + 1)
+	var cost = Rules.level_up_cost(self.level + 1)
 	if cash >= cost:
 		cash -= cost
 		# No stat selection yet, just pump up strength.

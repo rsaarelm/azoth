@@ -11,5 +11,5 @@ region = Rect2(48, 0, 16, 16)
 script = ExtResource("1_rgmnd")
 damage = 999
 display_name = "Armageddon"
-range = 0
+fx_range = 0
 icon = SubResource("AtlasTexture_rog6l")

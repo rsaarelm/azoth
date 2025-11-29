@@ -60,7 +60,9 @@ var cell: Vector2i:
 		return Vector2i(position / Area.CELL_SIZE)
 	set(value):
 		# Make sure to preserve the local offset.
-		var offset = Vector2i(posmod(position.x, Area.CELL_SIZE), posmod(position.y, Area.CELL_SIZE))
+		var offset = Vector2i(
+			posmod(position.x, Area.CELL_SIZE) as int,
+			posmod(position.y, Area.CELL_SIZE) as int)
 		position = Vector2(value * Area.CELL_SIZE + offset)
 
 var _goal := Goal.NONE
@@ -411,13 +413,13 @@ func _visible_enemies(detection_range: int) -> Array[Mob]:
 		search_group = "enemy"
 
 	for mob in get_tree().get_nodes_in_group(search_group):
-		if Game.dist(self, mob) <= detection_range:
+		if Rules.dist(self, mob) <= detection_range:
 			if area.can_see(self.cell, mob.cell):
 				result.append(mob)
 
 	# Sort from closest to furthest
 	result.sort_custom(func(a, b):
-		return Game.dist(self, a) < Game.dist(self, b)
+		return Rules.dist(self, a) < Rules.dist(self, b)
 	)
 	return result
 
