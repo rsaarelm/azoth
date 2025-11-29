@@ -166,7 +166,9 @@ func step(direction: Vector2i) -> bool:
 		# Is there something funny in the new location? This only happens when
 		# player hits the stuff.
 		var pos = cell + direction
-		match area.kind(pos):
+
+		var kind = area.kind(pos)
+		match kind:
 			Area.Kind.REGULAR: pass
 			Area.Kind.EXIT:
 				# Area transition!
@@ -200,6 +202,30 @@ func step(direction: Vector2i) -> bool:
 					# flag so that you can't use level transition to heal.
 					Game.load_area(new_area, new_pos, self)
 					return true
+				else:
+					return false
+			Area.Kind.UPSTAIRS, Area.Kind.DOWNSTAIRS:
+				# Another area transition
+				if is_pc():
+					# The assumption is that the matching exit is in the same
+					# position in the above/below map, and we want to set up a
+					# thing where the player can reverse the transition by
+					# immediately moving in the reverse direction. To do this,
+					# we do a two-step horizontal movement with the area
+					# transition.
+					var new_pos = cell + direction * 2
+
+					var new_area := ""
+					if kind == Area.Kind.UPSTAIRS:
+						new_area = area.above
+					elif kind == Area.Kind.DOWNSTAIRS:
+						new_area = area.below
+					assert(new_area, "Stair tile with no neighbor area.")
+					Game.load_area(new_area, new_pos, self)
+					return true
+				else:
+					return false
+
 			Area.Kind.ALTAR:
 				# Pray at altar, you heal but the enemies respawn.
 
@@ -212,6 +238,8 @@ func step(direction: Vector2i) -> bool:
 						Game.msg("Gained level " + str(Player.level))
 					Game.player_rests()
 					return true
+				else:
+					return false
 
 		# Set is_moving to true when you're definitely taking a step.
 		_is_moving = true

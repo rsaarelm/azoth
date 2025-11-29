@@ -44,14 +44,16 @@ const MAX_HEIGHT := 41
 @export var south: String
 @export var west: String
 
-# Above and below maps are accessed via teleporter-like stairwell elements,
-# they're not specified at terrain level.
+@export var above: String
+@export var below: String
 
 # INVARIANT: These must match the integers used in the tileset "kind" field.
 enum Kind {
 	REGULAR = 0,
 	EXIT = 1,
 	ALTAR = 2,
+	DOWNSTAIRS = 3,
+	UPSTAIRS = 4,
 }
 
 var _astar := AStarGrid2D.new()
