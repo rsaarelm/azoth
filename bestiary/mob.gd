@@ -38,6 +38,12 @@ const ENEMY_SIGHT_RANGE := 7
 ## How hard does the mob hit.
 @export var strength := 10
 
+## How likely the mob is to land a blow.
+@export var accuracy := 5
+
+## How well can the mob evade attacks.
+@export var evasion := 0
+
 ## "Inverse hitpoints", set up so it's easy to reset by setting it to zero.
 ##
 ## Once wounds reach up to your health, you're dead.
@@ -239,7 +245,10 @@ func attack(vec: Vector2i) -> bool:
 	# fire.
 	var target = area.mob_at(cell + vec)
 	if target:
-		target.take_damage(self.strength)
+		if Util.odds(accuracy - target.evasion):
+			target.take_damage(self.strength)
+		else:
+			target.say_drift("miss")
 		return true
 	return false
 
