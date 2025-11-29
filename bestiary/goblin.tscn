@@ -4,6 +4,7 @@
 
 [node name="Goblin" groups=["enemy"] instance=ExtResource("1_ae2vs")]
 display_name = "goblin"
+health = 10
 
 [node name="Sprite2D" parent="." index="1"]
 region_rect = Rect2(96, 0, 16, 16)

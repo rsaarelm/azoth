@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://c136e5ln64qgb"]
+
+[ext_resource type="PackedScene" uid="uid://cegnfcshcoem2" path="res://bestiary/mob.tscn" id="1_lu3cu"]
+
+[node name="Ooze" groups=["enemy"] instance=ExtResource("1_lu3cu")]
+display_name = "ooze"
+health = 30
+
+[node name="Sprite2D" parent="." index="1"]
+region_rect = Rect2(128, 0, 16, 16)

@@ -6,6 +6,7 @@
 display_name = "snake"
 health = 5
 strength = 20
+evasion = 5
 
 [node name="Sprite2D" parent="." index="1"]
 region_rect = Rect2(48, 0, 16, 16)

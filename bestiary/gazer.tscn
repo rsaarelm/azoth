@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://cs1euurgm67dw"]
+
+[ext_resource type="PackedScene" uid="uid://cegnfcshcoem2" path="res://bestiary/mob.tscn" id="1_j3nj5"]
+
+[node name="Gazer" groups=["enemy"] instance=ExtResource("1_j3nj5")]
+display_name = "gazer"
+health = 40
+strength = 15
+accuracy = 10
+evasion = 5
+
+[node name="Sprite2D" parent="." index="1"]
+region_rect = Rect2(208, 0, 16, 16)

@@ -1,12 +1,28 @@
-[gd_resource type="TileSet" load_steps=6 format=3 uid="uid://bq2yy7xds0ie2"]
+[gd_resource type="TileSet" load_steps=14 format=3 uid="uid://bq2yy7xds0ie2"]
 
 [ext_resource type="PackedScene" uid="uid://x0fuej02rsv0" path="res://bestiary/goblin.tscn" id="1_538gw"]
+[ext_resource type="PackedScene" uid="uid://ds0xcakqbymib" path="res://bestiary/stone_golem.tscn" id="1_bwlfj"]
 [ext_resource type="Texture2D" uid="uid://djme540p54pkb" path="res://atlas/terrain.png" id="1_c0pq6"]
 [ext_resource type="PackedScene" uid="uid://bemf7ll43irkn" path="res://bestiary/ancient_king.tscn" id="2_77eb6"]
+[ext_resource type="PackedScene" uid="uid://cs5u8qujtu65f" path="res://bestiary/wolf.tscn" id="2_txdbg"]
+[ext_resource type="PackedScene" uid="uid://bctldgljiydeo" path="res://bestiary/crocodile.tscn" id="4_x6lh3"]
+[ext_resource type="PackedScene" uid="uid://cs1euurgm67dw" path="res://bestiary/gazer.tscn" id="5_icnuh"]
+[ext_resource type="PackedScene" uid="uid://dtpq6xev5rqn3" path="res://bestiary/ogre.tscn" id="7_fmfuh"]
+[ext_resource type="PackedScene" uid="uid://c136e5ln64qgb" path="res://bestiary/ooze.tscn" id="8_h53yi"]
+[ext_resource type="PackedScene" uid="uid://b067j4onjygxm" path="res://bestiary/snake.tscn" id="9_iglbe"]
+[ext_resource type="PackedScene" uid="uid://bhbwxqc4ib3ek" path="res://bestiary/spider.tscn" id="10_m41gr"]
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_sdgw3"]
-scenes/1/scene = ExtResource("1_538gw")
 scenes/2/scene = ExtResource("2_77eb6")
+scenes/3/scene = ExtResource("4_x6lh3")
+scenes/4/scene = ExtResource("5_icnuh")
+scenes/5/scene = ExtResource("1_538gw")
+scenes/6/scene = ExtResource("7_fmfuh")
+scenes/7/scene = ExtResource("8_h53yi")
+scenes/8/scene = ExtResource("9_iglbe")
+scenes/9/scene = ExtResource("10_m41gr")
+scenes/10/scene = ExtResource("1_bwlfj")
+scenes/11/scene = ExtResource("2_txdbg")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2urvg"]
 texture = ExtResource("1_c0pq6")

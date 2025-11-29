@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://cs5u8qujtu65f"]
+
+[ext_resource type="PackedScene" uid="uid://cegnfcshcoem2" path="res://bestiary/mob.tscn" id="1_qml2a"]
+
+[node name="Wolf" groups=["enemy"] instance=ExtResource("1_qml2a")]
+display_name = "wolf"
+health = 15
+strength = 15
+evasion = 5
+
+[node name="Sprite2D" parent="." index="1"]
+region_rect = Rect2(192, 0, 16, 16)
