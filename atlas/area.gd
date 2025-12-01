@@ -172,7 +172,7 @@ func entities_at(cell: Vector2i) -> Array:
 func mob_at(cell: Vector2i):
 	var entities = entities_at(cell)
 	for e in entities:
-		if e is Mob:
+		if e is Mob and !e.is_dead():
 			return e
 	return null
 

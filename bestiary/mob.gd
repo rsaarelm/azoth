@@ -283,18 +283,19 @@ func attack(vec: Vector2i) -> bool:
 	return false
 
 func take_damage(damage: int) -> void:
+	if is_dead():
+		return
+
 	wounds += damage
-	if wounds < health:
-		# Still alive.
+	if !is_dead():
 		say_drift(str(damage))
 	else:
 		# Snap to health, no negative HP.
 		wounds = health
 		say_drift("death")
+		queue_free()
 		if is_pc():
 			Game.player_died()
-		else:
-			queue_free()
 
 		if is_enemy():
 			# XP gain (don't care who killed it)
@@ -317,6 +318,9 @@ func is_enemy() -> bool:
 
 func has_goal() -> bool:
 	return _goal != Goal.NONE
+
+func is_dead() -> bool:
+	return wounds >= health
 
 func cmd_goto(target):
 	_goal = Goal.GOTO
