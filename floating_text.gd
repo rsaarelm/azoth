@@ -46,15 +46,3 @@ func snap_to(target):
 	var offset = size * Vector2(0.5, 1.0) + Vector2(0, 6)
 
 	global_position = target.global_position - offset
-
-	# Clamp to parent visible rect.
-	var container = get_parent() as Control
-	if container:
-		var bounds = container.get_global_rect()
-		global_position = global_position.clamp(
-			Vector2(bounds.position.x, bounds.position.y),
-			Vector2(
-				bounds.position.x + bounds.size.x - size.x,
-				bounds.position.y + bounds.size.y - size.y
-			)
-		)
