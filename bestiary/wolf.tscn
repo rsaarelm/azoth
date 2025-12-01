@@ -4,9 +4,10 @@
 
 [node name="Wolf" groups=["enemy"] instance=ExtResource("1_qml2a")]
 display_name = "wolf"
-health = 15
-strength = 15
+health = 12
+strength = 6
 evasion = 5
+accuracy = 5
 
 [node name="Sprite2D" parent="." index="1"]
 region_rect = Rect2(192, 0, 16, 16)

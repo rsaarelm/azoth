@@ -33,13 +33,13 @@ const ENEMY_SIGHT_RANGE := 7
 @export var traits: Array[CreatureTrait]
 
 ## How much damage can the mob take.
-@export var health := 20
+@export var health := 10
 
 ## How hard does the mob hit.
-@export var strength := 10
+@export var strength := 3
 
 ## How likely the mob is to land a blow.
-@export var accuracy := 5
+@export var accuracy := 1
 
 ## How well can the mob evade attacks.
 @export var evasion := 0

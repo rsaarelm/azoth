@@ -4,8 +4,8 @@
 
 [node name="Crocodile" groups=["enemy"] instance=ExtResource("1_ripeg")]
 display_name = "crocodile"
-health = 30
-strength = 20
+health = 18
+strength = 8
 accuracy = 8
 
 [node name="Sprite2D" parent="." index="1"]

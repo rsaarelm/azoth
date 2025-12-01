@@ -4,8 +4,8 @@
 
 [node name="Spider" groups=["enemy"] instance=ExtResource("1_4i7mg")]
 display_name = "spider"
-strength = 20
-accuracy = 10
+strength = 10
+accuracy = 5
 evasion = 5
 
 [node name="Sprite2D" parent="." index="1"]

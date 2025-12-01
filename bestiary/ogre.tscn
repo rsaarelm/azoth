@@ -4,8 +4,8 @@
 
 [node name="Ogre" groups=["enemy"] instance=ExtResource("1_av37l")]
 display_name = "ogre"
-health = 40
-strength = 15
+health = 22
+strength = 10
 accuracy = 8
 
 [node name="Sprite2D" parent="." index="1"]

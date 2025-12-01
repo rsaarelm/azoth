@@ -4,8 +4,8 @@
 
 [node name="Gazer" groups=["enemy"] instance=ExtResource("1_j3nj5")]
 display_name = "gazer"
-health = 40
-strength = 15
+health = 28
+strength = 8
 accuracy = 10
 evasion = 5
 
