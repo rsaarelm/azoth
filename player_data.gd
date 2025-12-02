@@ -33,7 +33,11 @@ var abilities: Array[Ability] = [
 
 ## Get the player's mob node.
 func mob():
-	return get_tree().get_nodes_in_group("player").front()
+	var nodes = get_tree().get_nodes_in_group("player")
+	if nodes:
+		return nodes.front()
+	else:
+		return null
 
 ## Instantiate a new player Mob.
 func build() -> Mob:
