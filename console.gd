@@ -1,7 +1,7 @@
 extends Label
 
-func msg(text: String) -> void:
-	self.text += text + "\n"
+func msg(txt: String) -> void:
+	self.text += txt + "\n"
 
 	# If there are more than three lines of text, remove the oldest line
 	if self.text.count("\n") > 3:

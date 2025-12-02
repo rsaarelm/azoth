@@ -3,7 +3,7 @@
 [sub_resource type="GDScript" id="GDScript_onbv7"]
 script/source = "extends Node2D
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	# Follow mouse position.
 	# Must snap to integer vector here or floaty mouse values make the pointer polygon jiggle.
 	position = Vector2i(get_viewport().get_mouse_position())

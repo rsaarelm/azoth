@@ -30,5 +30,5 @@ static func odds_prob(a: float) -> float:
 	return 1.0 - 1.0 / (1.0 + 10.0 ** (a / 10.0))
 
 ## Randomly return true with the given deciban odds.
-static func odds(odds: float) -> bool:
-	return randf() < odds_prob(odds)
+static func odds(a: float) -> bool:
+	return randf() < odds_prob(a)

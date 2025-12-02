@@ -18,7 +18,7 @@ var is_paused := true
 ## the game as running.
 var pause_requested = null
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if !is_paused:
 		# Unless the leader is doing a long move, pause a running game right
 		# again.

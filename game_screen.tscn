@@ -16,7 +16,7 @@ border_color = Color(0, 0, 0, 1)
 [sub_resource type="GDScript" id="GDScript_3vj30"]
 script/source = "extends Label
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var pc = Game.leader()
 	if pc:
 		text = \"HP: \" + str(pc.health - pc.wounds) + \"/\" + str(pc.health)

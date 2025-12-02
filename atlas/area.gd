@@ -112,7 +112,7 @@ func _ready():
 			if is_passable(pos):
 				set_cell(pos, 1, EXIT_TILE)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if _astar_is_dirty:
 		_build_astar()
 		_astar_is_dirty = false
@@ -189,10 +189,10 @@ func raycast_sight(from: Vector2i, to: Vector2i):
 	var collision = space_state.intersect_ray(params)
 	if collision.size() > 0:
 		# Displace along normal so we get the point inside the cell hit.
-		var position = collision.position - collision.normal * 0.5 * CELL
+		var p = collision.position - collision.normal * 0.5 * CELL
 
 		# Return cell space position of the hit.
-		return local_to_map(to_local(position))
+		return local_to_map(to_local(p))
 	return null
 
 func can_see(from: Vector2i, to: Vector2i) -> bool:
@@ -200,9 +200,9 @@ func can_see(from: Vector2i, to: Vector2i) -> bool:
 
 ## Display a temporary animation drawing attention to the given cell.
 func ping(at: Vector2i) -> void:
-	var ping = preload("res://ping.tscn").instantiate() as Node2D
-	ping.position = map_to_local(at)
-	self.add_child(ping)
+	var fx = preload("res://ping.tscn").instantiate() as Node2D
+	fx.position = map_to_local(at)
+	self.add_child(fx)
 
 func _build_astar() -> void:
 	_astar.region = get_used_rect()

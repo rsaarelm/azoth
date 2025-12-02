@@ -61,8 +61,8 @@ var cell: Vector2i:
 	set(value):
 		# Make sure to preserve the local offset.
 		var offset = Vector2i(
-			posmod(position.x, Area.CELL_SIZE) as int,
-			posmod(position.y, Area.CELL_SIZE) as int)
+			posmod(position.x as int, Area.CELL_SIZE),
+			posmod(position.y as int, Area.CELL_SIZE))
 		position = Vector2(value * Area.CELL_SIZE + offset)
 
 var _goal := Goal.NONE
@@ -96,7 +96,7 @@ func _enter_tree():
 	assert(node, "Object has no parent area")
 	area = node
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if is_pc() and Game.is_paused:
 		# Direct input for player character, start running from pause.
 		var vector = Util.get_input_vector()
