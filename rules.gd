@@ -10,5 +10,5 @@ static func dist(p1, p2) -> float:
 
 ## How many coins do you need to pay to level up to given level.
 static func level_up_cost(level: int) -> int:
-	return int(100 * 1.05 ** (level - 1))
-
+	# Add the /4 fudge factor to make levels come faster in test game.
+	return int(100 * 1.05 ** (level - 1)) / 4
