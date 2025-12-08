@@ -38,6 +38,16 @@ const MAX_HEIGHT := 41
 # being connected to towards the East, South side on a map that is being
 # connected to towards the North.
 
+# INVARIANT: Stairwells must have free spaces on opposite sides on vertically
+# adjacent maps since the character jumps across the stairwell tile when
+# moving. (This is to allow a single backstep that returns you to previous
+# map)
+#
+#  @>#  <->  #<@
+#  ^           ^
+#   up      down
+# stairs   stairs
+
 @export_group("Neighboring Maps")
 @export var north: String
 @export var east: String
