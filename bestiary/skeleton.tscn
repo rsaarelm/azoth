@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://lfx6t3i3jf7e"]
+
+[ext_resource type="PackedScene" uid="uid://cegnfcshcoem2" path="res://bestiary/mob.tscn" id="1_ry2t1"]
+
+[node name="Skeleton" groups=["enemy"] instance=ExtResource("1_ry2t1")]
+display_name = "skeleton"
+health = 14
+strength = 4
+accuracy = 0
+evasion = 2
+
+[node name="Sprite2D" parent="." index="1"]
+region_rect = Rect2(16, 0, 16, 16)

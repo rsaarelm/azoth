@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://btl7mp3jj4vxs"]
+
+[ext_resource type="PackedScene" uid="uid://cegnfcshcoem2" path="res://bestiary/mob.tscn" id="1_p0ag5"]
+
+[node name="DeepOne" groups=["enemy"] instance=ExtResource("1_p0ag5")]
+display_name = "deep one"
+health = 12
+strength = 8
+accuracy = 8
+evasion = 4
+
+[node name="Sprite2D" parent="." index="1"]
+region_rect = Rect2(16, 16, 16, 16)

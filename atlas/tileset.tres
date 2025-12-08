@@ -1,11 +1,14 @@
-[gd_resource type="TileSet" load_steps=14 format=3 uid="uid://bq2yy7xds0ie2"]
+[gd_resource type="TileSet" load_steps=17 format=3 uid="uid://bq2yy7xds0ie2"]
 
 [ext_resource type="PackedScene" uid="uid://x0fuej02rsv0" path="res://bestiary/goblin.tscn" id="1_538gw"]
 [ext_resource type="PackedScene" uid="uid://ds0xcakqbymib" path="res://bestiary/stone_golem.tscn" id="1_bwlfj"]
 [ext_resource type="Texture2D" uid="uid://djme540p54pkb" path="res://atlas/terrain.png" id="1_c0pq6"]
 [ext_resource type="PackedScene" uid="uid://bemf7ll43irkn" path="res://bestiary/ancient_king.tscn" id="2_77eb6"]
 [ext_resource type="PackedScene" uid="uid://cs5u8qujtu65f" path="res://bestiary/wolf.tscn" id="2_txdbg"]
+[ext_resource type="PackedScene" uid="uid://btl7mp3jj4vxs" path="res://bestiary/deep_one.tscn" id="3_x6lh3"]
+[ext_resource type="PackedScene" uid="uid://cjnrdwahsv5vu" path="res://bestiary/trog.tscn" id="4_icnuh"]
 [ext_resource type="PackedScene" uid="uid://bctldgljiydeo" path="res://bestiary/crocodile.tscn" id="4_x6lh3"]
+[ext_resource type="PackedScene" uid="uid://lfx6t3i3jf7e" path="res://bestiary/skeleton.tscn" id="5_fmfuh"]
 [ext_resource type="PackedScene" uid="uid://cs1euurgm67dw" path="res://bestiary/gazer.tscn" id="5_icnuh"]
 [ext_resource type="PackedScene" uid="uid://dtpq6xev5rqn3" path="res://bestiary/ogre.tscn" id="7_fmfuh"]
 [ext_resource type="PackedScene" uid="uid://c136e5ln64qgb" path="res://bestiary/ooze.tscn" id="8_h53yi"]
@@ -23,6 +26,9 @@ scenes/8/scene = ExtResource("9_iglbe")
 scenes/9/scene = ExtResource("10_m41gr")
 scenes/10/scene = ExtResource("1_bwlfj")
 scenes/11/scene = ExtResource("2_txdbg")
+scenes/12/scene = ExtResource("3_x6lh3")
+scenes/16/scene = ExtResource("4_icnuh")
+scenes/17/scene = ExtResource("5_fmfuh")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2urvg"]
 texture = ExtResource("1_c0pq6")
