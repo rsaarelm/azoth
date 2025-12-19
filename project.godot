@@ -39,6 +39,11 @@ player=""
 enemy=""
 mob=""
 
+[gui]
+
+theme/default_font_antialiasing=0
+theme/custom_font="uid://c5pxnvirre88f"
+
 [input]
 
 move_up={
