@@ -118,6 +118,9 @@ func load_area(scene_path: String, player_pos: Vector2i, player: Mob = null):
 func msg(text: String) -> void:
 	get_tree().current_scene.msg(text)
 
+func confirm(message: String) -> bool:
+	return await get_tree().current_scene.confirm(message)
+
 ## Get the current leader mob (directly controlled player character).
 ## This may be different than the main player character if a minion NPC
 ## is temporarily assigned to lead the team.

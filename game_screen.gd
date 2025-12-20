@@ -67,3 +67,26 @@ func _input(event: InputEvent) -> void:
 
 func msg(text: String) -> void:
 	%Console.msg(text)
+
+# These need to be member variables so we can modify them from the listener lambdas.
+var _confirm_complete := false
+var _confirm_result = null
+
+func confirm(message: String) -> bool:
+	var dialog = %ConfirmationPopup
+
+	dialog.title = "Please confirm"
+	dialog.dialog_text = message
+	dialog.visible = true
+
+	dialog.canceled.connect(
+		func (): _confirm_result = false; _confirm_complete = true)
+	dialog.confirmed.connect(
+		func (): _confirm_result = true; _confirm_complete = true)
+
+	while !_confirm_complete:
+		# Busy-wait until we get an answer.
+		await get_tree().process_frame
+	_confirm_complete = false
+
+	return _confirm_result

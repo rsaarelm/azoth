@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://xtgbp2cv4xk4"]
+[gd_scene load_steps=12 format=3 uid="uid://xtgbp2cv4xk4"]
 
 [ext_resource type="Script" uid="uid://b5lgb5f3rmtt2" path="res://game_screen.gd" id="1_3vj30"]
 [ext_resource type="FontFile" uid="uid://dvpqcoee1hjeb" path="res://common/pf_tempesta_seven_condensed.ttf" id="2_3vj30"]
@@ -30,6 +30,9 @@ func _process(_delta: float) -> void:
 bg_color = Color(1, 0.945098, 0.909804, 1)
 border_width_top = 1
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Theme" id="Theme_3vj30"]
+default_font_size = 8
 
 [node name="GameScreen" type="Node2D"]
 script = ExtResource("1_3vj30")
@@ -107,3 +110,13 @@ script = ExtResource("6_o17u5")
 
 [node name="CursorSprite" parent="." instance=ExtResource("7_u10x5")]
 unique_name_in_owner = true
+
+[node name="ConfirmationPopup" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+oversampling_override = 1.0
+title = "Everything will be destroyed."
+initial_position = 1
+theme = SubResource("Theme_3vj30")
+ok_button_text = "Yes"
+dialog_text = "Are you sure you want to cancel the
+stopping of the quitting?"
