@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://xtgbp2cv4xk4"]
+[gd_scene load_steps=13 format=3 uid="uid://xtgbp2cv4xk4"]
 
 [ext_resource type="Script" uid="uid://b5lgb5f3rmtt2" path="res://game_screen.gd" id="1_3vj30"]
 [ext_resource type="FontFile" uid="uid://dvpqcoee1hjeb" path="res://common/pf_tempesta_seven_condensed.ttf" id="2_3vj30"]
@@ -24,6 +24,16 @@ func _process(_delta: float) -> void:
 		# Add indicator if you have enough cash to level up
 		if Player.cash >= Rules.level_up_cost(Player.level + 1):
 			text += \"*\"
+"
+
+[sub_resource type="GDScript" id="GDScript_6mti6"]
+script/source = "extends Button
+
+func _on_pressed() -> void:
+	if !await Game.confirm(\"Really erase your character?\"):
+		return
+	Player.retire()
+	Game.restart()
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0qhw6"]
@@ -84,6 +94,16 @@ theme_override_font_sizes/font_size = 8
 autowrap_mode = 3
 script = ExtResource("4_aybt7")
 
+[node name="Button" type="Button" parent="HSplitContainer/SidePanel"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 229.0
+offset_right = 47.0
+offset_bottom = 250.0
+theme_override_font_sizes/font_size = 8
+text = "Retire"
+script = SubResource("GDScript_6mti6")
+
 [node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer"]
 layout_mode = 2
 split_offset = 328
@@ -120,3 +140,5 @@ theme = SubResource("Theme_3vj30")
 ok_button_text = "Yes"
 dialog_text = "Are you sure you want to cancel the
 stopping of the quitting?"
+
+[connection signal="pressed" from="HSplitContainer/SidePanel/Button" to="HSplitContainer/SidePanel/Button" method="_on_pressed"]

@@ -65,6 +65,8 @@ func player_rests():
 	assert(Player.spawn_area, "Invalid area: No scene file path")
 	Player.spawn_pos = player.cell
 
+	Player.save_game()
+
 	# Show transition screen.
 	get_tree().change_scene_to_file("res://resting.tscn")
 	await get_tree().create_timer(1.0).timeout
