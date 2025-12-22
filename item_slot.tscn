@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://bhiwb3077h4b4"]
+
+[ext_resource type="Script" uid="uid://bc05je4njpqfs" path="res://item_slot.gd" id="1_i83bl"]
+[ext_resource type="Texture2D" uid="uid://cfjcxjfudgdwx" path="res://armory/items.png" id="1_vo707"]
+[ext_resource type="FontFile" uid="uid://cktjgvrfii0kn" path="res://common/tinypixel.otf" id="2_2fujg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ykwrd"]
+atlas = ExtResource("1_vo707")
+region = Rect2(0, 0, 8, 8)
+
+[node name="ItemSlot" type="Control"]
+custom_minimum_size = Vector2(8, 14)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -630.0
+offset_bottom = -344.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_i83bl")
+
+[node name="Icon" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 9.0
+offset_bottom = 9.0
+texture = SubResource("AtlasTexture_ykwrd")
+
+[node name="Count" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1.0
+offset_top = 9.0
+offset_right = 9.0
+offset_bottom = 16.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 0.94509804, 0.9098039, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("2_2fujg")
+theme_override_font_sizes/font_size = 7

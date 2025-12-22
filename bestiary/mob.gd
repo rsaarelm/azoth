@@ -248,6 +248,12 @@ func step(direction: Vector2i) -> bool:
 		cell += direction
 
 		# Hooks for stepping to a new position go here.
+		var item = area.item_at(cell)
+		if item and is_pc():
+			# Note the item while we don't have any smarter logic here yet.
+			# The player should pick the items up once we can do that.
+			# XXX: Also, need an articles story for a/an.
+			say("\"A" + item.item.name + ".\"")
 
 		return true
 

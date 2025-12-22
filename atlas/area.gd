@@ -186,6 +186,14 @@ func mob_at(cell: Vector2i):
 			return e
 	return null
 
+## Return item at given cell, or null if none.
+func item_at(cell: Vector2i):
+	var entities = entities_at(cell)
+	for e in entities:
+		if e is ItemNode:
+			return e
+	return null
+
 # Make more raycast methods as needed, raycast_projectile etc.
 
 ## Do a raycast up until you collide with something that blocks vision.
