@@ -122,6 +122,8 @@ func _ready():
 			if is_passable(pos):
 				set_cell(pos, 1, EXIT_TILE)
 
+	child_entered_tree.connect(_on_child_entered_tree)
+
 func _process(_delta: float) -> void:
 	if _astar_is_dirty:
 		_build_astar()
@@ -230,3 +232,8 @@ func _build_astar() -> void:
 	for cell in get_used_cells():
 		_astar.set_point_solid(cell, !is_passable(cell))
 	_astar.update()
+
+func _on_child_entered_tree(node: Node) -> void:
+	# Make sure newly generated mobs are added to the y-sorting Spawns node
+	if node is Mob:
+		node.reparent($Spawns)
