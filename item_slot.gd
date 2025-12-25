@@ -1,6 +1,6 @@
 extends Control
 
-@export var item: Item
+@export var item: ItemData
 @export var count := 1
 
 func _ready():

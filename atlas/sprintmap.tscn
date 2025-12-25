@@ -2,7 +2,7 @@
 
 [ext_resource type="TileSet" uid="uid://bq2yy7xds0ie2" path="res://atlas/tileset.tres" id="1_7geth"]
 [ext_resource type="Script" uid="uid://dbffabqownw0c" path="res://atlas/area.gd" id="2_36h2f"]
-[ext_resource type="PackedScene" uid="uid://bnigs4sd0eduf" path="res://armory/item_node.tscn" id="3_s5gdo"]
+[ext_resource type="PackedScene" uid="uid://bnigs4sd0eduf" path="res://armory/item.tscn" id="3_s5gdo"]
 [ext_resource type="Resource" uid="uid://goglsyhkeiey" path="res://armory/throwing_star.tres" id="4_hj07n"]
 
 [node name="Area" type="TileMapLayer"]

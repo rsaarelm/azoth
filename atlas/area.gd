@@ -190,7 +190,7 @@ func mob_at(cell: Vector2i):
 func item_at(cell: Vector2i):
 	var entities = entities_at(cell)
 	for e in entities:
-		if e is ItemNode:
+		if e is Item:
 			return e
 	return null
 
