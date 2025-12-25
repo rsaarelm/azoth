@@ -15,6 +15,20 @@ var deftness := 0
 var spawn_area: String
 var spawn_pos: Vector2i
 
+var inventory: Array[Item] = []
+
+# Nullable equipment item slots
+var cloak_slot = null
+var head_slot = null
+var amulet_slot = null
+
+var right_hand_slot = null
+var body_slot = null
+var left_hand_slot = null
+
+var right_ring_slot = null
+var left_ring_slot = null
+
 var level:
 	get:
 		return might + trickery + faith + deftness
