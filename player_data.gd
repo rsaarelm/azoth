@@ -15,6 +15,20 @@ var deftness := 0
 var spawn_area: String
 var spawn_pos: Vector2i
 
+var inventory := ItemCollection.new()
+
+# Nullable equipment item slots
+var cloak_slot = null
+var head_slot = null
+var amulet_slot = null
+
+var right_hand_slot = null
+var body_slot = null
+var left_hand_slot = null
+
+var right_ring_slot = null
+var left_ring_slot = null
+
 var level:
 	get:
 		return might + trickery + faith + deftness
@@ -41,6 +55,7 @@ func _ready():
 
 func clear():
 	# Reset all player data.
+	# NB. This function must be kept in sync with all the defined fields in PlayerData
 	might = 0
 	trickery = 0
 	faith = 0
@@ -50,6 +65,8 @@ func clear():
 
 	spawn_area = "res://atlas/sprintmap.tscn"
 	spawn_pos = Vector2i(62, 1)
+
+	inventory = ItemCollection.new()
 
 ## Get the player's mob node.
 func mob():
@@ -98,6 +115,8 @@ func save_game() -> void:
 
 			cash = self.cash,
 
+			inventory = self.inventory.save(),
+
 			# Current location.
 			area = spawn_area,
 			pos = var_to_str(spawn_pos),
@@ -120,6 +139,8 @@ func load_game() -> void:
 	deftness = player.deftness
 
 	cash = player.cash
+
+	inventory = ItemCollection.load(player.inventory)
 
 	spawn_area = player.area
 	spawn_pos = str_to_var(player.pos)

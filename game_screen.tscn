@@ -1,14 +1,12 @@
-[gd_scene load_steps=17 format=3 uid="uid://xtgbp2cv4xk4"]
+[gd_scene load_steps=15 format=3 uid="uid://xtgbp2cv4xk4"]
 
 [ext_resource type="Script" uid="uid://b5lgb5f3rmtt2" path="res://game_screen.gd" id="1_3vj30"]
 [ext_resource type="FontFile" uid="uid://dvpqcoee1hjeb" path="res://common/pf_tempesta_seven_condensed.ttf" id="2_3vj30"]
 [ext_resource type="FontFile" uid="uid://c5pxnvirre88f" path="res://common/pf_tempesta_seven_condensed_bold.ttf" id="3_6mti6"]
+[ext_resource type="PackedScene" uid="uid://bi6moe0c5k73r" path="res://inventory_view.tscn" id="3_oymjd"]
 [ext_resource type="Script" uid="uid://c4ijn5mqbm6rr" path="res://console.gd" id="4_aybt7"]
 [ext_resource type="PackedScene" uid="uid://nw1paqbifkmo" path="res://atlas/sprintmap.tscn" id="5_3vj30"]
-[ext_resource type="PackedScene" uid="uid://bhiwb3077h4b4" path="res://item_slot.tscn" id="5_oymjd"]
-[ext_resource type="Resource" uid="uid://goglsyhkeiey" path="res://armory/throwing_star.tres" id="6_aybt7"]
 [ext_resource type="Script" uid="uid://tv8g4wjhqfk0" path="res://hotbar.gd" id="6_o17u5"]
-[ext_resource type="Resource" uid="uid://6uorduhc0dc1" path="res://armory/healing_potion.tres" id="7_aybt7"]
 [ext_resource type="PackedScene" uid="uid://d1tgj56pwbuux" path="res://cursor_sprite.tscn" id="7_u10x5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dx7b0"]
@@ -85,6 +83,24 @@ theme_override_font_sizes/font_size = 8
 text = "Side Panel!"
 script = SubResource("GDScript_3vj30")
 
+[node name="InventoryView" parent="HSplitContainer/SidePanel" instance=ExtResource("3_oymjd")]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 112.0
+offset_right = 5.0
+offset_bottom = 112.0
+
+[node name="RetireButton" type="Button" parent="HSplitContainer/SidePanel"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 229.0
+offset_right = 47.0
+offset_bottom = 250.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_viusa")
+text = "Retire"
+script = SubResource("GDScript_6mti6")
+
 [node name="Console" type="Label" parent="HSplitContainer/SidePanel"]
 unique_name_in_owner = true
 layout_mode = 0
@@ -98,70 +114,6 @@ theme_override_fonts/font = ExtResource("3_6mti6")
 theme_override_font_sizes/font_size = 8
 autowrap_mode = 3
 script = ExtResource("4_aybt7")
-
-[node name="Inventory" type="GridContainer" parent="HSplitContainer/SidePanel"]
-layout_mode = 0
-offset_left = 5.0
-offset_top = 112.0
-offset_right = 119.0
-offset_bottom = 168.0
-columns = 8
-
-[node name="ItemSlot" parent="HSplitContainer/SidePanel/Inventory" instance=ExtResource("5_oymjd")]
-layout_mode = 2
-item = ExtResource("6_aybt7")
-count = 32
-
-[node name="ItemSlot2" parent="HSplitContainer/SidePanel/Inventory" instance=ExtResource("5_oymjd")]
-layout_mode = 2
-item = ExtResource("7_aybt7")
-
-[node name="ItemSlot3" parent="HSplitContainer/SidePanel/Inventory" instance=ExtResource("5_oymjd")]
-layout_mode = 2
-
-[node name="ItemSlot4" parent="HSplitContainer/SidePanel/Inventory" instance=ExtResource("5_oymjd")]
-layout_mode = 2
-
-[node name="ItemSlot5" parent="HSplitContainer/SidePanel/Inventory" instance=ExtResource("5_oymjd")]
-layout_mode = 2
-
-[node name="ItemSlot6" parent="HSplitContainer/SidePanel/Inventory" instance=ExtResource("5_oymjd")]
-layout_mode = 2
-
-[node name="ItemSlot7" parent="HSplitContainer/SidePanel/Inventory" instance=ExtResource("5_oymjd")]
-layout_mode = 2
-
-[node name="ItemSlot8" parent="HSplitContainer/SidePanel/Inventory" instance=ExtResource("5_oymjd")]
-layout_mode = 2
-
-[node name="ItemSlot9" parent="HSplitContainer/SidePanel/Inventory" instance=ExtResource("5_oymjd")]
-layout_mode = 2
-
-[node name="ItemSlot10" parent="HSplitContainer/SidePanel/Inventory" instance=ExtResource("5_oymjd")]
-layout_mode = 2
-
-[node name="ItemSlot11" parent="HSplitContainer/SidePanel/Inventory" instance=ExtResource("5_oymjd")]
-layout_mode = 2
-
-[node name="ItemSlot12" parent="HSplitContainer/SidePanel/Inventory" instance=ExtResource("5_oymjd")]
-layout_mode = 2
-
-[node name="ItemSlot13" parent="HSplitContainer/SidePanel/Inventory" instance=ExtResource("5_oymjd")]
-layout_mode = 2
-
-[node name="ItemSlot14" parent="HSplitContainer/SidePanel/Inventory" instance=ExtResource("5_oymjd")]
-layout_mode = 2
-
-[node name="RetireButton" type="Button" parent="HSplitContainer/SidePanel"]
-layout_mode = 0
-offset_left = 3.0
-offset_top = 229.0
-offset_right = 47.0
-offset_bottom = 250.0
-theme_override_font_sizes/font_size = 8
-theme_override_styles/normal = SubResource("StyleBoxFlat_viusa")
-text = "Retire"
-script = SubResource("GDScript_6mti6")
 
 [node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer"]
 layout_mode = 2

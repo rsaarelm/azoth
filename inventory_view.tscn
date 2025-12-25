@@ -1,0 +1,122 @@
+[gd_scene load_steps=6 format=3 uid="uid://bi6moe0c5k73r"]
+
+[ext_resource type="Script" uid="uid://bctneglua5w7b" path="res://inventory_view.gd" id="1_24o5v"]
+[ext_resource type="PackedScene" uid="uid://bhiwb3077h4b4" path="res://item_slot.tscn" id="2_fwof5"]
+[ext_resource type="Texture2D" uid="uid://cfjcxjfudgdwx" path="res://armory/items.png" id="3_fwof5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ymhc"]
+atlas = ExtResource("3_fwof5")
+region = Rect2(8, 0, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h01wx"]
+atlas = ExtResource("3_fwof5")
+region = Rect2(16, 0, 8, 8)
+
+[node name="InventoryView" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_24o5v")
+
+[node name="ItemGrid" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 68.0
+offset_bottom = 68.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 6
+
+[node name="ItemSlot" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot2" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot3" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot4" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot5" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot6" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot7" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot8" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot9" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot10" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot11" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot12" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot13" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot14" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot15" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot16" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot17" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot18" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot19" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot20" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot21" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot22" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot23" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="ItemSlot24" parent="ItemGrid" instance=ExtResource("2_fwof5")]
+layout_mode = 2
+
+[node name="UpButton" type="TextureButton" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 72.0
+offset_top = 1.0
+offset_right = 80.0
+offset_bottom = 9.0
+texture_normal = SubResource("AtlasTexture_4ymhc")
+
+[node name="DownButton" type="TextureButton" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 72.0
+offset_top = 55.0
+offset_right = 80.0
+offset_bottom = 63.0
+texture_normal = SubResource("AtlasTexture_h01wx")
+
+[connection signal="pressed" from="UpButton" to="." method="_on_up_pressed"]
+[connection signal="pressed" from="DownButton" to="." method="_on_down_pressed"]
