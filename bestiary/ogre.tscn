@@ -8,5 +8,5 @@ health = 22
 strength = 10
 accuracy = 8
 
-[node name="Sprite2D" parent="." index="1"]
+[node name="Icon" parent="." index="1"]
 region_rect = Rect2(112, 0, 16, 16)

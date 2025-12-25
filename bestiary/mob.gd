@@ -97,6 +97,8 @@ func _enter_tree():
 	area = node
 
 func _process(_delta: float) -> void:
+	_animate()
+
 	if is_pc() and Game.is_paused:
 		# Direct input for player character, start running from pause.
 		var vector = Util.get_input_vector()
@@ -433,4 +435,23 @@ func _visible_enemies(detection_range: int) -> Array[Mob]:
 	)
 	return result
 
+#endregion
+
+#region Animation
+const ANIM_CYCLE := int(1.0 * 60)  # 2 seconds in frames
+var _phase_offset = hash(self) % ANIM_CYCLE
+
+func _animate():
+	# Simple idle animation, operate in 60 FPS frames
+	var frame = (Engine.get_physics_frames() + _phase_offset) % ANIM_CYCLE
+
+	if is_enemy() && _goal != Goal.NONE:
+		# Animate awake enemies.
+		if frame < ANIM_CYCLE / 2:
+			$Icon.position = Vector2(0, -1)
+		else:
+			$Icon.position = Vector2(0, 0)
+	else:
+		# Make sure you're reset to neutral pos when anim stops
+		$Icon.position = Vector2(0, 0)
 #endregion

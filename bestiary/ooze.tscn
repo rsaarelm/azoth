@@ -6,5 +6,5 @@
 display_name = "ooze"
 health = 20
 
-[node name="Sprite2D" parent="." index="1"]
+[node name="Icon" parent="." index="1"]
 region_rect = Rect2(128, 0, 16, 16)

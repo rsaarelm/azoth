@@ -8,5 +8,5 @@ strength = 10
 accuracy = 5
 evasion = 5
 
-[node name="Sprite2D" parent="." index="1"]
+[node name="Icon" parent="." index="1"]
 region_rect = Rect2(160, 0, 16, 16)
