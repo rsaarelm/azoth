@@ -11,6 +11,7 @@ class_name Item extends Area2D
 		item = value
 		_refresh()
 
+## Count of copies of the item in a stack for stackable items.
 @export_range(1, 99, 1) var count: int = 1:
 	get:
 		return count
@@ -39,3 +40,20 @@ func _refresh():
 		$Icon.texture = item.icon
 	else:
 		$Icon.texture = null
+
+#region Animation
+const BLINK_CYCLE := int(3.0 * 60)  # 2 seconds in frames
+const BLINK_DURATION := int(0.15 * 60)
+var _phase_offset = hash(self) % BLINK_CYCLE
+
+func _process(_delta):
+	# Blinking animation, operate in 60 FPS frames
+	var frame = (Engine.get_physics_frames() + _phase_offset) % BLINK_CYCLE
+
+	if frame < BLINK_DURATION:
+		$Icon.modulate = Color(999, 999, 999)
+	elif frame < BLINK_DURATION * 1.1:
+		$Icon.modulate = Color(0, 0, 0)
+	else:
+		$Icon.modulate = Color(1, 1, 1, 1)
+#endregion
