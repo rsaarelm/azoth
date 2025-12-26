@@ -42,7 +42,7 @@ func _refresh():
 		$Icon.texture = null
 
 #region Animation
-const BLINK_CYCLE := int(3.0 * 60)  # 2 seconds in frames
+const BLINK_CYCLE := int(2.0 * 60)  # 2 seconds in frames
 const BLINK_DURATION := int(0.15 * 60)
 var _phase_offset = hash(self) % BLINK_CYCLE
 
