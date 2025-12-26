@@ -234,6 +234,6 @@ func _build_astar() -> void:
 	_astar.update()
 
 func _on_child_entered_tree(node: Node) -> void:
-	# Make sure newly generated mobs are added to the y-sorting Spawns node
+	# Make sure newly generated mobs are added to the y-sorting Mobs node
 	if node is Mob:
-		node.reparent($Spawns)
+		node.reparent($Mobs)
