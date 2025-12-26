@@ -10,6 +10,7 @@ script = ExtResource("2_g16ho")
 south = "res://atlas/sprintmap.tscn"
 metadata/_custom_type_script = "uid://dbffabqownw0c"
 
-[node name="Spawns" type="TileMapLayer" parent="."]
+[node name="Mobs" type="TileMapLayer" parent="."]
+y_sort_enabled = true
 tile_map_data = PackedByteArray("AAAtAB0AAAAAAAAABgApABkAAAAAAAAABgASAB0AAAAAAAAABQAPABsAAAAAAAAABQATABYAAAAAAAAABQASABoAAAAAAAAABQARABgAAAAAAAAABQAOABYAAAAAAAAABQA=")
 tile_set = ExtResource("1_by8cn")
