@@ -2,7 +2,7 @@
 
 [ext_resource type="TileSet" uid="uid://bq2yy7xds0ie2" path="res://atlas/tileset.tres" id="1_7geth"]
 [ext_resource type="Script" uid="uid://dbffabqownw0c" path="res://atlas/area.gd" id="2_36h2f"]
-[ext_resource type="PackedScene" uid="uid://bnigs4sd0eduf" path="res://armory/item.tscn" id="3_s5gdo"]
+[ext_resource type="Script" uid="uid://ceg3r73mgjdrx" path="res://armory/item.gd" id="3_s5gdo"]
 [ext_resource type="Resource" uid="uid://goglsyhkeiey" path="res://armory/throwing_star.tres" id="4_hj07n"]
 
 [node name="Area" type="TileMapLayer"]
@@ -14,11 +14,13 @@ above = "res://atlas/tower.tscn"
 below = "res://atlas/cellar.tscn"
 metadata/_custom_type_script = "uid://dbffabqownw0c"
 
-[node name="ItemNode" parent="." instance=ExtResource("3_s5gdo")]
-position = Vector2(412, 156)
-data = ExtResource("4_hj07n")
-
 [node name="Spawns" type="TileMapLayer" parent="."]
 y_sort_enabled = true
 tile_map_data = PackedByteArray("AAA7AB0AAAAAAAAABQA8AB4AAAAAAAAABQA3ACAAAAAAAAAABQA2AB4AAAAAAAAABQA5ACEAAAAAAAAABQA9ABkAAAAAAAAABQA7ABgAAAAAAAAABQAwACYAAAAAAAAABQAvACQAAAAAAAAABQA0ACYAAAAAAAAABQA2ACUAAAAAAAAABQAjACcAAAAAAAAACAAhACcAAAAAAAAACwAaACYAAAAAAAAACwAbACcAAAAAAAAACwAkAB4AAAAAAAAACwAiAB8AAAAAAAAACwAkACAAAAAAAAAACwAeAB4AAAAAAAAACAAdACAAAAAAAAAACwARACAAAAAAAAAAEAASACMAAAAAAAAAEAAOACMAAAAAAAAAEAAPACEAAAAAAAAAEAALACIAAAAAAAAAEAAOAB4AAAAAAAAAEAAnABYAAAAAAAAAAgASAAQAAAAAAAAACgADABMAAAAAAAAABwAPABcAAAAAAAAABwANABYAAAAAAAAABwAJAAkAAAAAAAAABwADAAYAAAAAAAAABwAKAAQAAAAAAAAABwASABEAAAAAAAAABwAQABAAAAAAAAAABwAuAAQAAAAAAAAAAwAmAAgAAAAAAAAADAAlAAsAAAAAAAAADAApAAgAAAAAAAAADAAhAA0AAAAAAAAADAAeAAkAAAAAAAAADAAmAAUAAAAAAAAADAAlAAMAAAAAAAAADAAKACgAAAAAAAAACQAEACIAAAAAAAAAEQANACQAAAAAAAAAEAASAB0AAAAAAAAAEAA=")
 tile_set = ExtResource("1_7geth")
+
+[node name="Item" type="Area2D" parent="."]
+position = Vector2(404, 196)
+script = ExtResource("3_s5gdo")
+data = ExtResource("4_hj07n")
+metadata/_custom_type_script = "uid://ceg3r73mgjdrx"

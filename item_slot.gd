@@ -1,5 +1,6 @@
 extends Control
 
+# TODO: Link to Item values instead
 @export var item: ItemData
 @export var count := 1
 

@@ -435,14 +435,9 @@ func _visible_enemies(detection_range: int) -> Array[Mob]:
 
 #region Items
 func pick_up(item: Item) -> void:
+	# TODO A/an distinction in articles
 	say("\"A" + item.data.name + ".\"")
-	# Node location gets a bit weird since the item becomes more
-	# abstract at this point and doesn't exist as a sprite anymore.
-	# Parenting it to the player data singleton, let's see if that
-	# works.
-	item.reparent(Player)
-	item.visible = false
-	Player.inventory.append(item)
+	Player.inventory.take(item)
 #endregion
 
 #region Animation

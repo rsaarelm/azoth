@@ -3,6 +3,8 @@ extends Resource
 
 ## The abstract Item resource.
 
+const MAX_STACK := 99
+
 @export var name := "Unnamed item"
 @export var icon: Texture2D
 

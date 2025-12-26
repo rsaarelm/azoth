@@ -15,7 +15,7 @@ var deftness := 0
 var spawn_area: String
 var spawn_pos: Vector2i
 
-var inventory: Array[Item] = []
+var inventory := ItemCollection.new()
 
 # Nullable equipment item slots
 var cloak_slot = null
@@ -112,6 +112,8 @@ func save_game() -> void:
 
 			cash = self.cash,
 
+			inventory = self.inventory.save(),
+
 			# Current location.
 			area = spawn_area,
 			pos = var_to_str(spawn_pos),
@@ -134,6 +136,8 @@ func load_game() -> void:
 	deftness = player.deftness
 
 	cash = player.cash
+
+	inventory = ItemCollection.load(player.inventory)
 
 	spawn_area = player.area
 	spawn_pos = str_to_var(player.pos)
