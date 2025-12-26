@@ -1,14 +1,14 @@
-@tool  # Make the icon show up in editor
+@tool  # Make the icon show up in editor map view
 class_name Item extends Area2D
 
 ## Node objects for items that show up on map.
 
 ## The resource for the actual item.
-@export var item: ItemData:
+@export var data: ItemData:
 	get:
-		return item
+		return data
 	set(value):
-		item = value
+		data = value
 		_refresh()
 
 ## Count of copies of the item in a stack for stackable items.
@@ -16,7 +16,7 @@ class_name Item extends Area2D
 	get:
 		return count
 	set(value):
-		if item and item.is_stacking:
+		if data and data.is_stacking:
 			count = value
 		else:
 			count = 1
@@ -35,9 +35,10 @@ var cell: Vector2i:
 func _ready():
 	_refresh()
 
+## Update the on-screen icon to match itemdata
 func _refresh():
-	if item:
-		$Icon.texture = item.icon
+	if data:
+		$Icon.texture = data.icon
 	else:
 		$Icon.texture = null
 

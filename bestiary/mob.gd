@@ -435,7 +435,7 @@ func _visible_enemies(detection_range: int) -> Array[Mob]:
 
 #region Items
 func pick_up(item: Item) -> void:
-	say("\"A" + item.item.name + ".\"")
+	say("\"A" + item.data.name + ".\"")
 	# Node location gets a bit weird since the item becomes more
 	# abstract at this point and doesn't exist as a sprite anymore.
 	# Parenting it to the player data singleton, let's see if that
