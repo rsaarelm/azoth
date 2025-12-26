@@ -16,7 +16,7 @@ metadata/_custom_type_script = "uid://dbffabqownw0c"
 
 [node name="ItemNode" parent="." instance=ExtResource("3_s5gdo")]
 position = Vector2(412, 156)
-item = ExtResource("4_hj07n")
+data = ExtResource("4_hj07n")
 
 [node name="Mobs" type="TileMapLayer" parent="."]
 y_sort_enabled = true
