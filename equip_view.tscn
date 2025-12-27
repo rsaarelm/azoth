@@ -1,0 +1,76 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddlaw6leqlf5v"]
+
+[ext_resource type="Texture2D" uid="uid://bu3vcaobcvbrw" path="res://armory/equip-view.png" id="1_5pq8x"]
+[ext_resource type="PackedScene" uid="uid://bhiwb3077h4b4" path="res://item_slot.tscn" id="2_1yd1b"]
+
+[node name="EquipView" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -608.0
+offset_bottom = -329.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("1_5pq8x")
+
+[node name="Cloak" parent="." instance=ExtResource("2_1yd1b")]
+layout_mode = 1
+offset_left = 2.0
+offset_top = -2.0
+offset_right = -22.0
+offset_bottom = -19.0
+
+[node name="Helmet" parent="." instance=ExtResource("2_1yd1b")]
+layout_mode = 1
+offset_left = 11.0
+offset_top = -2.0
+offset_right = -13.0
+offset_bottom = -19.0
+
+[node name="Amulet" parent="." instance=ExtResource("2_1yd1b")]
+layout_mode = 1
+offset_left = 20.0
+offset_top = -2.0
+offset_right = -4.0
+offset_bottom = -19.0
+
+[node name="RightHand" parent="." instance=ExtResource("2_1yd1b")]
+layout_mode = 1
+offset_left = -2.0
+offset_top = 12.0
+offset_right = -26.0
+offset_bottom = -5.0
+
+[node name="Body" parent="." instance=ExtResource("2_1yd1b")]
+layout_mode = 1
+offset_left = 11.0
+offset_top = 9.0
+offset_right = -13.0
+offset_bottom = -8.0
+
+[node name="LeftHand" parent="." instance=ExtResource("2_1yd1b")]
+layout_mode = 1
+offset_left = 24.0
+offset_top = 12.0
+offset_right = 0.0
+offset_bottom = -5.0
+
+[node name="RightRing" parent="." instance=ExtResource("2_1yd1b")]
+layout_mode = 1
+offset_left = -2.0
+offset_top = 21.0
+offset_right = -26.0
+offset_bottom = 4.0
+
+[node name="LeftRing" parent="." instance=ExtResource("2_1yd1b")]
+layout_mode = 1
+offset_left = 24.0
+offset_top = 21.0
+offset_right = 0.0
+offset_bottom = 4.0

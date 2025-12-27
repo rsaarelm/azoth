@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://xtgbp2cv4xk4"]
+[gd_scene load_steps=16 format=3 uid="uid://xtgbp2cv4xk4"]
 
 [ext_resource type="Script" uid="uid://b5lgb5f3rmtt2" path="res://game_screen.gd" id="1_3vj30"]
 [ext_resource type="FontFile" uid="uid://dvpqcoee1hjeb" path="res://common/pf_tempesta_seven_condensed.ttf" id="2_3vj30"]
 [ext_resource type="FontFile" uid="uid://c5pxnvirre88f" path="res://common/pf_tempesta_seven_condensed_bold.ttf" id="3_6mti6"]
 [ext_resource type="PackedScene" uid="uid://bi6moe0c5k73r" path="res://inventory_view.tscn" id="3_oymjd"]
 [ext_resource type="Script" uid="uid://c4ijn5mqbm6rr" path="res://console.gd" id="4_aybt7"]
+[ext_resource type="PackedScene" uid="uid://ddlaw6leqlf5v" path="res://equip_view.tscn" id="4_oymjd"]
 [ext_resource type="PackedScene" uid="uid://nw1paqbifkmo" path="res://atlas/sprintmap.tscn" id="5_3vj30"]
 [ext_resource type="Script" uid="uid://tv8g4wjhqfk0" path="res://hotbar.gd" id="6_o17u5"]
 [ext_resource type="PackedScene" uid="uid://d1tgj56pwbuux" path="res://cursor_sprite.tscn" id="7_u10x5"]
@@ -89,6 +90,18 @@ offset_left = 5.0
 offset_top = 112.0
 offset_right = 5.0
 offset_bottom = 112.0
+
+[node name="EquipView" parent="HSplitContainer/SidePanel" instance=ExtResource("4_oymjd")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 85.0
+offset_top = 114.0
+offset_right = 117.0
+offset_bottom = 145.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="RetireButton" type="Button" parent="HSplitContainer/SidePanel"]
 layout_mode = 0
