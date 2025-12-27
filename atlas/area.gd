@@ -124,6 +124,10 @@ func _ready():
 
 	child_entered_tree.connect(_on_child_entered_tree)
 
+	# Create fog of war
+	var fog = preload("res://atlas/fog_of_war.tscn").instantiate()
+	add_child(fog, true)
+
 func _process(_delta: float) -> void:
 	if _astar_is_dirty:
 		_build_astar()
@@ -149,6 +153,12 @@ func is_passable(cell: Vector2i) -> bool:
 		if data.get_collision_polygons_count(i) > 0:
 			return false
 	return true
+
+func is_opaque(cell: Vector2i) -> bool:
+	var data = get_cell_tile_data(cell)
+	if !data:
+		return true
+	return data.get_collision_polygons_count(SIGHT_LAYER) > 0
 
 ## Return the special kind value of terrain at given cell.
 func kind(cell: Vector2i) -> Kind:
@@ -219,10 +229,17 @@ func can_see(from: Vector2i, to: Vector2i) -> bool:
 	return raycast_sight(from, to) == null
 
 ## Display a temporary animation drawing attention to the given cell.
-func ping(at: Vector2i) -> void:
+func ping(at: Vector2i):
 	var fx = preload("res://ping.tscn").instantiate() as Node2D
 	fx.position = map_to_local(at)
 	self.add_child(fx)
+
+## Clear fog of war up to radius from center using field of view
+## algorithm.
+func expose_fov(center: Vector2i, radius: int):
+	$FogOfWar.expose_fov(center, radius, func(cell: Vector2i) -> bool:
+		return !is_opaque(cell)
+	)
 
 func _build_astar() -> void:
 	_astar.region = get_used_rect()

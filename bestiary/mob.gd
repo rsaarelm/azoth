@@ -96,6 +96,8 @@ func _enter_tree():
 	assert(node, "Object has no parent area")
 	area = node
 
+	_post_step()
+
 func _process(_delta: float) -> void:
 	_animate()
 
@@ -249,14 +251,23 @@ func step(direction: Vector2i) -> bool:
 		_is_moving = true
 		cell += direction
 
+		_post_step()
 		# Hooks for stepping to a new position go here.
-		var item = area.item_at(cell)
-		if item and is_pc():
-			pick_up(item)
 
 		return true
 
 	return false
+
+# Logic to call every time a mob steps on new cell.
+func _post_step():
+	if is_pc():
+		# Player-specific stuff
+		var item = area.item_at(cell)
+		if item:
+			pick_up(item)
+
+		area.expose_fov(cell, PLAYER_SIGHT_RANGE)
+	pass
 
 ## Attack enemies if there are any in the way. Return if action succeeded.
 func bump(direction: Vector2) -> bool:
