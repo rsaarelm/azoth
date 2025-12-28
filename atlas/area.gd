@@ -157,7 +157,7 @@ func is_passable(cell: Vector2i) -> bool:
 func is_opaque(cell: Vector2i) -> bool:
 	var data = get_cell_tile_data(cell)
 	if !data:
-		return true
+		return false
 	return data.get_collision_polygons_count(SIGHT_LAYER) > 0
 
 ## Return the special kind value of terrain at given cell.

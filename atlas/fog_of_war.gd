@@ -5,15 +5,11 @@ var _visited = {}
 
 ## Make given cell visible.
 func expose(cell: Vector2i):
-	if cell.x < 0 or cell.x >= Area.MAX_WIDTH or cell.y < 0 or cell.y >= Area.MAX_HEIGHT:
+	# Allow going one tile outside of bounds so we don't get a visible boundary at the edge of the on-screen map.
+	if cell.x < -1 or cell.x >= Area.MAX_WIDTH + 1 or cell.y < -1 or cell.y >= Area.MAX_HEIGHT + 1:
 		return
 	set_cells_terrain_connect([cell], 0, 0)
 
-## Make the entire area unmapped.
-func restore():
-	for y in Area.MAX_HEIGHT:
-		for x in Area.MAX_WIDTH:
-			set_cell(Vector2i(x, y), 0, Vector2i(0, 0))
 
 func expose_fov(center: Vector2i, radius: int, is_open: Callable):
 	# Run each point at most once.
