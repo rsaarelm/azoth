@@ -1,7 +1,12 @@
 extends TileMapLayer
 
+## Set of cells from which FOV has been exposed from. Do not re-run FOV from the same cell.
+var _visited = {}
+
 ## Make given cell visible.
 func expose(cell: Vector2i):
+	if cell.x < 0 or cell.x >= Area.MAX_WIDTH or cell.y < 0 or cell.y >= Area.MAX_HEIGHT:
+		return
 	set_cells_terrain_connect([cell], 0, 0)
 
 ## Make the entire area unmapped.
@@ -10,31 +15,67 @@ func restore():
 		for x in Area.MAX_WIDTH:
 			set_cell(Vector2i(x, y), 0, Vector2i(0, 0))
 
-func expose_fov(center: Vector2i, radius: int, vis: Callable):
-	# Floodfill-style FoV algo that copilot vibecoded for me.
-	# Not bad, though there should probably be less seeing around corners.
+func expose_fov(center: Vector2i, radius: int, is_open: Callable):
+	# Run each point at most once.
+	if _visited.has(center):
+		return
+	_visited[center] = true
 
-	# XXX: This is substantially slowing down my game, needs optimization.
-	var visited := {}
-	var to_visit := [center]
-	while to_visit.size() > 0:
-		var cell = to_visit.pop_front()
-		if cell in visited:
-			continue
-		visited[cell] = true
-		# Expose the cell.
-		expose(cell)
-		# If within radius, add neighbors.
-		if cell.distance_to(center) < radius and vis.call(cell):
-			for offset in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
-				var neighbor = cell + offset
-				if neighbor.x >= 0 and neighbor.x < Area.MAX_WIDTH and neighbor.y >= 0 and neighbor.y < Area.MAX_HEIGHT:
-					to_visit.append(neighbor)
-			# Expose opaque diagonal corners to make the FoV look better.
-			for offset in [Vector2i(1, 1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(-1, -1)]:
-				var neighbor = cell + offset
-				if cell.distance_to(neighbor) < radius and \
-					neighbor.x >= 0 and neighbor.x < Area.MAX_WIDTH and \
-					neighbor.y >= 0 and neighbor.y < Area.MAX_HEIGHT:
-					if !vis.call(neighbor):
-						expose(neighbor)
+	# Expose the center cell.
+	expose(center)
+	# Do recursive shadowcasting.
+	for u in [
+		Vector2i(1, 0), Vector2i(0, 1),
+		Vector2i(-1, 0), Vector2i(0, -1),
+	]:
+		# Perpendicular vectors
+		var v = Vector2i(u.y, u.x)
+		_process_octant(center, radius, is_open, u,  v, 1, 0.0, 1.0)
+		_process_octant(center, radius, is_open, u, -v, 1, 0.0, 1.0)
+
+func _process_octant(
+	center: Vector2i,
+	radius: int,
+	is_open: Callable,
+	forward: Vector2i,
+	side: Vector2i,
+	dist: int,
+	start_slope: float,
+	end_slope: float):
+
+	if end_slope <= start_slope:
+		return
+
+	for u in range(dist, radius):
+		var prev_visible = true
+		for v in (u+1):
+			# How the beams cross a square on the path:
+			# Back corner on the side of the main axis.
+			var inner_slope = (v - 0.5) / (u + 0.5)
+			# Front corner opposite to main axis.
+			var outer_slope = (v + 0.5) / (u - 0.5)
+
+			if start_slope > outer_slope:
+				continue
+			if end_slope < inner_slope:
+				break
+
+			var offset = u * forward + v * side
+			var cell = center + u * forward + v * side
+
+			if offset.length() < radius:
+				expose(cell)
+
+			var cell_open = is_open.call(cell)
+			if prev_visible and !cell_open:
+				# Hit a wall after visible span, recurse to the sub-span
+				prev_visible = false
+				_process_octant(center, radius, is_open, forward, side, u + 1, start_slope, inner_slope)
+			if !cell_open:
+				# Update start slope while going through a wall.
+				start_slope = outer_slope
+			prev_visible = cell_open
+
+		# This is a blocked span, do not proceed further.
+		if !prev_visible:
+			break
