@@ -15,3 +15,6 @@ build-wasm:
         exit 1
     fi
     echo "WASM export built in $TMPDIR."
+
+remove-save:
+    rm ~/.local/share/godot/app_userdata/Azoth/savegame.json
