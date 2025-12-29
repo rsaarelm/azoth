@@ -109,8 +109,11 @@ offset_left = 3.0
 offset_top = 229.0
 offset_right = 47.0
 offset_bottom = 250.0
+focus_mode = 1
 theme_override_font_sizes/font_size = 8
 theme_override_styles/normal = SubResource("StyleBoxFlat_viusa")
+shortcut_feedback = false
+shortcut_in_tooltip = false
 text = "Retire"
 script = SubResource("GDScript_6mti6")
 
