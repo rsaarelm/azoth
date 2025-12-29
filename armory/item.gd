@@ -34,6 +34,9 @@ var cell: Vector2i:
 			posmod(position.y as int, Area.CELL_SIZE))
 		position = Vector2(value * Area.CELL_SIZE + offset)
 
+## Point where mob was originally spawned, used for respawn blocklists.
+var spawn_origin: Vector2i
+
 func _init(_data=null, _count=1):
 	self.data = _data
 	# XXX: Should recoverable error handling be used for constructor validation?
@@ -52,6 +55,9 @@ func _ready():
 	shape.radius = 2.0
 	collision.shape = shape
 	add_child(collision)
+
+func _enter_tree():
+	self.spawn_origin = cell
 
 func _process(_delta):
 	animate()

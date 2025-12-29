@@ -32,3 +32,13 @@ static func odds_prob(a: float) -> float:
 ## Randomly return true with the given deciban odds.
 static func odds(a: float) -> bool:
 	return randf() < odds_prob(a)
+
+# INVARIANT: There must not be areas wider than 2^8 = 256 cells.
+
+## Encode map cell to JSON-friendly integer.
+static func cell_to_int(cell: Vector2i) -> int:
+	return cell.x + (cell.y << 8)
+
+## Decode encoded integer cell back to Vector2i.
+static func int_to_cell(value: int) -> Vector2i:
+	return Vector2i(value & 0xFF, (value >> 8) & 0xFF)

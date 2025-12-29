@@ -70,6 +70,16 @@ var _astar := AStarGrid2D.new()
 
 var _astar_is_dirty: bool = false
 
+var fog: Fog:
+	set(value):
+		# Make sure to remove any previous fog.
+		if fog == value:
+			return
+		if fog:
+			fog.queue_free()
+		fog = value
+		add_child(value, true)
+
 # NB. Do not rely on collision physics to detect mobs. Moving entities only
 # register in Godot's collision system on the frame after they moved, and a
 # lot of the logic of the game relies on mobs showing up in their destination
@@ -125,7 +135,8 @@ func _ready():
 	child_entered_tree.connect(_on_child_entered_tree)
 
 	# Create fog of war
-	add_child(Fog.new(), true)
+	fog = Fog.new()
+	add_child(fog, true)
 
 func _process(_delta: float) -> void:
 	if _astar_is_dirty:
@@ -189,6 +200,12 @@ func entities_at(cell: Vector2i) -> Array:
 			result.append(child)
 	return result
 
+## Clear all entities from cell, bypasses game logic on damage, death etc. Use
+## this to cull spawned items on a newly instantiated area.
+func clear_cell(cell: Vector2i):
+	for e in entities_at(cell):
+		e.queue_free()
+
 ## Return mob at given cell, or null if none.
 func mob_at(cell: Vector2i):
 	var entities = entities_at(cell)
@@ -236,7 +253,7 @@ func ping(at: Vector2i):
 ## Clear fog of war up to radius from center using field of view
 ## algorithm.
 func expose_fov(center: Vector2i, radius: int):
-	$Fog.expose_fov(center, radius, func(cell: Vector2i) -> bool:
+	fog.expose_fov(center, radius, func(cell: Vector2i) -> bool:
 		return !is_opaque(cell)
 	)
 

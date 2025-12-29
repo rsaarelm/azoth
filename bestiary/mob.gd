@@ -7,6 +7,8 @@ enum CreatureTrait {
 	UNDEAD,
 	## Fire does additional damage.
 	FLAMMABLE,
+	## This is a boss or a miniboss who won't respawn.
+	NO_RESPAWN,
 	## Killing this creature wins the level.
 	QUEST_BOSS,
 }
@@ -83,6 +85,13 @@ var _is_moving := false
 ## enemy is new or known.
 var _known_enemies: Array[Mob]
 
+# INVARIANT: Mobs can't migrate to a different level from where they were spawned.
+# The blocklist logic relies on mob's area at the time of its death being the same
+# where it was spawned.
+
+## Point where mob was originally spawned, used for respawn blocklists.
+var spawn_origin: Vector2i
+
 #region Movement
 
 func _enter_tree():
@@ -95,6 +104,7 @@ func _enter_tree():
 		node = node.get_parent()
 	assert(node, "Object has no parent area")
 	area = node
+	spawn_origin = cell
 
 	_post_step()
 
@@ -242,7 +252,7 @@ func step(direction: Vector2i) -> bool:
 					# Eat cash and do simple level ups as far as you can.
 					while Player.level_up():
 						Game.msg("Gained level " + str(Player.level))
-					Game.player_rests()
+					Game.player_rests(pos)
 					return true
 				else:
 					return false
@@ -281,7 +291,7 @@ func can_move(direction: Vector2i) -> bool:
 
 #endregion
 
-#region Combat
+#region Game rules
 
 # Should 'attack' be split into 'find_target' and 'deal_damage'?
 
@@ -318,7 +328,12 @@ func take_damage(damage: int) -> void:
 			var payout = strength
 			Player.cash += payout
 
-		# Additional death logic goes here...
+			Player.on_enemy_killed(self)
+	
+		# Add more death logic as needed
+
+func has_trait(_trait: CreatureTrait) -> bool:
+	return traits.has(_trait)
 
 #endregion
 
@@ -448,6 +463,7 @@ func _visible_enemies(detection_range: int) -> Array[Mob]:
 func pick_up(item: Item) -> void:
 	# TODO A/an distinction in articles
 	say("\"A" + item.data.name + ".\"")
+	Player.on_item_picked_up(self, item)
 	Player.inventory.take(item)
 #endregion
 

@@ -14,6 +14,7 @@ var deftness := 0
 # This will get updated to the area and position of the latest checkpoint.
 var spawn_area: String
 var spawn_pos: Vector2i
+var last_altar_pos := Vector2i(-1, -1)
 
 var inventory := ItemCollection.new()
 
@@ -40,6 +41,23 @@ var health:
 
 var cash := 0
 
+## Memory of explored maps, contains save images from Fog objects. Indexes are area resource paths.
+var map_memory: Dictionary = {}
+
+# INVARIANT: You must have at most a single entity, item or mob, spawn per
+# cell, since blocklists currently only store locations.
+
+## Spawn points that should no longer be active. Indexes are area resource paths.
+var perma_deleted_spawns: Dictionary = {}
+
+## Spawn points that are deactivated for the current run but will reactivate on rest or death.
+var soft_deleted_spawns: Dictionary = {}
+
+# There's a planned system for rollbacks on items that needs a third blocklist,
+# items that have been picked up but will be removed from your inventory and
+# restored to the world if you die and become permanent if you rest. No point
+# adding it yet since it also needs a ledger of picked-up and used items.
+
 var abilities: Array[Ability] = [
 	# TODO Replace hardcoded temporary test abilities with ones from character
 	# build dynamics.
@@ -65,8 +83,14 @@ func clear():
 
 	spawn_area = "res://atlas/sprintmap.tscn"
 	spawn_pos = Vector2i(62, 1)
+	last_altar_pos = Vector2i(-1, -1)
 
 	inventory = ItemCollection.new()
+
+	map_memory.clear()
+	perma_deleted_spawns.clear()
+	soft_deleted_spawns.clear()
+
 
 ## Get the player's mob node.
 func mob():
@@ -120,7 +144,11 @@ func save_game() -> void:
 			# Current location.
 			area = spawn_area,
 			pos = var_to_str(spawn_pos),
-		}
+			last_altar_pos = var_to_str(last_altar_pos),
+		},
+
+		map_memory = self.map_memory,
+		kill_list = self.perma_deleted_spawns,
 	}
 
 	file.store_line(JSON.stringify(save_dict))
@@ -144,6 +172,12 @@ func load_game() -> void:
 
 	spawn_area = player.area
 	spawn_pos = str_to_var(player.pos)
+	last_altar_pos = str_to_var(player.last_altar_pos)
+
+	map_memory = save.map_memory
+
+	perma_deleted_spawns = save.kill_list
+	soft_deleted_spawns.clear()
 
 	Game.restart()
 
@@ -155,3 +189,54 @@ func retire():
 	if save_exists():
 		DirAccess.remove_absolute(SAVE_PATH)
 	clear()
+
+func on_area_entered(area: Area):
+	var area_path = area.scene_file_path
+
+	if area_path in map_memory:
+		# Load fog of war memory for the area.
+		area.fog = Fog.load(map_memory[area_path])
+
+	# Unspawn blocked things.
+	if area_path in perma_deleted_spawns:
+		for x in perma_deleted_spawns[area_path]:
+			var cell = Util.int_to_cell(x)
+			area.clear_cell(cell)
+
+	if area_path in soft_deleted_spawns:
+		for x in soft_deleted_spawns[area_path]:
+			var cell = Util.int_to_cell(x)
+			area.clear_cell(cell)
+
+func on_area_exited(area: Area):
+	var area_path = area.scene_file_path
+	# Save fog of war memory for the area.
+	if area.fog:
+		map_memory[area_path] = area.fog.save()
+
+func on_enemy_killed(enemy: Mob):
+	var area = enemy.area.scene_file_path
+	var pos = Util.cell_to_int(enemy.spawn_origin)
+	if enemy.has_trait(Mob.CreatureTrait.NO_RESPAWN):
+		# Permanently delete a boss enemy.
+		perma_deleted_spawns.get_or_add(area, []).append(pos)
+	else:
+		# Temporarily delete a normal enemy.
+		soft_deleted_spawns.get_or_add(area, []).append(pos)
+	pass
+
+func on_item_picked_up(_mob: Mob, item: Item):
+	var area = _mob.area.scene_file_path
+	var pos = Util.cell_to_int(item.spawn_origin)
+	# Once you grab it, it's gone for good.
+	perma_deleted_spawns.get_or_add(area, []).append(pos)
+
+func respawn_soft_deleted_spawns():
+	soft_deleted_spawns.clear()
+
+## Make all soft deletions permanent, they'll stay dead even when you rest.
+func make_soft_deletions_permanent():
+	for area in soft_deleted_spawns.keys():
+		perma_deleted_spawns.get_or_add(area, []).append_array(
+			soft_deleted_spawns[area])
+	soft_deleted_spawns.clear()

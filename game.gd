@@ -59,11 +59,29 @@ func restart():
 	# reload the scene here.
 	get_tree().change_scene_to_file("res://game_screen.tscn")
 
-func player_rests():
+func player_rests(altar_pos: Vector2i):
 	var player = Player.mob()
+
+	var is_new_altar = (
+		altar_pos != Player.last_altar_pos or
+		player.area.scene_file_path != Player.spawn_area)
+	var prev_altar_exists = Player.last_altar_pos != Vector2i(-1, -1)
+
+	if is_new_altar and prev_altar_exists:
+		# Make changes permanent when you successfully reach a new altar.
+		Player.make_soft_deletions_permanent()
+	else:
+		# Respawn enemies if you just circle back to the same altar.
+		Player.respawn_soft_deleted_spawns()
+
 	Player.spawn_area = player.area.scene_file_path
 	assert(Player.spawn_area, "Invalid area: No scene file path")
 	Player.spawn_pos = player.cell
+	Player.last_altar_pos = altar_pos
+
+	# Make sure the hook runs before making a save game.
+	if _area:
+		Player.on_area_exited(_area)
 
 	Player.save_game()
 
@@ -82,6 +100,12 @@ func player_died():
 	if Player.cash > 0:
 		Game.msg("You lost " + str(Player.cash) + "$.")
 	Player.cash = 0
+
+	if _area:
+		Player.on_area_exited(_area)
+
+	# Respawn enemies when you die.
+	Player.respawn_soft_deleted_spawns()
 
 	await get_tree().create_timer(0.4).timeout
 	get_tree().change_scene_to_file("res://you_died.tscn")
@@ -104,6 +128,10 @@ func load_area(scene_path: String, player_pos: Vector2i, player: Mob = null):
 	var view = get_tree().current_scene.find_child("GameView", true, false)
 	assert(view, "XXX: load_area assumes it's in GameView")
 
+	# Run leave hook on existing area.
+	if _area:
+		Player.on_area_exited(_area)
+
 	# Remove existing area if there is one.
 	for child in view.get_children():
 		child.queue_free()
@@ -111,6 +139,13 @@ func load_area(scene_path: String, player_pos: Vector2i, player: Mob = null):
 	# Load the new area
 	_area = load(scene_path).instantiate()
 	view.add_child(_area)
+
+	# Wait for the area to initialize so that spawns show up for enter-hook to
+	# delete.
+	await get_tree().process_frame
+
+	# Hook to handle modifications from persistent game data
+	Player.on_area_entered(_area)
 
 	# Add player
 	player.cell = player_pos
