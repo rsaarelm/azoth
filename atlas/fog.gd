@@ -1,7 +1,20 @@
-extends TileMapLayer
+class_name Fog extends TileMapLayer
+
+## Fog of war on top of the area, can be revealed using a field of view algorithm.
 
 ## Set of cells from which FOV has been exposed from. Do not re-run FOV from the same cell.
 var _visited = {}
+
+# Covered tile atlas coordinates.
+const COVERED = Vector2i(0, 0)
+
+func _ready():
+	name = "Fog"
+	tile_set = preload("res://atlas/fog.tres")
+	# Fill the tilemap with fog.
+	for y in range(-1, Area.MAX_HEIGHT + 1):
+		for x in range(-1, Area.MAX_WIDTH + 1):
+			set_cell(Vector2i(x, y), 0, COVERED)
 
 ## Make given cell visible.
 func expose(cell: Vector2i):
@@ -9,7 +22,6 @@ func expose(cell: Vector2i):
 	if cell.x < -1 or cell.x >= Area.MAX_WIDTH + 1 or cell.y < -1 or cell.y >= Area.MAX_HEIGHT + 1:
 		return
 	set_cells_terrain_connect([cell], 0, 0)
-
 
 func expose_fov(center: Vector2i, radius: int, is_open: Callable):
 	# Run each point at most once.

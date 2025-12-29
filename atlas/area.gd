@@ -125,8 +125,7 @@ func _ready():
 	child_entered_tree.connect(_on_child_entered_tree)
 
 	# Create fog of war
-	var fog = preload("res://atlas/fog_of_war.tscn").instantiate()
-	add_child(fog, true)
+	add_child(Fog.new(), true)
 
 func _process(_delta: float) -> void:
 	if _astar_is_dirty:
@@ -237,7 +236,7 @@ func ping(at: Vector2i):
 ## Clear fog of war up to radius from center using field of view
 ## algorithm.
 func expose_fov(center: Vector2i, radius: int):
-	$FogOfWar.expose_fov(center, radius, func(cell: Vector2i) -> bool:
+	$Fog.expose_fov(center, radius, func(cell: Vector2i) -> bool:
 		return !is_opaque(cell)
 	)
 
