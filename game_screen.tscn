@@ -139,6 +139,7 @@ dragger_visibility = 2
 
 [node name="GameView" type="Control" parent="HSplitContainer/VSplitContainer"]
 unique_name_in_owner = true
+clip_contents = true
 layout_mode = 2
 
 [node name="Area" parent="HSplitContainer/VSplitContainer/GameView" instance=ExtResource("5_3vj30")]
