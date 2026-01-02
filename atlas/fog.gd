@@ -11,6 +11,7 @@ const COVERED = Vector2i(0, 0)
 func _init():
 	name = "Fog"
 	tile_set = preload("res://atlas/fog.tres")
+	z_index = 99
 	# Fill the tilemap with fog.
 	for y in range(-1, Area.MAX_HEIGHT + 1):
 		for x in range(-1, Area.MAX_WIDTH + 1):
