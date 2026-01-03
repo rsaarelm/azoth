@@ -12,3 +12,4 @@ script = ExtResource("1_w4nf8")
 name = "healing potion"
 icon = SubResource("AtlasTexture_ehdjv")
 is_stacking = true
+kind = 0

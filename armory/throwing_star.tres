@@ -12,3 +12,4 @@ script = ExtResource("1_b5r6c")
 name = "throwing star"
 icon = SubResource("AtlasTexture_362bf")
 is_stacking = true
+kind = 0

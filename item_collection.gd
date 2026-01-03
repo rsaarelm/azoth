@@ -32,16 +32,13 @@ func take(item):
 
 ## Throw an item to a position back in the world.
 func throw(index: int, cell: Vector2i, amount=1):
-	var drop = items[index].split(amount)
+	var item = items[index].split(amount)
 	if !is_instance_valid(items[index]):
 		# It was consumed by the split
 		items.remove_at(index)
 	contents_changed.emit()
 
-	# Throw it back to the world and have it be visible.
-	drop.visible = true
-	drop.cell = cell
-	drop.reparent(Game.area())
+	item.drop(cell)
 
 ## Consume items without sending them anywhere.
 func destroy(index: int, amount=1):

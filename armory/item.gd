@@ -38,6 +38,8 @@ var cell: Vector2i:
 var spawn_origin: Vector2i
 
 func _init(_data=null, _count=1):
+	position = Vector2(Area.CELL_SIZE / 2.0, Area.CELL_SIZE / 2.0)
+
 	self.data = _data
 	# XXX: Should recoverable error handling be used for constructor validation?
 	assert(_count == 1 || (_data and _data.is_stacking))
@@ -72,6 +74,48 @@ func split(amount: int) -> Item:
 	assert(amount <= ItemData.MAX_STACK)
 	clone.count = amount
 	return clone
+
+static var _coin_res = ResourceLoader.load("res://armory/silver_coin.tres")
+
+## Construct a stack of coins.
+static func make_coins(amount: int) -> Item:
+	return Item.new(_coin_res, amount)
+
+## Drop the item at a position.
+func drop(at: Vector2i):
+	visible = true
+	cell = at
+
+	var area = Game.area()
+	var existing_item = area.item_at(at)
+	if not existing_item:
+		area.add_child(self)
+
+	if existing_item and \
+		self.stacks_with(existing_item) and \
+		self.count + existing_item.count <= self.stack_limit():
+			# Merge stacks if you can
+			existing_item.count += self.count
+			self.queue_free()
+	else:
+		# Just cram two objects into the same cell for now.
+		# TODO: Scatter dropped items to adjacent cells pinata style.
+		area.add_child(self)
+
+func stack_limit() -> int:
+	if !self.data.is_stacking:
+		return 1
+	elif self.data.kind == ItemData.Kind.CASH:
+		# Cash piles can be huge.
+		return 999999
+	else:
+		return ItemData.MAX_STACK
+
+## Return whether two items can stack in principle.
+## Does consider stack size limits.
+func stacks_with(other: Item) -> bool:
+	return self.data.is_stacking and self.data == other.data
+
 
 #region Animation
 const BLINK_CYCLE := int(2.0 * 60)  # 2 seconds in frames

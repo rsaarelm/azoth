@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3 uid="uid://ckr8e62prw8g1"]
+
+[ext_resource type="Texture2D" uid="uid://cfjcxjfudgdwx" path="res://armory/items.png" id="1_7yof1"]
+[ext_resource type="Script" uid="uid://cvp6gdct0efso" path="res://armory/item_data.gd" id="1_25tub"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r1aw5"]
+atlas = ExtResource("1_7yof1")
+region = Rect2(48, 8, 8, 8)
+
+[resource]
+script = ExtResource("1_25tub")
+name = "silver coin"
+icon = SubResource("AtlasTexture_r1aw5")
+is_stacking = true
+kind = 2
+value = 1
+metadata/_custom_type_script = "uid://cvp6gdct0efso"

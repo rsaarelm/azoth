@@ -324,12 +324,12 @@ func take_damage(damage: int) -> void:
 			Game.player_died()
 
 		if is_enemy():
-			# XP gain (don't care who killed it)
+			# Drop cash.
 			var payout = strength
-			Player.cash += payout
+			Item.make_coins(payout).drop(cell)
 
 			Player.on_enemy_killed(self)
-	
+
 		# Add more death logic as needed
 
 func has_trait(_trait: CreatureTrait) -> bool:
@@ -461,6 +461,13 @@ func _visible_enemies(detection_range: int) -> Array[Mob]:
 
 #region Items
 func pick_up(item: Item) -> void:
+	# If it's cash, add count to stat and junk the object.
+	if item.data.kind == ItemData.Kind.CASH:
+		say("$" + str(item.count))
+		Player.cash += item.count
+		item.queue_free()
+		return
+
 	# TODO A/an distinction in articles
 	say("\"A" + item.data.name + ".\"")
 	Player.on_item_picked_up(self, item)
