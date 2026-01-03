@@ -3,6 +3,17 @@ extends Resource
 
 ## The abstract Item resource.
 
+enum ItemKind {
+	## Item can be used for some effect.
+	CONSUMABLE,
+
+	## Item has no practical use but is valuable and can be sold.
+	TREASURE,
+
+	## Item is a cash pile, will go to your wallet instead of staying in inventory.
+	CASH,
+}
+
 const MAX_STACK := 99
 
 @export var name := "Unnamed item"
