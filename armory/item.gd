@@ -38,7 +38,8 @@ var cell: Vector2i:
 var spawn_origin: Vector2i
 
 func _init(_data=null, _count=1):
-	position = Vector2(Area.CELL_SIZE / 2.0, Area.CELL_SIZE / 2.0)
+	if position == Vector2.ZERO:
+		position = Vector2(Area.CELL_SIZE / 2.0, Area.CELL_SIZE / 2.0)
 
 	self.data = _data
 	# XXX: Should recoverable error handling be used for constructor validation?
