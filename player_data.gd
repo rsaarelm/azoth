@@ -30,15 +30,6 @@ var left_hand_slot = null
 var right_ring_slot = null
 var left_ring_slot = null
 
-var level:
-	get:
-		return might + trickery + faith + deftness
-
-var health:
-	get:
-		# Health is derived from the base stats.
-		return 30 + 5 * might + 4 * faith + 4 * deftness + 3 * trickery
-
 var cash := 0
 
 ## Memory of explored maps, contains save images from Fog objects. Indexes are area resource paths.
@@ -64,6 +55,15 @@ var abilities: Array[Ability] = [
 	preload("res://grimoire/armageddon.tres"),
 	preload("res://grimoire/firebolt.tres"),
 	]
+
+var level:
+	get:
+		return might + trickery + faith + deftness
+
+var health:
+	get:
+		# Health is derived from the base stats.
+		return 30 + 5 * might + 4 * faith + 4 * deftness + 3 * trickery
 
 func _ready():
 	if save_exists():
