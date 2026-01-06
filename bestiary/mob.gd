@@ -325,7 +325,7 @@ func take_damage(damage: int) -> void:
 
 		if is_enemy():
 			# Drop cash.
-			var payout = strength
+			var payout = max(1, int(strength * randf_range(0.5, 2.0)))
 			Item.make_coins(payout).drop(cell)
 
 			Player.on_enemy_killed(self)
