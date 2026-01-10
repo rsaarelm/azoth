@@ -32,6 +32,11 @@ var left_ring_slot = null
 
 var cash := 0
 
+## Position where player died and dropped their money.
+##
+## Either {} or { area, pos, amount }
+var corpse_cash_drop = {}
+
 ## Memory of explored maps, contains save images from Fog objects. Indexes are area resource paths.
 var map_memory: Dictionary = {}
 
@@ -80,6 +85,7 @@ func clear():
 	deftness = 0
 
 	cash = 0
+	corpse_cash_drop = {}
 
 	spawn_area = "res://atlas/sprintmap.tscn"
 	spawn_pos = Vector2i(62, 1)
@@ -103,6 +109,8 @@ func save_game() -> void:
 			deftness = self.deftness,
 
 			cash = self.cash,
+
+			corpse_cash_drop = self.corpse_cash_drop,
 
 			inventory = self.inventory.save(),
 
@@ -132,6 +140,7 @@ func load_game() -> void:
 	deftness = player.deftness
 
 	cash = player.cash
+	corpse_cash_drop = player.corpse_cash_drop
 
 	inventory = ItemCollection.load(player.inventory)
 
@@ -207,6 +216,15 @@ func on_area_entered(area: Area):
 			var cell = Util.int_to_cell(x)
 			area.clear_cell(cell)
 
+	# If corpse_cash_drop has "area" field that is this area, spawn the cash drop.
+
+	# NB. This must be done after the deleted spawns are cleared so the corpse
+	# drop won't get cleared if it happens to be in the same cell as a deleted
+	# spawn.
+	if corpse_cash_drop.has("area") and corpse_cash_drop.area == area_path:
+		var item = Item.make_coins(corpse_cash_drop.amount)
+		item.drop(Util.int_to_cell(corpse_cash_drop.pos))
+
 func on_area_exited(area: Area):
 	var area_path = area.scene_file_path
 	# Save fog of war memory for the area.
@@ -226,9 +244,20 @@ func on_enemy_killed(enemy: Mob):
 
 func on_item_picked_up(_mob: Mob, item: Item):
 	var area = _mob.area.scene_file_path
-	var pos = Util.cell_to_int(item.spawn_origin)
+	var origin = Util.cell_to_int(item.spawn_origin)
 	# Once you grab it, it's gone for good.
-	perma_deleted_spawns.get_or_add(area, []).append(pos)
+	perma_deleted_spawns.get_or_add(area, []).append(origin)
+
+
+func on_cash_picked_up(_mob: Mob, item: Item):
+	self.cash += item.count
+
+	## If we pick the corpse cash drop, stop spawning it.
+	var area = _mob.area.scene_file_path
+	if corpse_cash_drop.has("area") and corpse_cash_drop.area == area \
+			and Util.int_to_cell(corpse_cash_drop.pos) == item.cell:
+		Game.msg("You recover your silver.")
+		corpse_cash_drop = {}
 
 func respawn_soft_deleted_spawns():
 	soft_deleted_spawns.clear()
@@ -239,3 +268,15 @@ func make_soft_deletions_permanent():
 		perma_deleted_spawns.get_or_add(area, []).append_array(
 			soft_deleted_spawns[area])
 	soft_deleted_spawns.clear()
+
+func drop_cash(area: Area, pos: Vector2i, amount: int):
+	assert(amount >= 0)
+
+	if amount == 0:
+		corpse_cash_drop = {}
+	else:
+		corpse_cash_drop = {
+			area = area.scene_file_path,
+			pos = Util.cell_to_int(pos),
+			amount = amount,
+		}

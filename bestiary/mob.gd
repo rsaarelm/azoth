@@ -463,8 +463,8 @@ func _visible_enemies(detection_range: int) -> Array[Mob]:
 func pick_up(item: Item) -> void:
 	# If it's cash, add count to stat and junk the object.
 	if item.data.kind == ItemData.Kind.CASH:
-		say("$" + str(item.count))
-		Player.cash += item.count
+		say("\"$" + str(item.count)+"\"")
+		Player.on_cash_picked_up(self, item)
 		item.queue_free()
 		return
 

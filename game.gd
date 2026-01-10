@@ -92,13 +92,12 @@ func player_rests(altar_pos: Vector2i):
 	Game.restart()
 
 func player_died():
-	# TODO: Generate a recoverable cash pile at the spot you died or on the
-	# enemy that killed you.
-
-	# Lose your cash as punishment for dying.
+	# Drop your cash on death.
 	Game.msg("You died.")
 	if Player.cash > 0:
-		Game.msg("You lost " + str(Player.cash) + "$.")
+		Player.drop_cash(_area, Player.mob().cell, Player.cash)
+		Game.msg("You dropped " + str(Player.cash) + "$.")
+
 	Player.cash = 0
 
 	if _area:
