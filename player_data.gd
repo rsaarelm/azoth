@@ -91,41 +91,6 @@ func clear():
 	perma_deleted_spawns.clear()
 	soft_deleted_spawns.clear()
 
-
-## Get the player's mob node.
-func mob():
-	var nodes = get_tree().get_nodes_in_group("player")
-	if nodes:
-		return nodes.front()
-	else:
-		return null
-
-## Instantiate a new player Mob.
-func build() -> Mob:
-	var player = preload("res://bestiary/player.tscn").instantiate()
-
-	# Urgh, I guess I need this so far to align it to the cell center.
-	player.position = Area.CELL / 2
-
-	# Apply stats.
-	player.health = health
-	player.strength = 10 + might
-
-	return player
-
-## Level up the persistent player.
-##
-## The player mob must be reconstructed with `build` before the effects show
-## up. Return false if you don't have money to level up.
-func level_up() -> bool:
-	var cost = Rules.level_up_cost(self.level + 1)
-	if cash >= cost:
-		cash -= cost
-		# No stat selection yet, just pump up strength.
-		might += 1
-		return true
-	return false
-
 func save_game() -> void:
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 
@@ -180,6 +145,40 @@ func load_game() -> void:
 	soft_deleted_spawns.clear()
 
 	Game.restart()
+
+## Get the player's mob node.
+func mob():
+	var nodes = get_tree().get_nodes_in_group("player")
+	if nodes:
+		return nodes.front()
+	else:
+		return null
+
+## Instantiate a new player Mob.
+func build() -> Mob:
+	var player = preload("res://bestiary/player.tscn").instantiate()
+
+	# Urgh, I guess I need this so far to align it to the cell center.
+	player.position = Area.CELL / 2
+
+	# Apply stats.
+	player.health = health
+	player.strength = 10 + might
+
+	return player
+
+## Level up the persistent player.
+##
+## The player mob must be reconstructed with `build` before the effects show
+## up. Return false if you don't have money to level up.
+func level_up() -> bool:
+	var cost = Rules.level_up_cost(self.level + 1)
+	if cash >= cost:
+		cash -= cost
+		# No stat selection yet, just pump up strength.
+		might += 1
+		return true
+	return false
 
 func save_exists() -> bool:
 	return FileAccess.file_exists(SAVE_PATH)
