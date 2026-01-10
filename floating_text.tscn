@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cdx8eqe1t3wpw" path="res://floating_text.gd" id="2_8goxa"]
 
 [node name="FloatingText" type="Label"]
+z_index = 11
 custom_minimum_size = Vector2(150, 0)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(1, 0.945098, 0.909804, 1)
