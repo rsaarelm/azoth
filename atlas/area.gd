@@ -6,6 +6,8 @@ class_name Area extends TileMapLayer
 const CELL_SIZE = 8
 const CELL = Vector2(CELL_SIZE, CELL_SIZE)
 
+const ACTIVE_ALTAR = Vector2i(6, 5)
+
 # Position of exit terrain tile in terrain.png tilesheet.
 const EXIT_TILE := Vector2i(0, 5)
 
@@ -137,6 +139,14 @@ func _ready():
 	# Create fog of war
 	fog = Fog.new()
 	add_child(fog, true)
+
+	# If current altar is on this area and there's a valid altar tile in the position,
+	# turn the tile into ACTIVE_ALTAR.
+	if Player.spawn_area == self.scene_file_path:
+		var altar_pos = Player.last_altar_pos
+		if kind(altar_pos) == Kind.ALTAR:
+			set_cell(altar_pos, 1, ACTIVE_ALTAR)
+
 
 func _process(_delta: float) -> void:
 	if _astar_is_dirty:
