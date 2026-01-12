@@ -87,9 +87,9 @@ func clear():
 	cash = 0
 	corpse_cash_drop = {}
 
-	spawn_area = "res://atlas/sprintmap.tscn"
-	spawn_pos = Vector2i(62, 1)
-	last_altar_pos = Vector2i(-1, -1)
+	spawn_area = "res://atlas/northlands.tscn"
+	spawn_pos = Vector2i(57, 36)
+	last_altar_pos = Vector2i(57, 35)
 
 	inventory = ItemCollection.new()
 
