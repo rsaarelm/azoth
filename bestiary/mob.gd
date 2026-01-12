@@ -113,7 +113,7 @@ func _process(_delta: float) -> void:
 
 	if is_pc() and Game.is_paused:
 		# Direct input for player character, start running from pause.
-		var vector = Util.get_input_vector()
+		var vector = Joystick.output
 		if vector != Vector2i.ZERO:
 			if bump(vector):
 				# Wipe out any current goal when the player acts manually.
