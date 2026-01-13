@@ -138,7 +138,6 @@ func _ready():
 
 	# Create fog of war
 	fog = Fog.new()
-	add_child(fog, true)
 
 	# If current altar is on this area and there's a valid altar tile in the position,
 	# turn the tile into ACTIVE_ALTAR.
@@ -279,4 +278,4 @@ func _build_astar() -> void:
 func _on_child_entered_tree(node: Node) -> void:
 	# Make sure newly generated mobs are added to the y-sorting Mobs node
 	if node is Mob:
-		node.reparent($Mobs)
+		node.call_deferred("reparent", $Mobs)
