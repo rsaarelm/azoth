@@ -303,8 +303,7 @@ func attack(vec: Vector2i) -> bool:
 	if target:
 		if Util.odds(accuracy - target.evasion):
 			target.take_damage(self.strength)
-		else:
-			target.say_drift("miss")
+		# TODO: Some animation when the mob is missed, mob jumps to the side or sth
 		return true
 	return false
 
