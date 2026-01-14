@@ -10,6 +10,9 @@ build-wasm:
     rm -rf wasm/
     mkdir -p wasm/
 
+    # Make the folder invisible to Godot IDE
+    touch wasm/.gdignore
+
     godot --headless --export-release "Web" "wasm/index.html"
 
     # Check that the output file exists
