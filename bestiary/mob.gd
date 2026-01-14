@@ -334,6 +334,14 @@ func take_damage(damage: int) -> void:
 func has_trait(_trait: CreatureTrait) -> bool:
 	return traits.has(_trait)
 
+## Check if mob is next to altar.
+func is_next_to_altar() -> bool:
+	var pos = cell
+	return area.kind(pos + Vector2i(1, 0)) == Area.Kind.ALTAR or \
+		area.kind(pos + Vector2i(-1, 0)) == Area.Kind.ALTAR or \
+		area.kind(pos + Vector2i(0, 1)) == Area.Kind.ALTAR or \
+		area.kind(pos + Vector2i(0, -1)) == Area.Kind.ALTAR
+
 #endregion
 
 #region AI
