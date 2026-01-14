@@ -1,4 +1,4 @@
-class_name ItemSlot extends Control
+class_name ItemSlot extends BaseButton
 
 # Show icon and count for items, base graphic for empty slots.
 @export var item: Item:

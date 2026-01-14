@@ -24,15 +24,20 @@ var _slots: Array[ItemSlot]
 func _ready():
 	# Collect ItemSlot type child nodes into _slots array.
 	_slots = []
-	for child in find_children("*", "ItemSlot", true, true):
-		_slots.append(child)
+
+	var slot_nodes = find_children("*", "ItemSlot", true, true)
+	for i in slot_nodes.size():
+		_slots.append(slot_nodes[i])
+
+		# Bind slot buttons.
+		slot_nodes[i].pressed.connect(_on_slot_pressed.bind(i))
 
 	# Get the column count from the GUI component.
 	columns = $ItemGrid.columns
 
 	# Just hardcode the connection to player's stuff
 	backend = Player.inventory
-	
+
 	# Populate
 	_update()
 
@@ -58,3 +63,7 @@ func _on_up_pressed():
 func _on_down_pressed():
 	offset += columns
 	_update()
+
+func _on_slot_pressed(idx: int):
+	# TODO: Use item when clicked
+	print("Pressed ", idx)
