@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3 uid="uid://goglsyhkeiey"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=5 format=3 uid="uid://goglsyhkeiey"]
 
+[ext_resource type="Resource" uid="uid://x5at3h2xk6c2" path="res://grimoire/throwing_star.tres" id="1_362bf"]
 [ext_resource type="Script" uid="uid://cvp6gdct0efso" path="res://armory/item_data.gd" id="1_b5r6c"]
 [ext_resource type="Texture2D" uid="uid://cfjcxjfudgdwx" path="res://armory/items.png" id="1_un7i0"]
 
@@ -13,3 +14,4 @@ name = "throwing star"
 icon = SubResource("AtlasTexture_362bf")
 is_stacking = true
 kind = 0
+effect = ExtResource("1_362bf")

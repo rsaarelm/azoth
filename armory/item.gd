@@ -112,11 +112,40 @@ func stack_limit() -> int:
 	else:
 		return ItemData.MAX_STACK
 
+## Decrement the item count, remove the item if it reaches zero.
+func consume_one():
+	if count < 2:
+		queue_free()
+	else:
+		count -= 1
+
 ## Return whether two items can stack in principle.
 ## Does consider stack size limits.
 func stacks_with(other: Item) -> bool:
 	return self.data.is_stacking and self.data == other.data
 
+
+func use(mob: Mob):
+	if data.kind == ItemData.Kind.CONSUMABLE:
+		var effect = data.effect
+		assert(effect, "Consumable item without effect")
+
+		consume_one()
+		if effect.needs_aiming():
+			# Effect needs aiming, punt to game
+			Game.aim_ability = effect
+		else:
+			# No aiming needed, use the effect immediately.
+			effect.use(mob, mob.cell)
+	elif data.kind == ItemData.Kind.TREASURE:
+		if mob.is_player():
+			if mob.is_next_to_altar():
+				Game.msg("You sacrifice the " + data.name + " on the altar.")
+				var value = data.value
+				consume_one()
+				Player.cash += value
+			else:
+				Game.msg("You can sacrifice this when standing next to an altar.")
 
 #region Animation
 const BLINK_CYCLE := int(2.0 * 60)  # 2 seconds in frames

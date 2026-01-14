@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3 uid="uid://6uorduhc0dc1"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=5 format=3 uid="uid://6uorduhc0dc1"]
 
+[ext_resource type="Resource" uid="uid://c5qii1wdw3ilx" path="res://grimoire/heal.tres" id="1_ehdjv"]
 [ext_resource type="Texture2D" uid="uid://cfjcxjfudgdwx" path="res://armory/items.png" id="1_esril"]
 [ext_resource type="Script" uid="uid://cvp6gdct0efso" path="res://armory/item_data.gd" id="1_w4nf8"]
 
@@ -13,3 +14,4 @@ name = "healing potion"
 icon = SubResource("AtlasTexture_ehdjv")
 is_stacking = true
 kind = 0
+effect = ExtResource("1_ehdjv")

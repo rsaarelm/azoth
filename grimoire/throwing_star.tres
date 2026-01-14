@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Blast" load_steps=4 format=3 uid="uid://x5at3h2xk6c2"]
+
+[ext_resource type="Script" uid="uid://c5wtyi72ccqy6" path="res://grimoire/blast.gd" id="1_ds7xr"]
+[ext_resource type="Texture2D" uid="uid://cfjcxjfudgdwx" path="res://armory/items.png" id="1_oexmu"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mnlx3"]
+atlas = ExtResource("1_oexmu")
+region = Rect2(40, 8, 8, 8)
+
+[resource]
+script = ExtResource("1_ds7xr")
+damage = 20
+display_name = "throwing star"
+fx_range = 10
+icon = SubResource("AtlasTexture_mnlx3")
+metadata/_custom_type_script = "uid://c5wtyi72ccqy6"

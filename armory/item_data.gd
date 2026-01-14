@@ -16,7 +16,7 @@ enum Kind {
 
 const MAX_STACK := 99
 
-@export var name := "Unnamed item"
+@export var name := "unnamed item"
 @export var icon: Texture2D
 
 # If true, instances of the item can be fused into numbered piles.

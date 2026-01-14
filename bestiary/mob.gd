@@ -111,7 +111,7 @@ func _enter_tree():
 func _process(_delta: float) -> void:
 	_animate()
 
-	if is_pc() and Game.is_paused:
+	if is_player() and Game.is_paused:
 		# Direct input for player character, start running from pause.
 		var vector = Joystick.output
 		if vector != Vector2i.ZERO:
@@ -142,11 +142,11 @@ func _process(_delta: float) -> void:
 					# When they find something, they'll shout and charge.
 					say("!")
 					cmd_goto(targets[0])
-			elif is_pc():
+			elif is_player():
 				# PC has nothing to do, so we should wait for player input.
 				Game.stop_running()
 		Goal.GOTO:
-			if is_pc():
+			if is_player():
 				var enemies = _visible_enemies(PLAYER_SIGHT_RANGE)
 				# Live enemies spotted while moving, pause the game.
 
@@ -193,7 +193,7 @@ func step(direction: Vector2i) -> bool:
 				# symmetric exit regions. Actual areas can be smaller and
 				# might have displaced regions, requiring you to adjust the
 				# entry position.
-				if is_pc():
+				if is_player():
 					var new_area := ""
 					var new_pos = pos
 					# Make sure the new pos is set just before the exit
@@ -222,7 +222,7 @@ func step(direction: Vector2i) -> bool:
 					return false
 			Area.Kind.UPSTAIRS, Area.Kind.DOWNSTAIRS:
 				# Another area transition
-				if is_pc():
+				if is_player():
 					# The assumption is that the matching exit is in the same
 					# position in the above/below map, and we want to set up a
 					# thing where the player can reverse the transition by
@@ -245,7 +245,7 @@ func step(direction: Vector2i) -> bool:
 			Area.Kind.ALTAR:
 				# Pray at altar, you heal but the enemies respawn.
 
-				if is_pc():
+				if is_player():
 					# TODO: Complex altar behavior, pop up an actual rest operations menu here for
 					# complex leveling up, spell attunement etc.
 
@@ -270,7 +270,7 @@ func step(direction: Vector2i) -> bool:
 
 # Logic to call every time a mob steps on new cell.
 func _post_step():
-	if is_pc():
+	if is_player():
 		# Player-specific stuff
 		var item = area.item_at(cell)
 		if item:
@@ -319,7 +319,7 @@ func take_damage(damage: int) -> void:
 		wounds = health
 		say_drift("death")
 		queue_free()
-		if is_pc():
+		if is_player():
 			Game.player_died()
 
 		if is_enemy():
@@ -348,7 +348,7 @@ func is_next_to_altar() -> bool:
 
 ## True if this mob is the main player character. The game is turn-based
 ## around the main character's moves.
-func is_pc() -> bool:
+func is_player() -> bool:
 	return self == Game.leader()
 
 func is_enemy() -> bool:
