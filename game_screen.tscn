@@ -81,7 +81,6 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_constants/line_spacing = 0
 theme_override_fonts/font = ExtResource("2_3vj30")
 theme_override_font_sizes/font_size = 8
-text = "Side Panel!"
 script = SubResource("GDScript_3vj30")
 
 [node name="InventoryView" parent="HSplitContainer/SidePanel" instance=ExtResource("3_oymjd")]
