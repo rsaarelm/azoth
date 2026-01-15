@@ -16,7 +16,15 @@ var spawn_area: String
 var spawn_pos: Vector2i
 var last_altar_pos := Vector2i(-1, -1)
 
-var inventory := ItemCollection.new()
+# Inventory must be a contained node in the tree so it can see items deleting themselves.
+var inventory: ItemCollection:
+	set(value):
+		# Make sure the previous one is removed from tree.
+		if inventory:
+			inventory.queue_free()
+		inventory = value
+		if inventory:
+			add_child(inventory)
 
 # Nullable equipment item slots
 var cloak_slot = null

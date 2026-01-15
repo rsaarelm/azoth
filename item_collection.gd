@@ -4,6 +4,10 @@ var items: Array[Item]
 
 signal contents_changed
 
+func _ready():
+	# Items can delete themselves when used, detect that here.
+	child_exiting_tree.connect(_on_child_exiting_tree)
+
 func take(item):
 	if item.data.is_stacking:
 		# Try to merge into an existing stack.
@@ -28,6 +32,7 @@ func take(item):
 	item.visible = false
 
 	items.append(item)
+	item.state_changed.connect(_on_item_state_changed)
 	contents_changed.emit()
 
 ## Throw an item to a position back in the world.
@@ -35,7 +40,7 @@ func throw(index: int, cell: Vector2i, amount=1):
 	var item = items[index].split(amount)
 	if !is_instance_valid(items[index]):
 		# It was consumed by the split
-		items.remove_at(index)
+		_remove_item_at(index)
 	contents_changed.emit()
 
 	item.drop(cell)
@@ -44,7 +49,7 @@ func throw(index: int, cell: Vector2i, amount=1):
 func destroy(index: int, amount=1):
 	if amount >= items[index].count:
 		items[index].queue_free()
-		items.remove_at(index)
+		_remove_item_at(index)
 	else:
 		items[index].count -= amount
 	contents_changed.emit()
@@ -65,3 +70,19 @@ func save() -> Array:
 			"count": item.count,
 		})
 	return file
+
+func _remove_item_at(index: int):
+	items[index].state_changed.disconnect(_on_item_state_changed)
+	items.remove_at(index)
+	contents_changed.emit()
+
+func _on_child_exiting_tree(node: Node):
+	var idx = items.find(node)
+	if idx == -1:
+		print("ItemCollection: exiting child " + str(node) + " not found in collection")
+		return
+
+	_remove_item_at(idx)
+
+func _on_item_state_changed():
+	contents_changed.emit()

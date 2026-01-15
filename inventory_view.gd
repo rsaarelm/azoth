@@ -65,5 +65,7 @@ func _on_down_pressed():
 	_update()
 
 func _on_slot_pressed(idx: int):
-	# TODO: Use item when clicked
-	print("Pressed ", idx)
+	var item_idx = offset + idx
+	if item_idx < backend.items.size():
+		var item = backend.items[item_idx]
+		item.use(Player.mob())

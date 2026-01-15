@@ -19,6 +19,8 @@ class_name Item extends Area2D
 		return count
 	set(value):
 		if data and data.is_stacking:
+			if value != count:
+				state_changed.emit.call_deferred()
 			count = value
 		else:
 			count = 1
@@ -36,6 +38,9 @@ var cell: Vector2i:
 
 ## Point where mob was originally spawned, used for respawn blocklists.
 var spawn_origin: Vector2i
+
+## Signal to UI that the item looks different now, eg. has a different count.
+signal state_changed
 
 func _init(_data=null, _count=1):
 	if position == Vector2.ZERO:
@@ -118,6 +123,7 @@ func consume_one():
 		queue_free()
 	else:
 		count -= 1
+		state_changed.emit.call_deferred()
 
 ## Return whether two items can stack in principle.
 ## Does consider stack size limits.
