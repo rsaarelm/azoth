@@ -9,6 +9,6 @@ region = Rect2(0, 0, 16, 16)
 
 [resource]
 script = ExtResource("1_ifolc")
-heal_amount = 20
+power = 20
 display_name = "Heal"
 icon = SubResource("AtlasTexture_u5tu6")
