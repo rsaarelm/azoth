@@ -1,0 +1,19 @@
+Location type
+	I want this to be a value type that specifies area and position in area, but Godot doesn't have custom value types
+	Workaround is to use arrays, but then we lose methods and typing, just use old-school conventions then
+
+	A Location value is a length 2 Array of a string and a Vector2i
+	The string is a location path
+	Example: ["res://atlas/tower.tscn", Vector2i(12, 34)]
+
+	Location variable names have suffix _location, eg. spawn_location
+
+World structure
+	The game world is implemeted as a "sparse graph" of point of interest areas with transition paths between them
+	It's deliberately unspecified whether outdoor areas are right next to each other or if there's some travel involved
+		You should nevertheless draw most areas so that the tiles in their connected edges line up
+	Areas can be connected in four cardinal directions horizontally and up or down vertically
+	Up and down connections must line up, stairwells can't specify a new position for you to appear in
+		The character leapfrogs stairwells when moving up or down
+			This is so the player can always do move forward / move back in opposite direction gesture to enter a new map and back from it again
+		You need to have matching open spaces on opposite sides of the stairwell on the two maps
