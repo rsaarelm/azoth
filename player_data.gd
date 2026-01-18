@@ -207,6 +207,9 @@ func retire():
 	clear()
 
 func on_area_entered(area: Area):
+	# XXX: There's glitches where you get extra moves when entering the area.
+	Joystick.delay()
+
 	var area_path = area.scene_file_path
 
 	if area_path in map_memory:
