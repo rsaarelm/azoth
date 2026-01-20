@@ -12,6 +12,7 @@ func _init():
 	name = "Fog"
 	tile_set = preload("res://atlas/fog.tres")
 	z_index = 10
+
 	# Fill the tilemap with fog.
 	for y in range(-1, Area.MAX_HEIGHT + 1):
 		for x in range(-1, Area.MAX_WIDTH + 1):
@@ -19,6 +20,9 @@ func _init():
 
 ## Make given cell visible.
 func expose(cell: Vector2i):
+	# This function makes sure the _inner bitgrid and the tilemap stay in sync.
+	# Do not mutate either from elsewhere.
+
 	# Allow going one tile outside of bounds so we don't get a visible boundary at the edge of the on-screen map.
 	if cell.x < -1 or cell.x >= Area.MAX_WIDTH + 1 or cell.y < -1 or cell.y >= Area.MAX_HEIGHT + 1:
 		return
@@ -44,52 +48,6 @@ func expose_fov(center: Vector2i, radius: int, is_open: Callable):
 		var v = Vector2i(u.y, u.x)
 		_process_octant(center, radius, is_open, u,  v, 1, 0.0, 1.0)
 		_process_octant(center, radius, is_open, u, -v, 1, 0.0, 1.0)
-
-## Save to JSON array.
-func save() -> Array[int]:
-	var file: Array[int] = []
-	# The fog is essentially a bitmap of visible cells, so we can compress things and pack runs of bits into 32-bit integers.
-
-	# Total number of cells, the area with the one-tile border.
-	var total_cells = (Area.MAX_WIDTH + 2) * (Area.MAX_HEIGHT + 2)
-	for chunk in (total_cells + 31) / 32:
-		var bits: int = 0
-		for bit in range(32):
-			var cell_index = chunk * 32 + bit
-			if cell_index >= total_cells:
-				break
-			var x = (cell_index % (Area.MAX_WIDTH + 2)) - 1
-			var y = (cell_index / (Area.MAX_WIDTH + 2)) - 1
-			if is_seen(Vector2i(x, y)):
-				bits |= (1 << bit)
-		file.append(bits)
-
-	# Trim trailing zeroes to keep the size down.
-	while file.size() > 0 and file[file.size() - 1] == 0:
-		file.remove_at(file.size() - 1)
-
-	return file
-
-## Load from JSON array.
-static func load(file: Array) -> Fog:
-	var fog = Fog.new()
-
-	# Run the inverse of save, unpack the bits run and expose cells.
-	var total_cells = (Area.MAX_WIDTH + 2) * (Area.MAX_HEIGHT + 2)
-	for chunk in range((total_cells + 31) / 32):
-		# If the input is shorter than expected, the rest is zeroes.
-		if chunk >= file.size():
-			break
-		var bits: int = file[chunk]
-		for bit in range(32):
-			var cell_index = chunk * 32 + bit
-			if cell_index >= total_cells:
-				break
-			var x = (cell_index % (Area.MAX_WIDTH + 2)) - 1
-			var y = (cell_index / (Area.MAX_WIDTH + 2)) - 1
-			if (bits & (1 << bit)) != 0:
-				fog.expose(Vector2i(x, y))
-	return fog
 
 func _process_octant(
 	center: Vector2i,

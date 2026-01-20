@@ -18,7 +18,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 Game="*res://game.gd"
-Player="*res://player_data.gd"
 Joystick="*res://pulse_joystick.gd"
 
 [debug]

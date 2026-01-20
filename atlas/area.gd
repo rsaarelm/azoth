@@ -139,14 +139,6 @@ func _ready():
 	# Create fog of war
 	fog = Fog.new()
 
-	# If current altar is on this area and there's a valid altar tile in the position,
-	# turn the tile into ACTIVE_ALTAR.
-	if Player.spawn_area == self.scene_file_path:
-		var altar_pos = Player.last_altar_pos
-		if kind(altar_pos) == Kind.ALTAR:
-			set_cell(altar_pos, 1, ACTIVE_ALTAR)
-
-
 func _process(_delta: float) -> void:
 	if _astar_is_dirty:
 		_build_astar()
@@ -215,6 +207,16 @@ func clear_cell(cell: Vector2i):
 	for e in entities_at(cell):
 		e.queue_free()
 
+func clear_mobs(cell: Vector2i):
+	for e in entities_at(cell):
+		if e is Mob:
+			e.queue_free()
+
+func clear_items(cell: Vector2i):
+	for e in entities_at(cell):
+		if e is ItemNode:
+			e.queue_free()
+
 ## Return mob at given cell, or null if none.
 func mob_at(cell: Vector2i):
 	var entities = entities_at(cell)
@@ -227,9 +229,13 @@ func mob_at(cell: Vector2i):
 func item_at(cell: Vector2i):
 	var entities = entities_at(cell)
 	for e in entities:
-		if e is Item:
+		if e is ItemNode:
 			return e
 	return null
+
+func make_altar_lit(pos: Vector2i):
+	if kind(pos) == Kind.ALTAR:
+		set_cell(pos, 1, ACTIVE_ALTAR)
 
 # Make more raycast methods as needed, raycast_projectile etc.
 
@@ -265,6 +271,33 @@ func expose_fov(center: Vector2i, radius: int):
 	fog.expose_fov(center, radius, func(cell: Vector2i) -> bool:
 		return !is_opaque(cell)
 	)
+
+## Get the location type (encoding area ID) for the given cell on this area.
+func get_location(cell: Vector2i) -> Dictionary:
+	return { area = scene_file_path, cell = cell }
+
+## Return state of the fog packed into an array.
+func dump_fog() -> PackedByteArray:
+	# Pack bits into byte array, 8 bits per byte.
+	var ret = PackedByteArray()
+	ret.resize(((MAX_WIDTH + 2) * (MAX_HEIGHT + 2) + 7) / 8)
+	for x in range(-1, MAX_WIDTH + 1):
+		for y in range(-1, MAX_HEIGHT + 1):
+			var i = x + y * (MAX_WIDTH + 2)
+			if fog.is_seen(Vector2i(x, y)):
+				ret[i/8] |= 1 << (i % 8)
+	return ret
+
+## Reset fog to match given packed byte array.
+func pump_fog(data: PackedByteArray):
+	assert(data.size() == ((MAX_WIDTH + 2) * (MAX_HEIGHT + 2) + 7) / 8)
+	fog = Fog.new()
+	for x in range(-1, MAX_WIDTH + 1):
+		for y in range(-1, MAX_HEIGHT + 1):
+			var i = x + y * (MAX_WIDTH + 2)
+			var seen = (data[i/8] & (1 << (i % 8))) != 0
+			if seen:
+				fog.expose(Vector2i(x, y))
 
 func _build_astar() -> void:
 	_astar.region = get_used_rect()

@@ -2,9 +2,9 @@
 
 [ext_resource type="TileSet" uid="uid://bq2yy7xds0ie2" path="res://atlas/tileset.tres" id="1_7geth"]
 [ext_resource type="Script" uid="uid://dbffabqownw0c" path="res://atlas/area.gd" id="2_36h2f"]
-[ext_resource type="Script" uid="uid://ceg3r73mgjdrx" path="res://armory/item.gd" id="3_s5gdo"]
+[ext_resource type="Script" uid="uid://ceg3r73mgjdrx" path="res://armory/item_node.gd" id="3_s5gdo"]
 [ext_resource type="Resource" uid="uid://goglsyhkeiey" path="res://armory/throwing_star.tres" id="4_hj07n"]
-[ext_resource type="Resource" uid="uid://6uorduhc0dc1" path="res://armory/healing_potion.tres" id="5_hj07n"]
+[ext_resource type="Resource" uid="uid://6uorduhc0dc1" path="res://armory/healing_potion.tres" id="5_uuxbq"]
 [ext_resource type="Resource" uid="uid://7wfne8yg1c3r" path="res://armory/gold_chalice.tres" id="6_uuxbq"]
 
 [node name="Area" type="TileMapLayer"]
@@ -30,7 +30,7 @@ metadata/_custom_type_script = "uid://ceg3r73mgjdrx"
 [node name="Item2" type="Area2D" parent="."]
 position = Vector2(436, 12)
 script = ExtResource("3_s5gdo")
-data = ExtResource("5_hj07n")
+data = ExtResource("5_uuxbq")
 metadata/_custom_type_script = "uid://ceg3r73mgjdrx"
 
 [node name="Item3" type="Area2D" parent="."]

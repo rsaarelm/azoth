@@ -9,7 +9,7 @@ func update_icons():
 		remove_child(child)
 		child.queue_free()
 
-	for ability in Player.abilities:
+	for ability in Game.player_abilities():
 		# TODO: Hotbar will need to have a selected set of abilities, not just
 		# a list of everything the player has. Doing the simpler thing for
 		# now though.
@@ -20,7 +20,7 @@ func update_icons():
 		add_child(btn)
 
 func _on_ability_pressed(ability):
-	var player = Player.mob()
+	var player = Game.leader()
 	if not player:
 		return
 	if ability.needs_aiming():

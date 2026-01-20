@@ -36,10 +36,16 @@ func _ready():
 	columns = $ItemGrid.columns
 
 	# Just hardcode the connection to player's stuff
-	backend = Player.inventory
+	backend = Game.state.inventory
 
 	# Populate
 	_update()
+
+func _process(_delta):
+	# If game was loaded, the old link is invalid, update.
+	if backend != Game.state.inventory:
+		backend = Game.state.inventory
+		_update()
 
 func _update():
 	# Adjust offset down if there's empty space at the end.
@@ -68,4 +74,4 @@ func _on_slot_pressed(idx: int):
 	var item_idx = offset + idx
 	if item_idx < backend.items.size():
 		var item = backend.items[item_idx]
-		item.use(Player.mob())
+		item.use(Game.leader())

@@ -1,10 +1,6 @@
 Location type
 	I want this to be a value type that specifies area and position in area, but Godot doesn't have custom value types
-	Workaround is to use arrays, but then we lose methods and typing, just use old-school conventions then
-
-	A Location value is a length 2 Array of a string and a Vector2i
-	The string is a location path
-	Example: ["res://atlas/tower.tscn", Vector2i(12, 34)]
+	Workaround is to use a dictionary, { area = "res://atlas/tower.tscn", cell = Vector2i(12, 32) }
 
 	Location variable names have suffix _location, eg. spawn_location
 

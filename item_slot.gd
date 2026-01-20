@@ -1,7 +1,7 @@
 class_name ItemSlot extends BaseButton
 
 # Show icon and count for items, base graphic for empty slots.
-@export var item: Item:
+var item: Item:
 	set(value):
 		if value != null:
 			$Icon.texture = value.data.icon

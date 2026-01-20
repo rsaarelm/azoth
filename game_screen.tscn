@@ -5,9 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://bi6moe0c5k73r" path="res://inventory_view.tscn" id="3_oymjd"]
 [ext_resource type="Script" uid="uid://c4ijn5mqbm6rr" path="res://console.gd" id="4_aybt7"]
 [ext_resource type="PackedScene" uid="uid://ddlaw6leqlf5v" path="res://equip_view.tscn" id="4_oymjd"]
-[ext_resource type="PackedScene" uid="uid://nw1paqbifkmo" path="res://atlas/sprintmap.tscn" id="5_3vj30"]
 [ext_resource type="FontFile" uid="uid://cktjgvrfii0kn" path="res://common/tinypixel.otf" id="5_oymjd"]
 [ext_resource type="Script" uid="uid://tv8g4wjhqfk0" path="res://hotbar.gd" id="6_o17u5"]
+[ext_resource type="Script" uid="uid://trtvwies5qpd" path="res://area_frame.gd" id="7_oymjd"]
 [ext_resource type="PackedScene" uid="uid://d1tgj56pwbuux" path="res://cursor_sprite.tscn" id="7_u10x5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dx7b0"]
@@ -22,9 +22,9 @@ func _process(_delta: float) -> void:
 	var pc = Game.leader()
 	if pc:
 		text = \"HP: \" + str(pc.health - pc.wounds) + \"/\" + str(pc.health)
-		text += \"\\nSilver: \" + str(Player.cash) + \"$\"
+		text += \"\\nSilver: \" + str(Game.player_cash()) + \"$\"
 		# Add indicator if you have enough cash to level up
-		if Player.cash >= Rules.level_up_cost(Player.level + 1):
+		if Game.player_cash() >= Rules.level_up_cost(Game.player_level() + 1):
 			text += \"*\"
 "
 
@@ -36,7 +36,7 @@ script/source = "extends Button
 func _on_pressed() -> void:
 	if !await Game.confirm(\"Really erase your character?\"):
 		return
-	Player.retire()
+	Game.retire()
 	Game.restart()
 "
 
@@ -136,12 +136,12 @@ split_offset = 328
 dragging_enabled = false
 dragger_visibility = 2
 
-[node name="GameView" type="Control" parent="HSplitContainer/VSplitContainer"]
+[node name="AreaFrame" type="Container" parent="HSplitContainer/VSplitContainer"]
 unique_name_in_owner = true
 clip_contents = true
 layout_mode = 2
-
-[node name="Area" parent="HSplitContainer/VSplitContainer/GameView" instance=ExtResource("5_3vj30")]
+script = ExtResource("7_oymjd")
+metadata/_custom_type_script = "uid://trtvwies5qpd"
 
 [node name="BottomPanel" type="Panel" parent="HSplitContainer/VSplitContainer"]
 layout_mode = 2

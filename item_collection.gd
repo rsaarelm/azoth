@@ -1,14 +1,30 @@
-class_name ItemCollection extends Node
+class_name ItemCollection extends RefCounted
 
-var items: Array[Item]
+@export_storage var items: Array[Item]:
+	set(value):
+		# Unbind old items.
+		for i in items:
+			i.destroyed.disconnect(_on_item_destroyed)
+			i.changed.disconnect(_on_item_changed)
+
+		items = value
+
+		# Bind new items.
+		for i in items:
+			_bind_item(i)
+
+		contents_changed.emit()
 
 signal contents_changed
 
 func _ready():
-	# Items can delete themselves when used, detect that here.
-	child_exiting_tree.connect(_on_child_exiting_tree)
+	# If collection starts out with contents, do initial bindings.
+	for i in items:
+		_bind_item(i)
+	if items.size():
+		contents_changed.emit()
 
-func take(item):
+func insert(item: Item):
 	if item.data.is_stacking:
 		# Try to merge into an existing stack.
 		for i in items.size():
@@ -17,7 +33,7 @@ func take(item):
 				if space >= item.count:
 					# Fully merged into an existing pile, exit early.
 					items[i].count += item.count
-					item.queue_free()
+					item.die()
 					contents_changed.emit()
 					return
 				else:
@@ -27,62 +43,28 @@ func take(item):
 	# If we're here, the item was not fully merged into an existing stack,
 	# and we need to add a new item.
 
-	# Item moves under container, stops being a visible sprite in the world.
-	item.reparent(self)
-	item.visible = false
-
 	items.append(item)
-	item.state_changed.connect(_on_item_state_changed)
+	_bind_item(item)
+
 	contents_changed.emit()
 
-## Throw an item to a position back in the world.
-func throw(index: int, cell: Vector2i, amount=1):
-	var item = items[index].split(amount)
-	if !is_instance_valid(items[index]):
-		# It was consumed by the split
-		_remove_item_at(index)
-	contents_changed.emit()
-
-	item.drop(cell)
-
-## Consume items without sending them anywhere.
-func destroy(index: int, amount=1):
-	if amount >= items[index].count:
-		items[index].queue_free()
-		_remove_item_at(index)
-	else:
-		items[index].count -= amount
-	contents_changed.emit()
-
-## Load an ItemCollection from a JSON array.
-static func load(file: Array) -> ItemCollection:
-	var collection = ItemCollection.new()
-	for entry in file:
-		collection.items.append(Item.new(ResourceLoader.load(entry.item), entry.count))
-	return collection
-
-## Save an ItemCollection to a JSON array.
-func save() -> Array:
-	var file: Array = []
-	for item in items:
-		file.append({
-			"item": item.data.resource_path,
-			"count": item.count,
-		})
-	return file
+func _bind_item(item):
+	item.destroyed.connect(_on_item_destroyed.bind(item))
+	item.changed.connect(_on_item_changed.bind(item))
 
 func _remove_item_at(index: int):
-	items[index].state_changed.disconnect(_on_item_state_changed)
+	items[index].changed.disconnect(_on_item_changed)
+	items[index].destroyed.disconnect(_on_item_destroyed)
 	items.remove_at(index)
 	contents_changed.emit()
 
-func _on_child_exiting_tree(node: Node):
-	var idx = items.find(node)
+func _on_item_destroyed(item: Item):
+	var idx = items.find(item)
 	if idx == -1:
-		print("ItemCollection: exiting child " + str(node) + " not found in collection")
+		print("ItemCollection: destroyed item " + str(item) + " not found in collection")
 		return
 
 	_remove_item_at(idx)
 
-func _on_item_state_changed():
+func _on_item_changed(_item: Item):
 	contents_changed.emit()

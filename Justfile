@@ -57,4 +57,4 @@ publish: build-wasm
     rm -rf $DIR/
 
 remove-save:
-    rm ~/.local/share/godot/app_userdata/Azoth/savegame.json
+    rm ~/.local/share/godot/app_userdata/Azoth/save.json

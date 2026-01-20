@@ -250,8 +250,8 @@ func step(direction: Vector2i) -> bool:
 					# complex leveling up, spell attunement etc.
 
 					# Eat cash and do simple level ups as far as you can.
-					while Player.level_up():
-						Game.msg("Gained level " + str(Player.level))
+					while Game.level_up():
+						Game.msg("Gained a level!")
 					Game.player_rests(pos)
 					return true
 				else:
@@ -325,9 +325,9 @@ func take_damage(damage: int) -> void:
 		if is_enemy():
 			# Drop cash.
 			var payout = max(1, int(strength * randf_range(0.5, 2.0)))
-			Item.make_coins(payout).drop(cell)
+			ItemNode.new(Item.make_coins(payout)).drop(cell)
 
-			Player.on_enemy_killed(self)
+			Game.on_enemy_killed(self)
 
 		# Add more death logic as needed
 
@@ -377,7 +377,7 @@ func _make_floating_text(text: String) -> FloatingText:
 	# XXX: Hardcoded scene and screen component names
 	var floating_text_scene = preload("res://floating_text.tscn")
 	var node = floating_text_scene.instantiate() as FloatingText
-	get_tree().current_scene.find_child("GameView", true, false).add_child(node)
+	get_tree().current_scene.find_child("AreaFrame", true, false).add_child(node)
 	node.text = text
 	return node
 
@@ -467,18 +467,18 @@ func _visible_enemies(detection_range: int) -> Array[Mob]:
 #endregion
 
 #region Items
-func pick_up(item: Item) -> void:
+func pick_up(item: ItemNode) -> void:
 	# If it's cash, add count to stat and junk the object.
 	if item.data.kind == ItemData.Kind.CASH:
 		say("\"$" + str(item.count)+"\"")
-		Player.on_cash_picked_up(self, item)
+		Game.on_cash_picked_up(self, item)
 		item.queue_free()
 		return
 
 	# TODO A/an distinction in articles
-	say("\"A" + item.data.name + ".\"")
-	Player.on_item_picked_up(self, item)
-	Player.inventory.take(item)
+	say("\"A " + item.data.name + ".\"")
+	Game.on_item_picked_up(self, item)
+	Game.state.inventory.insert(item.take())
 #endregion
 
 #region Animation

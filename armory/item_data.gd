@@ -1,7 +1,7 @@
 class_name ItemData
 extends Resource
 
-## The abstract Item resource.
+## The abstract item resource.
 
 enum Kind {
 	## Item can be used for some effect.

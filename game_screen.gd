@@ -2,8 +2,10 @@ extends Node
 ## Top UI object for game
 
 func _ready():
-	var player = Player.build()
-	Game.load_area(Player.spawn_area, Player.spawn_pos, player)
+	if Save.exists():
+		var loaded = Save.read()
+		Game.state = loaded
+	Game.load_area(Game.state.spawn_location.area, Game.state.spawn_location.cell)
 
 ## Ability you're currently aiming.
 var aim_ability: Ability = null:
