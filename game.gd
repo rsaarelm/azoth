@@ -111,6 +111,7 @@ func player_died():
 
 	# Respawn enemies when you die.
 	respawn_soft_kills()
+	Save.write(state)
 
 	await get_tree().create_timer(0.4).timeout
 	get_tree().change_scene_to_file("res://you_died.tscn")
@@ -140,8 +141,10 @@ func retire():
 #endregion
 
 #region Area management
-func get_area_state() -> AreaState:
+func get_area_state(a: Area = null) -> AreaState:
 	var area_path = _area.scene_file_path
+	if a:
+		area_path = a.scene_file_path
 	if not state.areas.has(area_path):
 		state.areas[area_path] = AreaState.new()
 	return state.areas[area_path]
@@ -183,7 +186,7 @@ func on_area_entered(a: Area):
 
 func on_area_exited(a: Area):
 	# Save fog of war memory for the area.
-	var area_state = get_area_state()
+	var area_state = get_area_state(a)
 	area_state.map_memory = a.dump_fog()
 
 #endregion
