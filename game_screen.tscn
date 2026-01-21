@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://ddlaw6leqlf5v" path="res://equip_view.tscn" id="4_oymjd"]
 [ext_resource type="FontFile" uid="uid://cktjgvrfii0kn" path="res://common/tinypixel.otf" id="5_oymjd"]
 [ext_resource type="Script" uid="uid://tv8g4wjhqfk0" path="res://hotbar.gd" id="6_o17u5"]
-[ext_resource type="Script" uid="uid://trtvwies5qpd" path="res://area_frame.gd" id="7_oymjd"]
+[ext_resource type="Script" uid="uid://trtvwies5qpd" path="res://atlas/area_frame.gd" id="7_oymjd"]
 [ext_resource type="PackedScene" uid="uid://d1tgj56pwbuux" path="res://cursor_sprite.tscn" id="7_u10x5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dx7b0"]
