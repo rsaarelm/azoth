@@ -201,10 +201,13 @@ static func deserialize(data: Variant) -> Variant:
 			if "__script_path__" in data:
 				# Magic path property found, it's an object.
 
-				# TODO: Error handling when script can't be loaded.
+				# TODO: More robust error handling with various failures.
 
 				# Instantiate an object using the script resource.
 				var script: Script = load(data.__script_path__)
+				if not script:
+					push_error("No object script " + data.__script_path__ + " found.")
+					return null
 				var obj = script.new()
 
 				for key in data.keys():
