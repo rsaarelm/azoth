@@ -18,6 +18,30 @@ func _init():
 		for x in range(-1, Area.MAX_WIDTH + 1):
 			set_cell(Vector2i(x, y), 0, COVERED)
 
+## Initialize fog from byte array returned by a `to_bytes` call.
+static func from_bytes(data: PackedByteArray) -> Fog:
+	assert(data.size() == ((Area.MAX_WIDTH + 2) * (Area.MAX_HEIGHT + 2) + 7) / 8)
+	var fog = Fog.new()
+	for x in range(-1, Area.MAX_WIDTH + 1):
+		for y in range(-1, Area.MAX_HEIGHT + 1):
+			var i = x + y * (Area.MAX_WIDTH + 2)
+			var seen = (data[i/8] & (1 << (i % 8))) != 0
+			if seen:
+				fog.expose(Vector2i(x, y))
+	return fog
+
+## Return state of the fog packed into an array.
+func to_bytes() -> PackedByteArray:
+	# Pack bits into byte array, 8 bits per byte.
+	var ret = PackedByteArray()
+	ret.resize(((Area.MAX_WIDTH + 2) * (Area.MAX_HEIGHT + 2) + 7) / 8)
+	for x in range(-1, Area.MAX_WIDTH + 1):
+		for y in range(-1, Area.MAX_HEIGHT + 1):
+			var i = x + y * (Area.MAX_WIDTH + 2)
+			if is_seen(Vector2i(x, y)):
+				ret[i/8] |= 1 << (i % 8)
+	return ret
+
 ## Make given cell visible.
 func expose(cell: Vector2i):
 	# This function makes sure the _inner bitgrid and the tilemap stay in sync.

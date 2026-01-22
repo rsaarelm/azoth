@@ -278,26 +278,11 @@ func get_location(cell: Vector2i) -> Dictionary:
 
 ## Return state of the fog packed into an array.
 func dump_fog() -> PackedByteArray:
-	# Pack bits into byte array, 8 bits per byte.
-	var ret = PackedByteArray()
-	ret.resize(((MAX_WIDTH + 2) * (MAX_HEIGHT + 2) + 7) / 8)
-	for x in range(-1, MAX_WIDTH + 1):
-		for y in range(-1, MAX_HEIGHT + 1):
-			var i = x + y * (MAX_WIDTH + 2)
-			if fog.is_seen(Vector2i(x, y)):
-				ret[i/8] |= 1 << (i % 8)
-	return ret
+	return fog.to_bytes()
 
 ## Reset fog to match given packed byte array.
 func pump_fog(data: PackedByteArray):
-	assert(data.size() == ((MAX_WIDTH + 2) * (MAX_HEIGHT + 2) + 7) / 8)
-	fog = Fog.new()
-	for x in range(-1, MAX_WIDTH + 1):
-		for y in range(-1, MAX_HEIGHT + 1):
-			var i = x + y * (MAX_WIDTH + 2)
-			var seen = (data[i/8] & (1 << (i % 8))) != 0
-			if seen:
-				fog.expose(Vector2i(x, y))
+	fog = Fog.from_bytes(data)
 
 func _build_astar() -> void:
 	_astar.region = get_used_rect()
