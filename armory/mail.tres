@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3 uid="uid://cl5r4byu3n5ra"]
+
+[ext_resource type="Script" uid="uid://cvp6gdct0efso" path="res://armory/item_data.gd" id="1_g072d"]
+[ext_resource type="Texture2D" uid="uid://cfjcxjfudgdwx" path="res://armory/items.png" id="1_v0e3c"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kswcj"]
+atlas = ExtResource("1_v0e3c")
+region = Rect2(24, 8, 8, 8)
+
+[resource]
+script = ExtResource("1_g072d")
+name = "mail"
+icon = SubResource("AtlasTexture_kswcj")
+kind = 3
+metadata/_custom_type_script = "uid://cvp6gdct0efso"

@@ -12,6 +12,18 @@ enum Kind {
 
 	## Item is a cash pile, will go to your wallet instead of staying in inventory.
 	CASH,
+
+	## Equippable in armor slot.
+	ARMOR,
+
+	## Equippable in helmet slot.
+	HELMET,
+
+	## Equippable as weapon.
+	WEAPON,
+
+	## Equippable as ring.
+	RING,
 }
 
 const MAX_STACK := 99
@@ -29,3 +41,18 @@ const MAX_STACK := 99
 
 ## Effect of a consumable item.
 @export var effect: Ability
+
+## How powerful the item is as a weapon/armor
+@export var power: int
+
+## Minimum might needed to equip.
+@export var might_min: int
+
+## Minimum grace needed to equip.
+@export var grace_min: int
+
+## Minimum faith needed to equip.
+@export var faith_min: int
+
+## Minimum cunning needed to equip.
+@export var cunning_min: int
