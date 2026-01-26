@@ -16,6 +16,7 @@ var aim_ability: Ability = null:
 			%CursorSprite.set_icon(null)
 		aim_ability = value
 
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var area = Game.area()
@@ -67,12 +68,14 @@ func _input(event: InputEvent) -> void:
 						if Game.dist(pos, mob) <= Mob.ENEMY_SIGHT_RANGE and area.can_see(mob.cell, Vector2i(x, y)):
 							area.ping(pos)
 
+
 func msg(text: String) -> void:
 	%Console.msg(text)
 
 # These need to be member variables so we can modify them from the listener lambdas.
 var _confirm_complete := false
 var _confirm_result = null
+
 
 func confirm(message: String) -> bool:
 	var dialog = %ConfirmationPopup
@@ -82,9 +85,13 @@ func confirm(message: String) -> bool:
 	dialog.visible = true
 
 	dialog.canceled.connect(
-		func (): _confirm_result = false; _confirm_complete = true)
+		func(): _confirm_result = false
+			_confirm_complete = true
+	)
 	dialog.confirmed.connect(
-		func (): _confirm_result = true; _confirm_complete = true)
+		func(): _confirm_result = true
+			_confirm_complete = true
+	)
 
 	while !_confirm_complete:
 		# Busy-wait until we get an answer.

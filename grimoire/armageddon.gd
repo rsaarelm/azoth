@@ -1,7 +1,9 @@
 ## Kill everything ability
-class_name Armageddon extends Ability
+class_name Armageddon
+extends Ability
 
 @export var power: int = 9999
+
 
 func use(caster: Mob, _target: Vector2i) -> void:
 	# Deal damage to all mobs that are not the caster.

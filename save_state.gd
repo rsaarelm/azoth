@@ -1,5 +1,5 @@
-class_name SaveState extends RefCounted
-
+class_name SaveState
+extends RefCounted
 ## Class containing all the data that goes in a save file
 
 @export_storage var player_stats := Stats.new()
@@ -17,4 +17,4 @@ class_name SaveState extends RefCounted
 # TODO: Equipment blocks, per character thing
 
 ## Dictionary of area resource path to AreaState
-@export_storage var areas := {}
+@export_storage var areas := { }

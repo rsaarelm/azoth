@@ -1,4 +1,5 @@
-class_name Area extends TileMapLayer
+class_name Area
+extends TileMapLayer
 ## Custom terrain class that provides pathfinding and visibility checks.
 ## Use as root for area scenes.
 
@@ -89,6 +90,7 @@ var fog: Fog:
 # two mobs updating on the same frame and trying to move to the same target
 # cell.
 
+
 func _ready():
 	# Configure for 4-way movement.
 	_astar.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
@@ -99,8 +101,9 @@ func _ready():
 	# Schedule a pathfinding update whenever the tiles change.
 	# Do not call _build_astar() directly here since there can be many change
 	# events per frame.
-	self.changed.connect(func() -> void:
-		_astar_is_dirty = true
+	self.changed.connect(
+		func() -> void:
+			_astar_is_dirty = true
 	)
 	# NB. Pathfinding doesn't work immediately at the init frame, you need to
 	# wait for the next frame after _astar.update() was called before paths
@@ -139,14 +142,17 @@ func _ready():
 	# Create fog of war
 	fog = Fog.new()
 
+
 func _process(_delta: float) -> void:
 	if _astar_is_dirty:
 		_build_astar()
 		_astar_is_dirty = false
 
+
 ## Get path from start to end cell coordinates.
 func path_to(start: Vector2i, end: Vector2i) -> Array[Vector2i]:
 	return _astar.get_id_path(start, end)
+
 
 ## Return whether terrain can be walked at given cell coordinates.
 ## Does not consider mobs that might block the path.
@@ -165,11 +171,13 @@ func is_passable(cell: Vector2i) -> bool:
 			return false
 	return true
 
+
 func is_opaque(cell: Vector2i) -> bool:
 	var data = get_cell_tile_data(cell)
 	if !data:
 		return false
 	return data.get_collision_polygons_count(SIGHT_LAYER) > 0
+
 
 ## Return the special kind value of terrain at given cell.
 func kind(cell: Vector2i) -> Kind:
@@ -181,6 +189,7 @@ func kind(cell: Vector2i) -> Kind:
 		return Kind.REGULAR
 	return kind_value as Kind
 
+
 ## Return cell the mouse is currently over.
 func mouse_cell():
 	var cell = local_to_map(get_local_mouse_position())
@@ -188,6 +197,7 @@ func mouse_cell():
 	if !get_cell_tile_data(cell):
 		return null
 	return cell
+
 
 ## Return entities in a given cell.
 func entities_at(cell: Vector2i) -> Array:
@@ -201,21 +211,25 @@ func entities_at(cell: Vector2i) -> Array:
 			result.append(child)
 	return result
 
+
 ## Clear all entities from cell, bypasses game logic on damage, death etc. Use
 ## this to cull spawned items on a newly instantiated area.
 func clear_cell(cell: Vector2i):
 	for e in entities_at(cell):
 		e.queue_free()
 
+
 func clear_mobs(cell: Vector2i):
 	for e in entities_at(cell):
 		if e is Mob:
 			e.queue_free()
 
+
 func clear_items(cell: Vector2i):
 	for e in entities_at(cell):
 		if e is ItemNode:
 			e.queue_free()
+
 
 ## Return mob at given cell, or null if none.
 func mob_at(cell: Vector2i):
@@ -225,6 +239,7 @@ func mob_at(cell: Vector2i):
 			return e
 	return null
 
+
 ## Return item at given cell, or null if none.
 func item_at(cell: Vector2i):
 	var entities = entities_at(cell)
@@ -233,11 +248,13 @@ func item_at(cell: Vector2i):
 			return e
 	return null
 
+
 func make_altar_lit(pos: Vector2i):
 	if kind(pos) == Kind.ALTAR:
 		set_cell(pos, 1, ACTIVE_ALTAR)
 
 # Make more raycast methods as needed, raycast_projectile etc.
+
 
 ## Do a raycast up until you collide with something that blocks vision.
 ## Return null if nothing was hit, otherwise return the collision position.
@@ -256,8 +273,10 @@ func raycast_sight(from: Vector2i, to: Vector2i):
 		return local_to_map(to_local(p))
 	return null
 
+
 func can_see(from: Vector2i, to: Vector2i) -> bool:
 	return raycast_sight(from, to) == null
+
 
 ## Display a temporary animation drawing attention to the given cell.
 func ping(at: Vector2i):
@@ -265,24 +284,32 @@ func ping(at: Vector2i):
 	fx.position = map_to_local(at)
 	self.add_child(fx)
 
+
 ## Clear fog of war up to radius from center using field of view
 ## algorithm.
 func expose_fov(center: Vector2i, radius: int):
-	fog.expose_fov(center, radius, func(cell: Vector2i) -> bool:
-		return !is_opaque(cell)
+	fog.expose_fov(
+		center,
+		radius,
+		func(cell: Vector2i) -> bool:
+			return !is_opaque(cell)
 	)
+
 
 ## Get the location type (encoding area ID) for the given cell on this area.
 func get_location(cell: Vector2i) -> Dictionary:
 	return { area = scene_file_path, cell = cell }
 
+
 ## Return state of the fog packed into an array.
 func dump_fog() -> PackedByteArray:
 	return fog.to_bytes()
 
+
 ## Reset fog to match given packed byte array.
 func pump_fog(data: PackedByteArray):
 	fog = Fog.from_bytes(data)
+
 
 func _build_astar() -> void:
 	_astar.region = get_used_rect()
@@ -292,6 +319,7 @@ func _build_astar() -> void:
 	for cell in get_used_cells():
 		_astar.set_point_solid(cell, !is_passable(cell))
 	_astar.update()
+
 
 func _on_child_entered_tree(node: Node) -> void:
 	# Make sure newly generated mobs are added to the y-sorting Mobs node

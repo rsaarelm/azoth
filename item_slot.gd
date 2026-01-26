@@ -1,4 +1,5 @@
-class_name ItemSlot extends BaseButton
+class_name ItemSlot
+extends BaseButton
 
 # Show icon and count for items, base graphic for empty slots.
 var item: Item:

@@ -1,5 +1,5 @@
-class_name Save extends Object
-
+class_name Save
+extends Object
 ## The magical automatic save/load system.
 ##
 ## This module uses reflection to try to save and load objects automatically.
@@ -21,12 +21,15 @@ class_name Save extends Object
 
 const SAVE_PATH := "user://save.json"
 
+
 static func exists() -> bool:
 	return FileAccess.file_exists(SAVE_PATH)
+
 
 static func delete():
 	if exists():
 		DirAccess.remove_absolute(SAVE_PATH)
+
 
 ## Write object into save file.
 static func write(obj):
@@ -35,6 +38,7 @@ static func write(obj):
 
 	var save_file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	save_file.store_line(json)
+
 
 ## Read save contents into the input object.
 static func read() -> Variant:
@@ -45,6 +49,7 @@ static func read() -> Variant:
 	if data == null:
 		push_error("Error loading save")
 	return deserialize(data)
+
 
 static func _load_json(path: String) -> Variant:
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -63,6 +68,7 @@ static func _load_json(path: String) -> Variant:
 		return null
 
 	return json.data
+
 
 static func serialize(obj: Variant) -> Variant:
 	match typeof(obj):
@@ -103,7 +109,7 @@ static func serialize(obj: Variant) -> Variant:
 				output_array.append(serialize(element))
 			return output_array
 		TYPE_DICTIONARY:
-			var output_dict = {}
+			var output_dict = { }
 			for key in obj.keys():
 				output_dict[serialize(key)] = serialize(obj[key])
 			return output_dict
@@ -140,7 +146,7 @@ static func serialize(obj: Variant) -> Variant:
 
 	var result = {
 		# Write the magic object identifier field
-		__script_path__ = obj.get_script().resource_path
+		__script_path__ = obj.get_script().resource_path,
 	}
 
 	# XXX: Find the index past the 'script' property. This is assuming that the
@@ -165,6 +171,7 @@ static func serialize(obj: Variant) -> Variant:
 		result[name] = serialize(value)
 
 	return result
+
 
 static func deserialize(data: Variant) -> Variant:
 	match typeof(data):
@@ -227,7 +234,7 @@ static func deserialize(data: Variant) -> Variant:
 				return obj
 			else:
 				# Otherwise assume it's a regular dictionary.
-				var output_dict = {}
+				var output_dict = { }
 				for key in data.keys():
 					output_dict[deserialize(key)] = deserialize(data[key])
 				return output_dict

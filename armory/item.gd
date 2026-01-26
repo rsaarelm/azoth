@@ -1,5 +1,5 @@
-class_name Item extends RefCounted
-
+class_name Item
+extends RefCounted
 ## Individual item instances with runtime state.
 
 @export_storage var data: ItemData
@@ -19,34 +19,41 @@ signal destroyed
 ## Signal that a property of the item has changed.
 signal changed
 
-func _init(_data=null, _count=1):
+
+func _init(_data = null, _count = 1):
 	self.data = _data
 	# XXX: Should recoverable error handling be used for constructor validation?
 	assert(_count == 1 || (_data and _data.is_stacking))
 	self.count = _count
 
+
 func duplicate() -> Item:
 	return Item.new(data, count)
+
 
 # Split off part of stack.
 func split(amount: int) -> ItemNode:
 	var clone = duplicate()
 	if amount >= count:
-		amount = count  # Don't make more than we have.
+		amount = count # Don't make more than we have.
 		die()
 	assert(amount == 1 || clone.data.is_stacking)
 	assert(amount <= ItemData.MAX_STACK)
 	clone.count = amount
 	return clone
 
+
 static var _coin_res = ResourceLoader.load("res://armory/silver_coin.tres")
+
 
 ## Construct a stack of coins.
 static func make_coins(amount: int) -> Item:
 	return Item.new(_coin_res, amount)
 
+
 func die():
 	destroyed.emit()
+
 
 func stack_limit() -> int:
 	if !self.data.is_stacking:
@@ -57,6 +64,7 @@ func stack_limit() -> int:
 	else:
 		return ItemData.MAX_STACK
 
+
 ## Decrement the item count, remove the item if it reaches zero.
 func consume_one():
 	if count < 2:
@@ -64,10 +72,12 @@ func consume_one():
 	else:
 		count -= 1
 
+
 ## Return whether two items can stack in principle.
 ## Does consider stack size limits.
 func stacks_with(other: Item) -> bool:
 	return self.data.is_stacking and self.data == other.data
+
 
 func use(mob: Mob):
 	if data.kind == ItemData.Kind.CONSUMABLE:

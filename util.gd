@@ -11,9 +11,11 @@ static func unwrap_cell(entity) -> Vector2i:
 		assert(false, "unwrap_pos: Can't handle entity of type %s" % [typeof(entity)])
 	return Vector2i.ZERO
 
+
 ## Get probability value for deciban odds.
 static func odds_prob(a: float) -> float:
 	return 1.0 - 1.0 / (1.0 + 10.0 ** (a / 10.0))
+
 
 ## Randomly return true with the given deciban odds.
 static func odds(a: float) -> bool:

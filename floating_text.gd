@@ -1,4 +1,5 @@
-class_name FloatingText extends Label
+class_name FloatingText
+extends Label
 
 const LIFETIME_PER_LETTER_S := 0.05
 const DRIFTING_LIFETIME_S := 0.5
@@ -18,6 +19,7 @@ var target_node: Node2D:
 var game_screen: Control
 
 var _lifetime := 0.0
+
 
 func _process(delta: float) -> void:
 	_lifetime += delta
@@ -39,6 +41,7 @@ func _process(delta: float) -> void:
 		modulate.a = alpha
 	elif target_node:
 		snap_to(target_node)
+
 
 func snap_to(target):
 	# Snap bottom-center to the target node's position.

@@ -9,5 +9,6 @@ func msg(txt: String) -> void:
 		lines.remove_at(0)
 		self.text = "\n".join(lines)
 
+
 func clear_msgs() -> void:
 	self.text = ""

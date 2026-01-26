@@ -1,5 +1,4 @@
 extends Node
-
 ## Global access game singleton.
 
 ## Cached current area.
@@ -22,6 +21,7 @@ var is_paused := true
 ## Game._process and nowhere else to control when the other _process calls see
 ## the game as running.
 var pause_requested = null
+
 
 func _process(_delta: float) -> void:
 	if !is_paused:
@@ -47,9 +47,11 @@ func _process(_delta: float) -> void:
 			is_paused = false
 			pause_requested = null
 
+
 ## Start running logic after player turn
 func start_running():
 	pause_requested = false
+
 
 ## Start running logic after player turn
 func stop_running():
@@ -66,6 +68,7 @@ func restart():
 	# Restarting is baked into GameScreen's initialization routine, so we just
 	# reload the scene here.
 	get_tree().change_scene_to_file("res://game_screen.tscn")
+
 
 func player_rests(altar_pos: Vector2i):
 	var player = leader()
@@ -94,6 +97,7 @@ func player_rests(altar_pos: Vector2i):
 
 	restart()
 
+
 func player_died():
 	var player = leader()
 
@@ -118,6 +122,7 @@ func player_died():
 	await get_tree().create_timer(1.0).timeout
 	restart()
 
+
 ## Load a new area and place the player in the given pos.
 ##
 ## If player is unspecified, pull out the existing player.
@@ -125,14 +130,17 @@ func load_area(scene_path: String, player_pos: Vector2i, player: Mob = null):
 	var frame = get_tree().current_scene.find_child("AreaFrame", true, false)
 	frame.load_area(scene_path, player_pos, player)
 
+
 func respawn_soft_kills():
 	for a in state.areas:
 		state.areas[a].soft_kills.clear()
+
 
 ## Make all soft deletions permanent, they'll stay dead even when you rest.
 func make_soft_kills_permanent():
 	for a in state.areas:
 		state.areas[a].finalize_soft_kills()
+
 
 func retire():
 	Save.delete()
@@ -148,6 +156,7 @@ func get_area_state(a: Area = null) -> AreaState:
 	if not state.areas.has(area_path):
 		state.areas[area_path] = AreaState.new()
 	return state.areas[area_path]
+
 
 ## Apply changes made previously during the game to the area being entered.
 func on_area_entered(a: Area):
@@ -170,19 +179,23 @@ func on_area_entered(a: Area):
 
 	var area_path = _area.scene_file_path
 	if state.corpse_cash_location and \
-			area_path == state.corpse_cash_location.area:
+	area_path == state.corpse_cash_location.area:
 		var pos = state.corpse_cash_location.cell
-		var item = ItemNode.new(Item.make_coins(
-			state.corpse_cash_amount))
+		var item = ItemNode.new(
+			Item.make_coins(
+				state.corpse_cash_amount,
+			),
+		)
 		item.drop(pos)
 
 	# Light up the active altar.
 	# If current altar is on this area and there's a valid altar tile in the position,
 	# turn the tile into ACTIVE_ALTAR.
 	if state.last_altar_location and \
-			state.last_altar_location.area == area_path:
+	state.last_altar_location.area == area_path:
 		var altar_pos = state.last_altar_location.cell
 		a.make_altar_lit(altar_pos)
+
 
 func on_area_exited(a: Area):
 	# Save fog of war memory for the area.
@@ -202,6 +215,7 @@ func leader() -> Mob:
 	else:
 		return null
 
+
 func build_player() -> Mob:
 	var player = preload("res://bestiary/player.tscn").instantiate()
 
@@ -215,18 +229,23 @@ func build_player() -> Mob:
 
 	return player
 
+
 func area() -> Area:
 	return _area
+
 
 func add_cash(amount: int) -> void:
 	assert(amount >= 0)
 	state.cash += amount
 
+
 func player_cash() -> int:
 	return state.cash
 
+
 func player_level() -> int:
 	return state.player_stats.level
+
 
 func level_up() -> bool:
 	var cost = Rules.level_up_cost(player_level() + 1)
@@ -236,6 +255,7 @@ func level_up() -> bool:
 		state.player_stats.might += 1
 		return true
 	return false
+
 
 func player_abilities() -> Array:
 	# TODO An actual system for tracking abilities, using a hardcoded list for
@@ -258,10 +278,12 @@ func on_enemy_killed(enemy: Mob):
 		# Temporarily delete a normal enemy.
 		area_state.soft_kills[enemy.spawn_origin] = enemy.display_name
 
+
 func on_item_picked_up(mob: Mob, item: ItemNode):
-	assert(mob.is_player())  # Only player is allowed to pick up items.
+	assert(mob.is_player()) # Only player is allowed to pick up items.
 	# Once you grab it, it's gone for good.
 	get_area_state().loots[item.spawn_origin] = item.display_name
+
 
 func on_cash_picked_up(_mob: Mob, item: ItemNode):
 	state.cash += item.count
@@ -278,6 +300,7 @@ func on_cash_picked_up(_mob: Mob, item: ItemNode):
 #region UI
 func msg(text: String) -> void:
 	get_tree().current_scene.msg(text)
+
 
 func confirm(message: String) -> bool:
 	return await get_tree().current_scene.confirm(message)

@@ -1,4 +1,5 @@
-class_name ItemCollection extends RefCounted
+class_name ItemCollection
+extends RefCounted
 
 @export_storage var items: Array[Item]:
 	set(value):
@@ -17,12 +18,14 @@ class_name ItemCollection extends RefCounted
 
 signal contents_changed
 
+
 func _ready():
 	# If collection starts out with contents, do initial bindings.
 	for i in items:
 		_bind_item(i)
 	if items.size():
 		contents_changed.emit()
+
 
 func insert(item: Item):
 	if item.data.is_stacking:
@@ -48,15 +51,18 @@ func insert(item: Item):
 
 	contents_changed.emit()
 
+
 func _bind_item(item):
 	item.destroyed.connect(_on_item_destroyed.bind(item))
 	item.changed.connect(_on_item_changed.bind(item))
+
 
 func _remove_item_at(index: int):
 	items[index].changed.disconnect(_on_item_changed)
 	items[index].destroyed.disconnect(_on_item_destroyed)
 	items.remove_at(index)
 	contents_changed.emit()
+
 
 func _on_item_destroyed(item: Item):
 	var idx = items.find(item)
@@ -65,6 +71,7 @@ func _on_item_destroyed(item: Item):
 		return
 
 	_remove_item_at(idx)
+
 
 func _on_item_changed(_item: Item):
 	contents_changed.emit()

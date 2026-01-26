@@ -1,4 +1,5 @@
-class_name Mob extends StaticBody2D
+class_name Mob
+extends StaticBody2D
 
 enum CreatureTrait {
 	## Walks upright, can open doors and use items.
@@ -64,7 +65,8 @@ var cell: Vector2i:
 		# Make sure to preserve the local offset.
 		var offset = Vector2i(
 			posmod(position.x as int, Area.CELL_SIZE),
-			posmod(position.y as int, Area.CELL_SIZE))
+			posmod(position.y as int, Area.CELL_SIZE),
+		)
 		position = Vector2(value * Area.CELL_SIZE + offset)
 
 var _goal := Goal.NONE
@@ -107,6 +109,7 @@ func _enter_tree():
 	spawn_origin = cell
 
 	_post_step()
+
 
 func _process(_delta: float) -> void:
 	_animate()
@@ -174,6 +177,7 @@ func _process(_delta: float) -> void:
 					# Goal is done or failed.
 					_clear_goal()
 
+
 ## Take a single step in direction.
 func step(direction: Vector2i) -> bool:
 	assert(direction.length() == 1, "Direction must be a unit vector.")
@@ -185,7 +189,8 @@ func step(direction: Vector2i) -> bool:
 
 		var kind = area.kind(pos)
 		match kind:
-			Area.Kind.REGULAR: pass
+			Area.Kind.REGULAR:
+				pass
 			Area.Kind.EXIT:
 				# Area transition!
 
@@ -241,7 +246,6 @@ func step(direction: Vector2i) -> bool:
 					return true
 				else:
 					return false
-
 			Area.Kind.ALTAR:
 				# Pray at altar, you heal but the enemies respawn.
 
@@ -268,6 +272,7 @@ func step(direction: Vector2i) -> bool:
 
 	return false
 
+
 # Logic to call every time a mob steps on new cell.
 func _post_step():
 	if is_player():
@@ -279,11 +284,13 @@ func _post_step():
 		area.expose_fov(cell, PLAYER_SIGHT_RANGE)
 	pass
 
+
 ## Attack enemies if there are any in the way. Return if action succeeded.
 func bump(direction: Vector2) -> bool:
 	if attack(direction):
 		return true
 	return step(direction)
+
 
 func can_move(direction: Vector2i) -> bool:
 	var pos = cell + direction
@@ -306,6 +313,7 @@ func attack(vec: Vector2i) -> bool:
 		# TODO: Some animation when the mob is missed, mob jumps to the side or sth
 		return true
 	return false
+
 
 func take_damage(damage: int) -> void:
 	if is_dead():
@@ -331,16 +339,18 @@ func take_damage(damage: int) -> void:
 
 		# Add more death logic as needed
 
+
 func has_trait(_trait: CreatureTrait) -> bool:
 	return traits.has(_trait)
+
 
 ## Check if mob is next to altar.
 func is_next_to_altar() -> bool:
 	var pos = cell
 	return area.kind(pos + Vector2i(1, 0)) == Area.Kind.ALTAR or \
-		area.kind(pos + Vector2i(-1, 0)) == Area.Kind.ALTAR or \
-		area.kind(pos + Vector2i(0, 1)) == Area.Kind.ALTAR or \
-		area.kind(pos + Vector2i(0, -1)) == Area.Kind.ALTAR
+	area.kind(pos + Vector2i(-1, 0)) == Area.Kind.ALTAR or \
+	area.kind(pos + Vector2i(0, 1)) == Area.Kind.ALTAR or \
+	area.kind(pos + Vector2i(0, -1)) == Area.Kind.ALTAR
 
 #endregion
 
@@ -351,27 +361,34 @@ func is_next_to_altar() -> bool:
 func is_player() -> bool:
 	return self == Game.leader()
 
+
 func is_enemy() -> bool:
 	return is_in_group("enemy")
+
 
 func has_goal() -> bool:
 	return _goal != Goal.NONE
 
+
 func is_dead() -> bool:
 	return wounds >= health
+
 
 func cmd_goto(target):
 	_goal = Goal.GOTO
 	_goal_target = target
 
+
 func say(text):
 	var node = _make_floating_text(text)
 	node.target_node = self
+
 
 func say_drift(text):
 	var node = _make_floating_text(text)
 	node.snap_to(self)
 	node.drifts_away = true
+
 
 func _make_floating_text(text: String) -> FloatingText:
 	# XXX: Hardcoded scene and screen component names
@@ -381,11 +398,13 @@ func _make_floating_text(text: String) -> FloatingText:
 	node.text = text
 	return node
 
+
 func _clear_goal():
 	_goal = Goal.NONE
 	_goal_target = null
 	if self == Game.leader():
 		Game.stop_running()
+
 
 ## Return cell of the current goal target, or null if there is none.
 func _goal_target_cell():
@@ -401,6 +420,7 @@ func _goal_target_cell():
 	else:
 		# It's a live object but not a type we understand.
 		assert(false, "Invalid goal target type: " + _goal_target)
+
 
 ## Goal-executing primitive. Returns true if the goal remains valid.
 func _move_towards(destination: Vector2i) -> bool:
@@ -447,6 +467,7 @@ func _move_towards(destination: Vector2i) -> bool:
 		# Bail out since we don't know what's going on.
 		return false
 
+
 func _visible_enemies(detection_range: int) -> Array[Mob]:
 	var result: Array[Mob] = []
 
@@ -460,8 +481,9 @@ func _visible_enemies(detection_range: int) -> Array[Mob]:
 				result.append(mob)
 
 	# Sort from closest to furthest
-	result.sort_custom(func(a, b):
-		return Rules.dist(self, a) < Rules.dist(self, b)
+	result.sort_custom(
+		func(a, b):
+			return Rules.dist(self, a) < Rules.dist(self, b)
 	)
 	return result
 #endregion
@@ -470,7 +492,7 @@ func _visible_enemies(detection_range: int) -> Array[Mob]:
 func pick_up(item: ItemNode) -> void:
 	# If it's cash, add count to stat and junk the object.
 	if item.data.kind == ItemData.Kind.CASH:
-		say("\"$" + str(item.count)+"\"")
+		say("\"$" + str(item.count) + "\"")
 		Game.on_cash_picked_up(self, item)
 		item.queue_free()
 		return
@@ -482,8 +504,9 @@ func pick_up(item: ItemNode) -> void:
 #endregion
 
 #region Animation
-const ANIM_CYCLE := int(1.0 * 60)  # 2 seconds in frames
+const ANIM_CYCLE := int(1.0 * 60) # 2 seconds in frames
 var _phase_offset = hash(self) % ANIM_CYCLE
+
 
 func _animate():
 	# Simple idle animation, operate in 60 FPS frames

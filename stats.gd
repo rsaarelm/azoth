@@ -1,5 +1,5 @@
-class_name Stats extends RefCounted
-
+class_name Stats
+extends RefCounted
 ## Primary and derived stats for player characters.
 
 @export_storage var might := 0

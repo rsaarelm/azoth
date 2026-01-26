@@ -3,6 +3,7 @@ extends HBoxContainer
 func _init():
 	update_icons()
 
+
 func update_icons():
 	# Remove old icons
 	for child in get_children():
@@ -18,6 +19,7 @@ func update_icons():
 
 		btn.connect("pressed", Callable(self, "_on_ability_pressed").bind(ability))
 		add_child(btn)
+
 
 func _on_ability_pressed(ability):
 	var player = Game.leader()

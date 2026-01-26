@@ -1,12 +1,14 @@
-class_name AreaFrame extends Container
-
+class_name AreaFrame
+extends Container
 ## Container for game screen that manages area transitions.
 
 var area: Area
 
+
 func _init():
 	# Become area-sized
 	size = Area.CELL * Vector2(Area.MAX_WIDTH, Area.MAX_HEIGHT)
+
 
 func load_area(scene_path: String, player_pos: Vector2i, player: Mob = null) -> Area:
 	if not player:

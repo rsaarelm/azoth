@@ -1,7 +1,9 @@
 ## Ranged attack ability.
-class_name Blast extends Ability
+class_name Blast
+extends Ability
 
 @export var power: int = 5
+
 
 func use(_caster: Mob, target: Vector2i) -> void:
 	var mob = Game.area().mob_at(target)

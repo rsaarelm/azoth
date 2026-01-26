@@ -1,5 +1,6 @@
-@tool  # Make the icon show up in editor map view
-class_name ItemNode extends Area2D
+@tool # Make the icon show up in editor map view
+class_name ItemNode
+extends Area2D
 
 # For inspector ergonomics, have dummy parameters here for the inner item resource.
 # Build the actual item in _ready.
@@ -37,7 +38,8 @@ var cell: Vector2i:
 		# Make sure to preserve the local offset.
 		var offset = Vector2i(
 			posmod(position.x as int, Area.CELL_SIZE),
-			posmod(position.y as int, Area.CELL_SIZE))
+			posmod(position.y as int, Area.CELL_SIZE),
+		)
 		position = Vector2(value * Area.CELL_SIZE + offset)
 
 ## Point where item was originally spawned, used for respawn blocklists.
@@ -50,6 +52,7 @@ var display_name: String:
 		else:
 			return "n/a"
 
+
 # TODO New signature _init(inner: Item)
 func _init(_inner: Item = null):
 	if _inner:
@@ -58,6 +61,7 @@ func _init(_inner: Item = null):
 	# Align to cell center.
 	if position == Vector2.ZERO:
 		position = Area.CELL / 2
+
 
 func _ready():
 	# Create a Sprite2D child node named Icon.
@@ -72,16 +76,20 @@ func _ready():
 	collision.shape = shape
 	add_child(collision)
 
+
 func _enter_tree():
 	self.spawn_origin = cell
 
+
 func _process(_delta):
 	animate()
+
 
 ## Take out the inner item resource and discard the node.
 func take() -> Item:
 	queue_free()
 	return inner
+
 
 ## Drop the item at a position.
 func drop(at: Vector2i):
@@ -94,24 +102,25 @@ func drop(at: Vector2i):
 		area.add_child(self)
 
 	if existing_item and \
-		self.inner.stacks_with(existing_item.inner) and \
-		self.count + existing_item.count <= self.inner.stack_limit():
-			# Merge stacks if you can
-			existing_item.count += self.count
-			self.queue_free()
+	self.inner.stacks_with(existing_item.inner) and \
+	self.count + existing_item.count <= self.inner.stack_limit():
+		# Merge stacks if you can
+		existing_item.count += self.count
+		self.queue_free()
 	else:
 		# Just cram two objects into the same cell for now.
 		# TODO: Scatter dropped items to adjacent cells pinata style.
 		area.add_child(self)
 
 #region Animation
-const BLINK_CYCLE := int(2.0 * 60)  # 2 seconds in frames
+const BLINK_CYCLE := int(2.0 * 60) # 2 seconds in frames
 const BLINK_DURATION := int(0.15 * 60)
 var _phase_offset = hash(self) % BLINK_CYCLE
 
+
 func animate():
 	if Engine.is_editor_hint():
-		return  # Don't animate in editor.
+		return # Don't animate in editor.
 
 	# Blinking animation, operate in 60 FPS frames
 	var frame = (Engine.get_physics_frames() + _phase_offset) % BLINK_CYCLE

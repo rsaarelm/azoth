@@ -21,6 +21,7 @@ var columns := 1
 
 var _slots: Array[ItemSlot]
 
+
 func _ready():
 	# Collect ItemSlot type child nodes into _slots array.
 	_slots = []
@@ -41,11 +42,13 @@ func _ready():
 	# Populate
 	_update()
 
+
 func _process(_delta):
 	# If game was loaded, the old link is invalid, update.
 	if backend != Game.state.inventory:
 		backend = Game.state.inventory
 		_update()
+
 
 func _update():
 	# Adjust offset down if there's empty space at the end.
@@ -62,13 +65,16 @@ func _update():
 	$UpButton.visible = offset > 0
 	$DownButton.visible = offset + _slots.size() < backend.items.size()
 
+
 func _on_up_pressed():
 	offset = max(0, offset - columns)
 	_update()
 
+
 func _on_down_pressed():
 	offset += columns
 	_update()
+
 
 func _on_slot_pressed(idx: int):
 	var item_idx = offset + idx
