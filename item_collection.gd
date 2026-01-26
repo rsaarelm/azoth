@@ -39,9 +39,8 @@ func insert(item: Item):
 					item.die()
 					contents_changed.emit()
 					return
-				else:
-					items[i].count += space
-					item.count -= space
+				items[i].count += space
+				item.count -= space
 
 	# If we're here, the item was not fully merged into an existing stack,
 	# and we need to add a new item.

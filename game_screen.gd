@@ -49,7 +49,8 @@ func _input(event: InputEvent) -> void:
 					leader.cmd_goto(cell)
 					Game.start_running()
 
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+	if event is InputEventMouseButton and \
+	event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 		var area = Game.area()
 
 		# Right button cancels aiming
@@ -65,7 +66,8 @@ func _input(event: InputEvent) -> void:
 				for y in range(0, 54):
 					for x in range(0, 64):
 						var pos = Vector2i(x, y)
-						if Game.dist(pos, mob) <= Mob.ENEMY_SIGHT_RANGE and area.can_see(mob.cell, Vector2i(x, y)):
+						if Game.dist(pos, mob) <= Mob.ENEMY_SIGHT_RANGE \
+						and area.can_see(mob.cell, Vector2i(x, y)):
 							area.ping(pos)
 
 
@@ -85,11 +87,13 @@ func confirm(message: String) -> bool:
 	dialog.visible = true
 
 	dialog.canceled.connect(
-		func(): _confirm_result = false
+		func():
+			_confirm_result = false
 			_confirm_complete = true
 	)
 	dialog.confirmed.connect(
-		func(): _confirm_result = true
+		func():
+			_confirm_result = true
 			_confirm_complete = true
 	)
 

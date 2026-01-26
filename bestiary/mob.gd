@@ -223,8 +223,7 @@ func step(direction: Vector2i) -> bool:
 					# flag so that you can't use level transition to heal.
 					Game.load_area(new_area, new_pos, self)
 					return true
-				else:
-					return false
+				return false
 			Area.Kind.UPSTAIRS, Area.Kind.DOWNSTAIRS:
 				# Another area transition
 				if is_player():
@@ -244,8 +243,7 @@ func step(direction: Vector2i) -> bool:
 					assert(new_area, "Stair tile with no neighbor area.")
 					Game.load_area(new_area, new_pos, self)
 					return true
-				else:
-					return false
+				return false
 			Area.Kind.ALTAR:
 				# Pray at altar, you heal but the enemies respawn.
 
@@ -258,8 +256,7 @@ func step(direction: Vector2i) -> bool:
 						Game.msg("Gained a level!")
 					Game.player_rests(pos)
 					return true
-				else:
-					return false
+				return false
 
 		# Set is_moving to true when you're definitely taking a step.
 		_is_moving = true
@@ -282,7 +279,6 @@ func _post_step():
 			pick_up(item)
 
 		area.expose_fov(cell, PLAYER_SIGHT_RANGE)
-	pass
 
 
 ## Attack enemies if there are any in the way. Return if action succeeded.
@@ -410,16 +406,15 @@ func _clear_goal():
 func _goal_target_cell():
 	if _goal_target == null:
 		return null
-	elif _goal_target is Vector2i:
+	if _goal_target is Vector2i:
 		return _goal_target
-	elif !is_instance_valid(_goal_target):
+	if !is_instance_valid(_goal_target):
 		# We were targeting a mob that has since been deleted.
 		return null
-	elif _goal_target is Mob:
+	if _goal_target is Mob:
 		return _goal_target.cell
-	else:
-		# It's a live object but not a type we understand.
-		assert(false, "Invalid goal target type: " + _goal_target)
+	# It's a live object but not a type we understand.
+	assert(false, "Invalid goal target type: " + _goal_target)
 
 
 ## Goal-executing primitive. Returns true if the goal remains valid.
@@ -460,12 +455,11 @@ func _move_towards(destination: Vector2i) -> bool:
 		if cell == next_cell:
 			_planned_path.remove_at(0)
 		return true
-	else:
-		_planned_path = []
-		_planned_destination = Vector2i(-1, -1)
-		# Something went wrong, has the terrain changed?
-		# Bail out since we don't know what's going on.
-		return false
+	_planned_path = []
+	_planned_destination = Vector2i(-1, -1)
+	# Something went wrong, has the terrain changed?
+	# Bail out since we don't know what's going on.
+	return false
 
 
 func _visible_enemies(detection_range: int) -> Array[Mob]:

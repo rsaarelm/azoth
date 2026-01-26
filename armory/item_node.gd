@@ -49,8 +49,7 @@ var display_name: String:
 	get:
 		if inner.data:
 			return inner.data.name
-		else:
-			return "n/a"
+		return "n/a"
 
 
 # TODO New signature _init(inner: Item)

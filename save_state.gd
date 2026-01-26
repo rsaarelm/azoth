@@ -4,8 +4,11 @@ extends RefCounted
 
 @export_storage var player_stats := Stats.new()
 
-@export_storage var spawn_location := { area = "res://atlas/northlands.tscn", cell = Vector2i(57, 36) }
-@export_storage var last_altar_location := { area = "res://atlas/northlands.tscn", cell = Vector2i(57, 35) }
+@export_storage var spawn_location := \
+{ area = "res://atlas/northlands.tscn", cell = Vector2i(57, 36) }
+
+@export_storage var last_altar_location := \
+{ area = "res://atlas/northlands.tscn", cell = Vector2i(57, 35) }
 
 @export_storage var corpse_cash_location = null
 @export_storage var corpse_cash_amount := 0

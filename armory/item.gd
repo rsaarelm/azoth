@@ -58,11 +58,10 @@ func die():
 func stack_limit() -> int:
 	if !self.data.is_stacking:
 		return 1
-	elif self.data.kind == ItemData.Kind.CASH:
+	if self.data.kind == ItemData.Kind.CASH:
 		# Cash piles can be huge.
 		return 999999
-	else:
-		return ItemData.MAX_STACK
+	return ItemData.MAX_STACK
 
 
 ## Decrement the item count, remove the item if it reaches zero.

@@ -212,8 +212,7 @@ func leader() -> Mob:
 	var nodes = get_tree().get_nodes_in_group("player")
 	if nodes:
 		return nodes.front()
-	else:
-		return null
+	return null
 
 
 func build_player() -> Mob:

@@ -51,7 +51,8 @@ func expose(cell: Vector2i):
 	# This function makes sure the _inner bitgrid and the tilemap stay in sync.
 	# Do not mutate either from elsewhere.
 
-	# Allow going one tile outside of bounds so we don't get a visible boundary at the edge of the on-screen map.
+	# Allow going one tile outside of bounds so we don't get a visible boundary
+	# at the edge of the on-screen map.
 	if cell.x < -1 or cell.x >= Area.MAX_WIDTH + 1 or cell.y < -1 or cell.y >= Area.MAX_HEIGHT + 1:
 		return
 	set_cells_terrain_connect([cell], 0, 0)
@@ -119,7 +120,16 @@ func _process_octant(
 			if prev_visible and !cell_open:
 				# Hit a wall after visible span, recurse to the sub-span
 				prev_visible = false
-				_process_octant(center, radius, is_open, forward, side, u + 1, start_slope, inner_slope)
+				_process_octant(
+					center,
+					radius,
+					is_open,
+					forward,
+					side,
+					u + 1,
+					start_slope,
+					inner_slope,
+				)
 			if !cell_open:
 				# Update start slope while going through a wall.
 				start_slope = outer_slope

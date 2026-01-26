@@ -5,10 +5,9 @@ class_name Util
 static func unwrap_cell(entity) -> Vector2i:
 	if entity is Vector2i:
 		return entity
-	elif entity is Mob:
+	if entity is Mob:
 		return entity.cell
-	else:
-		assert(false, "unwrap_pos: Can't handle entity of type %s" % [typeof(entity)])
+	assert(false, "unwrap_pos: Can't handle entity of type %s" % [typeof(entity)])
 	return Vector2i.ZERO
 
 

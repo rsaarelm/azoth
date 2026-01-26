@@ -142,7 +142,10 @@ static func serialize(obj: Variant) -> Variant:
 
 	# Script objects are instantiated using their script file path, so only
 	# classes at the top level of the script file are good.
-	assert(obj.get_script() and obj.get_script().resource_path, "serialize: Object " + str(obj) + " must have its own script file")
+	assert(
+		obj.get_script() and obj.get_script().resource_path,
+		"serialize: Object " + str(obj) + " must have its own script file",
+	)
 
 	var result = {
 		# Write the magic object identifier field
@@ -162,7 +165,8 @@ static func serialize(obj: Variant) -> Variant:
 
 	for i in range(start_idx, props.size()):
 		var prop = props[i]
-		# Properties must be marked to be serialized with @export or @export_storage to be serialized.
+		# Properties must be marked to be serialized with @export or
+		# @export_storage to be serialized.
 		# We don't want to serialize all the random junk in objects.
 		if not prop.usage & PROPERTY_USAGE_STORAGE:
 			continue
@@ -188,17 +192,19 @@ static func deserialize(data: Variant) -> Variant:
 				if res == null:
 					push_error("Failed to load resource at path: " + data)
 				return res
-			elif data.begins_with(":pba "):
+			if data.begins_with(":pba "):
 				# PackedByteArray in base64.
 				return Marshalls.base64_to_raw(data.substr(5))
-			elif data.begins_with(":pbz "):
+			if data.begins_with(":pbz "):
 				# Compressed PackedByteArray in base64.
 				var bytes = Marshalls.base64_to_raw(data.substr(5))
-				var pba = bytes.decompress_dynamic(-1, FileAccess.CompressionMode.COMPRESSION_DEFLATE)
+				var pba = bytes.decompress_dynamic(
+					-1,
+					FileAccess.CompressionMode.COMPRESSION_DEFLATE,
+				)
 				return pba
-			else:
-				# Use standard conversion otherwise.
-				return str_to_var(data)
+			# Use standard conversion otherwise.
+			return str_to_var(data)
 		TYPE_ARRAY:
 			var output_array = []
 			for element in data:
@@ -211,9 +217,9 @@ static func deserialize(data: Variant) -> Variant:
 				# TODO: More robust error handling with various failures.
 
 				# Instantiate an object using the script resource.
-				var script: Script = load(data.__script_path__)
+				var script: Script = load(data["__script_path__"])
 				if not script:
-					push_error("No object script " + data.__script_path__ + " found.")
+					push_error("No object script " + data["__script_path__"] + " found.")
 					return null
 				var obj = script.new()
 
@@ -232,12 +238,11 @@ static func deserialize(data: Variant) -> Variant:
 						# Otherwise just set directly.
 						obj.set(key, value)
 				return obj
-			else:
-				# Otherwise assume it's a regular dictionary.
-				var output_dict = { }
-				for key in data.keys():
-					output_dict[deserialize(key)] = deserialize(data[key])
-				return output_dict
+			# Otherwise assume it's a regular dictionary.
+			var output_dict = { }
+			for key in data.keys():
+				output_dict[deserialize(key)] = deserialize(data[key])
+			return output_dict
 		_:
 			assert(false, "Cannot deserialize type " + str(typeof(data)))
 	return null
