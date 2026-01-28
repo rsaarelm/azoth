@@ -17,7 +17,7 @@ extends RefCounted
 
 @export_storage var inventory := ItemCollection.new()
 
-# TODO: Equipment blocks, per character thing
+@export_storage var equipment := Equipment.new()
 
 ## Dictionary of area resource path to AreaState
 @export_storage var areas := { }

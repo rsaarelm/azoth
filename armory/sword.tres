@@ -11,5 +11,5 @@ region = Rect2(16, 8, 8, 8)
 script = ExtResource("1_g072d")
 name = "sword"
 icon = SubResource("AtlasTexture_kswcj")
-kind = 5
+kind = 7
 metadata/_custom_type_script = "uid://cvp6gdct0efso"

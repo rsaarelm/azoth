@@ -51,6 +51,15 @@ func insert(item: Item):
 	contents_changed.emit()
 
 
+func remove(item: Item) -> bool:
+	var idx = items.find(item)
+	if idx == -1:
+		return false
+
+	_remove_item_at(idx)
+	return true
+
+
 func _bind_item(item):
 	item.destroyed.connect(_on_item_destroyed.bind(item))
 	item.changed.connect(_on_item_changed.bind(item))

@@ -18,8 +18,20 @@ enum Kind {
 	## Equippable in helmet slot.
 	HELMET,
 
+	## Equippable in cloak slot.
+	CLOAK,
+
+	## Equippable in amulet slot.
+	AMULET,
+
 	## Equippable as weapon.
 	WEAPON,
+
+	## Equippable as weapon, takes two hands.
+	TWO_HANDED_WEAPON,
+
+	## Equippable as shield.
+	SHIELD,
 
 	## Equippable as ring.
 	RING,
@@ -30,7 +42,7 @@ const MAX_STACK := 99
 @export var name := "unnamed item"
 @export var icon: Texture2D
 
-# If true, instances of the item can be fused into numbered piles.
+## If true, instances of the item can be fused into piles.
 @export var is_stacking := false
 
 @export var kind := Kind.TREASURE
@@ -55,3 +67,16 @@ const MAX_STACK := 99
 
 ## Minimum cunning needed to equip.
 @export var cunning_min: int
+
+
+func is_equipment() -> bool:
+	return kind in [
+		Kind.ARMOR,
+		Kind.HELMET,
+		Kind.CLOAK,
+		Kind.AMULET,
+		Kind.WEAPON,
+		Kind.SHIELD,
+		Kind.RING,
+		Kind.TWO_HANDED_WEAPON,
+	]

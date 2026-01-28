@@ -3,12 +3,14 @@ extends Control
 ## Reference to the character inventory in game data.
 var backend: ItemCollection:
 	set(value):
-		# Disconnect old signal
+		# Disconnect old signal.
 		if backend:
 			backend.contents_changed.disconnect(_update)
 		backend = value
+		# Attach new signal and update.
 		if backend:
 			backend.contents_changed.connect(_update)
+			_update()
 
 # INVARIANT: offset value must be either zero or small enough that there are no
 # empty lines in the item view grid.
@@ -47,10 +49,12 @@ func _process(_delta):
 	# If game was loaded, the old link is invalid, update.
 	if backend != Game.state.inventory:
 		backend = Game.state.inventory
-		_update()
 
 
 func _update():
+	if not backend:
+		return
+
 	# Adjust offset down if there's empty space at the end.
 	while offset > 0 and offset + _slots.size() - columns >= backend.items.size():
 		offset -= columns
@@ -80,4 +84,16 @@ func _on_slot_pressed(idx: int):
 	var item_idx = offset + idx
 	if item_idx < backend.items.size():
 		var item = backend.items[item_idx]
-		item.use(Game.leader())
+		if item.data.is_equipment():
+			# Try to equip the item.
+			var unequipped = Game.state.equipment.equip(item)
+			if unequipped != null:
+				# Successfully equipped, remove from inventory.
+				backend.remove(item)
+
+				# Add unequipped items back to inventory.
+				for uneq_item in unequipped:
+					backend.insert(uneq_item)
+		else:
+			# Use consumable item.
+			item.use(Game.leader())
