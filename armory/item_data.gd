@@ -18,6 +18,12 @@ enum Kind {
 	## Equippable in helmet slot.
 	HELMET,
 
+	## Equippable in cloak slot.
+	CLOAK,
+
+	## Equippable in amulet slot.
+	AMULET,
+
 	## Equippable as weapon.
 	WEAPON,
 
