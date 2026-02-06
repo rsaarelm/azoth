@@ -128,6 +128,7 @@ theme_override_constants/line_spacing = 1
 theme_override_fonts/font = ExtResource("5_oymjd")
 theme_override_font_sizes/font_size = 7
 autowrap_mode = 3
+uppercase = true
 script = ExtResource("4_aybt7")
 
 [node name="VSplitContainer" type="VSplitContainer" parent="HSplitContainer"]
