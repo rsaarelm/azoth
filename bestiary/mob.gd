@@ -47,6 +47,14 @@ const ENEMY_SIGHT_RANGE := 7
 ## How well can the mob evade attacks.
 @export var evasion := 0
 
+# Derived stats.
+# ALWAYS USE THESE FOR RULE LOGIC
+# The base stats with the regular names are for the base mob.
+# Derived stats have equipment properties and other effects applied to them.
+var _strength := strength
+var _accuracy := accuracy
+var _evasion := evasion
+
 ## "Inverse hitpoints", set up so it's easy to reset by setting it to zero.
 ##
 ## Once wounds reach up to your health, you're dead.
@@ -68,6 +76,17 @@ var cell: Vector2i:
 			posmod(position.y as int, Area.CELL_SIZE),
 		)
 		position = Vector2(value * Area.CELL_SIZE + offset)
+
+var equipment := Equipment.new():
+	set(value):
+		if equipment:
+			# Disconnect old signal.
+			equipment.contents_changed.disconnect(recompute_stats)
+		equipment = value
+		if equipment:
+			# Connect new signal
+			equipment.contents_changed.connect(recompute_stats)
+		recompute_stats()
 
 var _goal := Goal.NONE
 
@@ -304,8 +323,8 @@ func attack(vec: Vector2i) -> bool:
 	# fire.
 	var target = area.mob_at(cell + vec)
 	if target:
-		if Util.odds(accuracy - target.evasion):
-			target.take_damage(self.strength)
+		if Util.odds(_accuracy - target._evasion):
+			target.take_damage(self._strength)
 		# TODO: Some animation when the mob is missed, mob jumps to the side or sth
 		return true
 	return false
@@ -328,12 +347,19 @@ func take_damage(damage: int) -> void:
 
 		if is_enemy():
 			# Drop cash.
-			var payout = max(1, int(strength * randf_range(0.5, 2.0)))
+			var payout = max(1, int(challenge_rating() * randf_range(0.5, 2.0)))
 			ItemNode.new(Item.make_coins(payout)).drop(cell)
 
 			Game.on_enemy_killed(self)
 
 		# Add more death logic as needed
+
+
+## Return how powerful a mob is considered to be for kill rewards etc.
+func challenge_rating() -> int:
+	# NB. Use base strength here, not the derived one, because we're looking at
+	# the base mob's rating.
+	return strength
 
 
 func has_trait(_trait: CreatureTrait) -> bool:
@@ -347,6 +373,23 @@ func is_next_to_altar() -> bool:
 	area.kind(pos + Vector2i(-1, 0)) == Area.Kind.ALTAR or \
 	area.kind(pos + Vector2i(0, 1)) == Area.Kind.ALTAR or \
 	area.kind(pos + Vector2i(0, -1)) == Area.Kind.ALTAR
+
+
+## Compute derived stats from base stats.
+func recompute_stats():
+	_strength = strength
+	_accuracy = accuracy
+	_evasion = evasion
+
+	for s in equipment.slot:
+		var item = equipment.slot[s]
+		if item.data.is_armor():
+			_evasion += item.data.power
+		elif item.data.is_weapon():
+			_strength += item.data.power
+			# XXX: Get a plus-something to accuracy for
+			# powerful weapons. This could use more thinking.
+			_accuracy += item.data.power / 4
 
 #endregion
 

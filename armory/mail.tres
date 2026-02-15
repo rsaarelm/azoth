@@ -12,4 +12,5 @@ script = ExtResource("1_g072d")
 name = "mail"
 icon = SubResource("AtlasTexture_kswcj")
 kind = 3
+power = 5
 metadata/_custom_type_script = "uid://cvp6gdct0efso"

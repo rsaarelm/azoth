@@ -26,6 +26,7 @@ func _process(_delta: float) -> void:
 		# Add indicator if you have enough cash to level up
 		if Game.player_cash() >= Rules.level_up_cost(Game.player_level() + 1):
 			text += \"*\"
+		text += \"\\nStr: \" + str(pc._strength) + \" Acc: \" + str(pc._accuracy) + \" Ev: \" + str(pc._evasion)
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_viusa"]

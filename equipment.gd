@@ -19,18 +19,6 @@ enum EquipSlot {
 signal contents_changed
 
 
-## Apply the effects of the equipment set to a mob.
-func apply_to(_mob: Mob):
-	# * Reset mob's derived stats to ones derived from the base creature data.
-	# Same effect can come from both spell effects and equipment, should handle
-	# equipping and unequipping correctly, ie, keep going as long as spell
-	# lasts even if effect item was unequipped.
-
-	# * Add the effects of each equipped item to entity, need some iteration
-	# scheme here to keep code nice.
-	pass
-
-
 func unequip(s: Equipment.EquipSlot) -> Variant:
 	if slot.has(s):
 		var item = slot[s]

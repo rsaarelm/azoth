@@ -226,6 +226,9 @@ func build_player() -> Mob:
 	player.health = state.player_stats.health
 	player.strength = 10 + state.player_stats.might
 
+	# Link persistent equipment struct to player
+	player.equipment = state.equipment
+
 	return player
 
 

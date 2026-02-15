@@ -80,3 +80,21 @@ func is_equipment() -> bool:
 		Kind.RING,
 		Kind.TWO_HANDED_WEAPON,
 	]
+
+
+func is_armor() -> bool:
+	return kind in [
+		Kind.ARMOR,
+		Kind.HELMET,
+		Kind.CLOAK,
+		Kind.AMULET,
+		Kind.SHIELD,
+		Kind.RING,
+	]
+
+
+func is_weapon() -> bool:
+	return kind in [
+		Kind.WEAPON,
+		Kind.TWO_HANDED_WEAPON,
+	]
